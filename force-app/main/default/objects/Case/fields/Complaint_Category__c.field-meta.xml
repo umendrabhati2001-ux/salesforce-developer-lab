@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Complaint_Category__c</fullName>
+    <description
+  >Category of customer complaint for NexGen Cloud Solutions</description>
+    <externalId>false</externalId>
+    <label>Complaint Category</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Hardware Failure</fullName>
+                <default>false</default>
+                <label>Hardware Failure</label>
+            </value>
+            <value>
+                <fullName>Cloud Downtime</fullName>
+                <default>false</default>
+                <label>Cloud Downtime</label>
+            </value>
+            <value>
+                <fullName>Network Latency</fullName>
+                <default>false</default>
+                <label>Network Latency</label>
+            </value>
+            <value>
+                <fullName>Software Bug</fullName>
+                <default>false</default>
+                <label>Software Bug</label>
+            </value>
+            <value>
+                <fullName>Billing Dispute</fullName>
+                <default>false</default>
+                <label>Billing Dispute</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

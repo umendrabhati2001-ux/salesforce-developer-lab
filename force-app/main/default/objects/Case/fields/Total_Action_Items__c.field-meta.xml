@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_Action_Items__c</fullName>
+    <description
+  >Automatically rolls up the total count of action items required for this complaint</description>
+    <externalId>false</externalId>
+    <label>Total Action Items</label>
+    <summaryForeignKey>Complaint_Action_Item__c.Case__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

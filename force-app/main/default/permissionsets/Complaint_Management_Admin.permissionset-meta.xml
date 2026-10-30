@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Full access to Customer Complaint and Support Management System metadata and fields.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Complaint Management Admin</label>
+
+    <!-- Object Permissions -->
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Case</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Complaint_Action_Item__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+
+    <!-- Field Permissions on Case -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Complaint_Category__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Resolution_SLA_Hours__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Root_Cause_Summary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.SLA_Breach_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Total_Action_Items__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <!-- Field Permissions on Complaint_Action_Item__c -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Complaint_Action_Item__c.Due_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Complaint_Action_Item__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <tabSettings>
+        <tab>Complaint_Action_Item__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>
