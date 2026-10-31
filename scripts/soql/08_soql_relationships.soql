@@ -1,0 +1,7 @@
+SELECT
+    Name,
+    Industry,
+    (SELECT FirstName, LastName, Email, Title FROM Contacts),
+    (SELECT CaseNumber, Subject, Priority, Status, SLA_Breach_Status__c FROM Cases)
+FROM Account
+WHERE Name = 'Acme Logistics Global'

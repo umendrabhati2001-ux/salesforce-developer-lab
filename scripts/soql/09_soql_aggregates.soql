@@ -1,0 +1,7 @@
+SELECT
+    Priority,
+    COUNT(Id) totalCases,
+    AVG(Resolution_SLA_Hours__c) avgSlaHours,
+    MAX(Resolution_SLA_Hours__c) maxSlaHours
+FROM Case
+GROUP BY Priority

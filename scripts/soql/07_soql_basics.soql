@@ -1,0 +1,13 @@
+SELECT
+    CaseNumber,
+    Subject,
+    Status,
+    Priority,
+    Complaint_Category__c,
+    Resolution_SLA_Hours__c,
+    CreatedDate
+FROM Case
+WHERE Priority IN ('High', 'Critical')
+  AND Status != 'Closed'
+ORDER BY CreatedDate DESC
+LIMIT 5
