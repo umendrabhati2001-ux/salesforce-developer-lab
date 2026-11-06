@@ -152,9 +152,12 @@ Welcome to your structured, serial-wise Salesforce Developer syllabus. Every sin
   - Practice File: `scripts/apex/19_positive_negative_bulk_testing.apex`
   - Status: **COMPLETED & VERIFIED**
 
-- [ ] **20. Code Coverage & Deployment Readiness**
+- [x] **20. Code Coverage & Deployment Readiness**
   - Achieving 85%+ code coverage (Salesforce requires 75% minimum for production)
-  - CLI test execution & XML report generation
+  - Deployment test levels: `NoTestRun`, `RunSpecifiedTests`, `RunLocalTests`
+  - CLI test execution & CI/CD deployment gates
+  - Practice File: `scripts/apex/20_code_coverage_deployment.apex`
+  - Status: **COMPLETED & VERIFIED**
 
 ---
 
