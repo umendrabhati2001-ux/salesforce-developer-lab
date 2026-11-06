@@ -29,10 +29,11 @@ export const ParticleSalesforceFooter: React.FC = () => {
     let animationFrameId: number;
     let particles: Particle[] = [];
 
+    // Tighter, smaller cursor interaction radius (55px instead of 120px)
     const mouse = {
       x: -9999,
       y: -9999,
-      radius: 120, // repulsion radius in pixels
+      radius: 55,
     };
 
     const colors = [
@@ -67,8 +68,7 @@ export const ParticleSalesforceFooter: React.FC = () => {
       offCtx.fillStyle = "#000000";
       offCtx.fillRect(0, 0, width, height);
 
-      // Compute font size to make "SALESFORCE" stretch across width
-      // Base font ratio: width / 7.2 roughly fills 90% of screen width
+      // Compute font size to make "SALESFORCE" stretch gracefully across width
       const fontSize = Math.floor(width / 7.6);
       offCtx.font = `900 ${fontSize}px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`;
       offCtx.textAlign = "center";
@@ -84,7 +84,7 @@ export const ParticleSalesforceFooter: React.FC = () => {
 
       particles = [];
 
-      // Density step: adapt step based on width to keep particle count ~1200-2500 for high 60fps performance
+      // Step grid for high performance and smooth dot density
       const step = width < 640 ? 4 : width < 1024 ? 5 : 6;
 
       for (let y = 0; y < height; y += step) {
@@ -93,7 +93,6 @@ export const ParticleSalesforceFooter: React.FC = () => {
           const brightness = data[index]; // red channel
 
           if (brightness > 128) {
-            // Pick a color biased toward cyan and salesforce blue
             const rand = Math.random();
             let color = colors[0];
             if (rand < 0.45) color = colors[0]; // Cyan
@@ -103,12 +102,12 @@ export const ParticleSalesforceFooter: React.FC = () => {
             else color = colors[4]; // White glint
 
             particles.push({
-              x: x + (Math.random() - 0.5) * 12, // Slight organic dispersal on load
-              y: y + (Math.random() - 0.5) * 12,
+              x: x,
+              y: y,
               originX: x,
               originY: y,
-              vx: (Math.random() - 0.5) * 2,
-              vy: (Math.random() - 0.5) * 2,
+              vx: 0,
+              vy: 0,
               color: color,
               size: width < 640 ? 2 : 2.5,
             });
@@ -165,7 +164,7 @@ export const ParticleSalesforceFooter: React.FC = () => {
     container.addEventListener("touchmove", handleTouchMove, { passive: true });
     container.addEventListener("touchend", handleTouchEnd);
 
-    // Physics Animation Loop
+    // Silky Smooth Physics Animation Loop
     const render = () => {
       const rect = container.getBoundingClientRect();
       const width = rect.width;
@@ -173,9 +172,11 @@ export const ParticleSalesforceFooter: React.FC = () => {
 
       ctx.clearRect(0, 0, width, height);
 
-      const friction = 0.86; // Drag
-      const spring = 0.08;   // Snap back attraction
-      const repulsionPower = 18; // Push force away from cursor
+      // Fine-tuned for gentle, fluid, slow organic motion
+      const friction = 0.91;      // Gliding damping (was 0.86)
+      const spring = 0.035;       // Gentle organic spring return (was 0.08)
+      const repulsionPower = 4.2; // Soft, slow push (was 18 - 4x softer and smoother!)
+      const maxSpeed = 6.0;       // Velocity limiter prevents harsh sudden jumps
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
@@ -188,12 +189,12 @@ export const ParticleSalesforceFooter: React.FC = () => {
         if (dist < mouse.radius && dist > 0) {
           const force = (mouse.radius - dist) / mouse.radius;
           const angle = Math.atan2(dy, dx);
-          // Push away from cursor
+          // Gentle push away from cursor
           p.vx -= Math.cos(angle) * force * repulsionPower;
           p.vy -= Math.sin(angle) * force * repulsionPower;
         }
 
-        // 2. Spring Force returning to origin
+        // 2. Spring Force returning smoothly to origin
         const homeDx = p.originX - p.x;
         const homeDy = p.originY - p.y;
         p.vx += homeDx * spring;
@@ -203,16 +204,33 @@ export const ParticleSalesforceFooter: React.FC = () => {
         p.vx *= friction;
         p.vy *= friction;
 
-        // 4. Update coordinates
+        // 4. Velocity clamp for smooth floating motion
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (speed > maxSpeed) {
+          p.vx = (p.vx / speed) * maxSpeed;
+          p.vy = (p.vy / speed) * maxSpeed;
+        }
+
+        // 5. Update coordinates
         p.x += p.vx;
         p.y += p.vy;
 
-        // 5. Draw Particle
+        // 6. Draw Particle dot
         ctx.fillStyle = p.color;
-        // Draw round dots
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
         ctx.fill();
+      }
+
+      // 7. Subtle interactive cursor aura (shows the small, focused touch zone)
+      if (mouse.x > 0 && mouse.y > 0 && mouse.x < width && mouse.y < height) {
+        ctx.strokeStyle = "rgba(0, 240, 255, 0.25)";
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, mouse.radius, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
       }
 
       animationFrameId = requestAnimationFrame(render);

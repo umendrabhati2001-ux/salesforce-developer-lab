@@ -145,9 +145,12 @@ Welcome to your structured, serial-wise Salesforce Developer syllabus. Every sin
   - Practice File: `scripts/apex/18_test_data_factory.apex`
   - Status: **COMPLETED & VERIFIED**
 
-- [ ] **19. Positive, Negative & Bulk Unit Testing**
+- [x] **19. Positive, Negative & Bulk Unit Testing**
   - Testing happy path vs expected validation failures
   - 200-record bulk testing requirements
+  - Asserting Governor Limits within tests (`Limits.getQueries()`, `Limits.getCpuTime()`)
+  - Practice File: `scripts/apex/19_positive_negative_bulk_testing.apex`
+  - Status: **COMPLETED & VERIFIED**
 
 - [ ] **20. Code Coverage & Deployment Readiness**
   - Achieving 85%+ code coverage (Salesforce requires 75% minimum for production)
