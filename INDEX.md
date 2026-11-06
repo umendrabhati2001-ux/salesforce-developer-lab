@@ -113,10 +113,12 @@ Welcome to your structured, serial-wise Salesforce Developer syllabus. Every sin
 
 ## 📌 Phase D: Asynchronous Apex (Heavy Computing)
 
-- [ ] **15. Future Methods & Queueable Apex**
+- [x] **15. Future Methods & Queueable Apex**
   - `@future` methods (Primitive parameters only, Callouts in background)
   - `Queueable` Apex: Passing complex objects, Job ID tracking, Chaining jobs
   - System monitoring (`AsyncApexJob`)
+  - Practice File: `scripts/apex/15_future_queueable_apex.apex`
+  - Status: **COMPLETED & VERIFIED**
 
 - [ ] **16. Batch Apex & Schedulable Apex**
   - Processing 50,000+ to 50 Million records: `Database.Batchable` (`start`, `execute`, `finish`)
