@@ -73,14 +73,14 @@ export const Navbar: React.FC = () => {
             
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="font-extrabold text-xs sm:text-base tracking-tight bg-gradient-to-r from-white via-cyan-100 to-cyan-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-white transition-colors truncate">
-                  Salesforce Lab
+                <span className="font-extrabold text-xs sm:text-base tracking-tight bg-gradient-to-r from-white via-cyan-100 to-cyan-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-white transition-colors">
+                  Salesforce Developer Lab
                 </span>
                 <span className="text-[9px] sm:text-[10px] font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 font-semibold shadow-[0_0_10px_rgba(0,240,255,0.2)] shrink-0">
                   Visual Lab
                 </span>
               </div>
-              <p className="text-[10px] sm:text-[11px] text-slate-400 font-mono hidden sm:flex items-center gap-1.5 truncate">
+              <p className="text-[10px] sm:text-[11px] text-slate-400 font-mono hidden sm:flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 <span>Umendra Bhati &bull; 100% SFDX Source Safe</span>
               </p>
