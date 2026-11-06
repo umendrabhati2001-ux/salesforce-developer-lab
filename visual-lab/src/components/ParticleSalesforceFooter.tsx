@@ -33,16 +33,17 @@ export const ParticleSalesforceFooter: React.FC = () => {
     const mouse = {
       x: -9999,
       y: -9999,
-      radius: 55,
+      radius: 65,
     };
 
-    const colors = [
-      "#00F0FF", // Electric Cyan
-      "#0176D3", // Salesforce Blue
-      "#00A1E0", // Sky Blue
-      "#A855F7", // Purple Accent
-      "#FFFFFF", // Bright Glint
-    ];
+   const colors = [
+  "#0176D3", // Salesforce Brand Blue (Primary)
+  "#1B96FF", // Salesforce Interactive Blue (Lighter Action)
+  "#0B5CAB", // Salesforce Dark Blue (Deep Accent)
+  "#00A1E0", // Cloud Sky Blue
+  "#54698D", // Salesforce Slate/Text Grey
+  "#FFFFFF", // Bright Glint
+];
 
     const initParticles = () => {
       const rect = container.getBoundingClientRect();
