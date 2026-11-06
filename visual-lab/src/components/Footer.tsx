@@ -3,6 +3,7 @@
 import React from "react";
 import { ShieldCheck, Linkedin, ExternalLink, Sparkles, Heart } from "lucide-react";
 import { SalesforceLogo } from "./SalesforceLogo";
+import { ParticleSalesforceFooter } from "./ParticleSalesforceFooter";
 
 export const Footer: React.FC = () => {
   return (
@@ -94,36 +95,22 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* ===================================================================== */}
-      {/* UNITED CARRIERS STYLE: GIANT SCREEN-SPANNING SALESFORCE BOTTOM BANNER */}
+      {/* UNITED CARRIERS STYLE: INTERACTIVE PARTICLE SALESFORCE CANVAS        */}
+      {/* Hovering cursor scatters particles; moving away springs them back     */}
       {/* ===================================================================== */}
-      <div className="relative w-full pt-10 pb-4 overflow-hidden select-none pointer-events-none">
+      <div className="relative w-full pt-6 pb-2 overflow-hidden">
         
-        {/* Ambient Backlight for Giant Wordmark */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-28 bg-gradient-to-t from-[#0176D3]/20 via-[#00F0FF]/10 to-transparent blur-2xl" />
+        {/* Ambient Backlight */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-gradient-to-t from-[#0176D3]/20 via-[#00F0FF]/15 to-transparent blur-3xl pointer-events-none" />
 
-        {/* Giant Monolithic Wordmark */}
-        <div className="relative w-full text-center flex items-center justify-center">
-          <span className="text-[14vw] sm:text-[15vw] font-black uppercase tracking-tighter leading-none bg-clip-text text-transparent bg-gradient-to-b from-white/20 via-cyan-400/10 to-slate-900/10 select-none block drop-shadow-[0_20px_40px_rgba(0,240,255,0.15)] font-mono">
-            SALESFORCE
-          </span>
-
-          {/* Floating Glowing Official Salesforce Cloud in Center Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-20 h-14 sm:w-32 sm:h-20 opacity-70 filter drop-shadow-[0_0_25px_rgba(1,118,211,0.8)]">
-              <img
-                src="/salesforce.svg"
-                alt="Salesforce"
-                className="w-full h-full object-contain"
-              />
-            </div>
-          </div>
-        </div>
+        {/* Physics-Based Particle Salesforce Wordmark */}
+        <ParticleSalesforceFooter />
 
         {/* Bottommost Copyright Bar */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 mt-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-slate-600 font-mono">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 mt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-slate-600 font-mono">
           <span>&copy; {new Date().getFullYear()} Umendra Bhati. All rights reserved.</span>
           <span className="text-slate-500">
-            Powered by Next.js 15 &bull; Tailwind CSS &bull; Salesforce DX
+            Powered by Next.js 15 &bull; Tailwind CSS &bull; Salesforce DX &bull; HTML5 Canvas Physics
           </span>
         </div>
 

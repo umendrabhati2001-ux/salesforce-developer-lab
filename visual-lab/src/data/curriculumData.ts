@@ -355,7 +355,7 @@ export const curriculumTopics: TopicItem[] = [
     phaseTitle: "Apex Testing & QA",
     title: "Apex Unit Testing Fundamentals",
     description: "@isTest, Test.startTest(), Test.stopTest(), and Assert assertions.",
-    status: "upcoming",
+    status: "completed",
     bullets: [
       "@isTest, @TestVisible, seeAllData=false test isolation",
       "Test.startTest() / Test.stopTest() to reset governor limits",

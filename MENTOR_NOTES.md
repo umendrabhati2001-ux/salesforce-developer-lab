@@ -975,6 +975,45 @@ for (Case newCase : triggerNew) {
 
 ---
 
+### 🎯 Q25: Why is `seeAllData=false` the universal best practice in Apex unit tests?
+
+> _"`seeAllData=false` (the default since API 24.0) isolates unit tests from actual database records in the Org. This guarantees:_  
+> _1. **Deterministic Test Execution:** Tests do not fail unexpectedly when real user data changes or is deleted in Production/Sandboxes._  
+> _2. **Sandbox & Scratch Org Portability:** Tests can deploy and run anywhere without prerequisite customer records._  
+> _3. **Data Safety:** Tests can create, update, or delete mock records during execution without corrupting real customer data. All test data rolls back automatically when the test method finishes."_
+
+---
+
+### 🎯 Q26: What are the two distinct architectural purposes of `Test.startTest()` and `Test.stopTest()`?
+
+> _"1. **Governor Limit Reset:** Code executed prior to `Test.startTest()` (such as setting up accounts, contacts, or mock records) consumes limits. `Test.startTest()` resets all Governor Limits to zero, giving the actual business logic method under test its own full, uncompromised quota._  
+> _2. **Asynchronous Execution Synchronizer:** In Production, asynchronous processes (`@future`, `Queueable`, and `Batch Apex`) run in the background. In a test context, `Test.stopTest()` blocks until all queued asynchronous worker threads execute to completion, allowing assertions to immediately evaluate the final output."_
+
+---
+
+### 🎯 Q27: How does modern Winter '23 `Assert` differ from legacy `System.assert`?
+
+> _"`System.Assert` provides modern, specialized static methods with standardized parameter order: `Assert.areEqual(expected, actual, failureMessage)`. This improves error diagnostics in CI/CD pipelines compared to legacy `System.assertEquals()` by providing clear, typed failure descriptions and dedicated helpers like `Assert.isNotNull()`, `Assert.isTrue()`, and `Assert.fail()`."_
+
+---
+
+### 🎯 Q28: How does `@TestSetup` optimize test execution and preserve data isolation between test methods?
+
+> _"A method annotated with `@TestSetup` runs **once per test class** before any test method executes, inserting shared baseline records into a temporary test database. This delivers two major benefits:_  
+> _1. **Dramatic Speed Improvements:** Instead of running 10 DML inserts across 10 individual test methods (100 DML operations), the DML executes only once (10 DML operations), slashing test run time by 50% to 70%._  
+> _2. **Transactional State Isolation:** If Test Method 1 modifies, updates, or deletes a record created in `@TestSetup`, Salesforce automatically rolls back those changes when Method 1 finishes. When Test Method 2 begins, it receives the exact pristine original records created by `@TestSetup`."_
+
+---
+
+### 🎯 Q29: What is the `TestDataFactory` pattern and why should factory methods accept a `doInsert` boolean flag?
+
+> _"`TestDataFactory` is a centralized, reusable utility class (`@isTest`) that serves as the single source of truth for constructing test sObjects with valid default fields across the entire Org._  
+> _**The `doInsert` parameter:**_  
+> _- When `true`: The factory method inserts the record immediately and returns an sObject with an `Id` populated._  
+> _- When `false`: The factory method returns the sObject in memory without executing DML. This allows the calling test class to customize specific fields (e.g. override billing address or test negative edge cases) and perform a single bulk `insert list;` instead of consuming unnecessary DML statements."_
+
+---
+
 ## 9. Remaining Roadmap (Topics 11 to 30)
 
 | Topic #      | Phase                     | Topic Name                                   | Practical Deliverable                                                  | Status                   |
@@ -986,9 +1025,9 @@ for (Case newCase : triggerNew) {
 | **Topic 14** | **Phase C: Triggers**     | Exception Handling & Savepoints              | `scripts/apex/14_exception_handling_savepoints.apex` (Savepoints)      | **COMPLETED & VERIFIED** |
 | **Topic 15** | **Phase D: Async Apex**   | `@future` Methods & Queueable Apex           | `scripts/apex/15_future_queueable_apex.apex` (Job Chaining & ID)       | **COMPLETED & VERIFIED** |
 | **Topic 16** | **Phase D: Async Apex**   | Batch Apex & Schedulable Apex                | `scripts/apex/16_batch_schedulable_apex.apex` (50M records & Stateful) | **COMPLETED & VERIFIED** |
-| **Topic 17** | **Phase E: Testing**      | Apex Unit Testing Fundamentals               | `@isTest`, `Test.startTest()`, `Assert` assertions                     | **NEXT TARGET**          |
-| **Topic 17** | **Phase E: Testing**      | Apex Unit Testing Fundamentals               | `@isTest`, `Test.startTest()`, `Assert` assertions                     |
-| **Topic 18** | **Phase E: Testing**      | `@TestSetup` & Test Data Factory             | Reusable `TestDataFactory` class                                       |
+| **Topic 17** | **Phase E: Testing**      | Apex Unit Testing Fundamentals               | `scripts/apex/17_unit_testing_fundamentals.apex` (Modern Assert)       | **COMPLETED & VERIFIED** |
+| **Topic 18** | **Phase E: Testing**      | `@TestSetup` & Test Data Factory             | `scripts/apex/18_test_data_factory.apex` (Reusable TestDataFactory)    | **COMPLETED & VERIFIED** |
+| **Topic 19** | **Phase E: Testing**      | Positive, Negative & Bulk Testing            | 200-record bulk validation & Governor limit assertion                  | **NEXT TARGET**          |
 | **Topic 19** | **Phase E: Testing**      | Positive, Negative & Bulk Testing            | 200-record bulk validation & Governor limit assertion                  |
 | **Topic 20** | **Phase E: Testing**      | Code Coverage & Deployment Gate              | Reaching 85%+ coverage & release readiness                             |
 | **Topic 21** | **Phase F: LWC**          | LWC Architecture & ES6+ JavaScript           | Modern Web Components, Shadow DOM, HTML templates                      |
