@@ -1014,6 +1014,46 @@ for (Case newCase : triggerNew) {
 
 ---
 
+### 🎯 Q30: What is the purpose of Negative Testing in Apex, and how do you write assertions for expected exceptions?
+
+> _"Negative testing verifies that when invalid inputs, illegal state transitions, or validation rule breaches occur, the system safely catches the error, generates actionable diagnostic messages, and refuses to commit corrupt data._  
+> _**The Exception Assertion Pattern:**_  
+> _1. Declare `Boolean exceptionThrown = false;` prior to the risky invocation._  
+> _2. Wrap the call in a `try` block._  
+> _3. In the `catch (CustomException ex)` block, set `exceptionThrown = true;` and verify `Assert.isTrue(ex.getMessage().contains('expected substring'));`._  
+> _4. Immediately after the try-catch block, assert `Assert.isTrue(exceptionThrown, 'Expected exception was never thrown!');`."_
+
+---
+
+### 🎯 Q31: Why is 200-record bulk testing mandatory in Salesforce?
+
+> _"Because the Salesforce Bulk API, standard data loader, and synchronous trigger invocations batch records in chunks of 200. If a developer queries or performs DML inside a `for` loop, the code may pass a unit test containing 1 record but will crash fatally with a `LimitException: Too many SOQL queries: 101` when 200 records enter production. 200-record bulk testing proves that collection bulkification (Set + Map) maintains a flat $O(1)$ query consumption regardless of data volume."_
+
+---
+
+### 🎯 Q32: What are the 4 deployment test levels in Salesforce, and which is recommended for Production?
+
+> _"1. **`NoTestRun`**: No tests are executed. Allowed **only** in Developer Scratch Orgs and Sandboxes; strictly forbidden in Production deployments._  
+> _2. **`RunSpecifiedTests`**: Executes only the explicitly named test classes provided in the deployment manifest. **This is the enterprise gold standard for production hotfixes and sprint releases** because it completes in 2-3 minutes instead of hours, provided the deployed classes meet the 75% coverage requirement._  
+> _3. **`RunLocalTests`**: Executes all tests created in the Org, excluding AppExchange managed packages. This is the default mandatory level for general production releases._  
+> _4. **`RunAllTestsInOrg`**: Executes all tests including third-party managed packages (slowest and prone to failures outside developer control)."_
+
+---
+
+### 🎯 Q33: How does Salesforce calculate Code Coverage, and which lines are excluded from the denominator?
+
+> _"Code Coverage is calculated using the formula:_  
+> $$\text{Coverage \%} = \left(\frac{\text{Lines Executed}}{\text{Lines Executed} + \text{Lines Unexecuted}}\right) \times 100$$  
+> _**Excluded from the denominator (do NOT count as executable lines):**_  
+> _- Comments (`//` and `/* ... */`)_  
+> _- Isolated curly brackets (`{` and `}`)_  
+> _- `System.debug()` statements (the compiler strips these from the coverage calculation)_  
+> _- Class and interface header declarations_  
+> _- Empty lines and variable declarations without assignments (e.g. `Integer count;`)_  
+> _**Included (executable lines):** DML statements, SOQL queries, `return` lines, `if`/`else` condition branches, and method invocations."_
+
+---
+
 ## 9. Remaining Roadmap (Topics 11 to 30)
 
 | Topic #      | Phase                     | Topic Name                                   | Practical Deliverable                                                  | Status                   |
@@ -1027,9 +1067,9 @@ for (Case newCase : triggerNew) {
 | **Topic 16** | **Phase D: Async Apex**   | Batch Apex & Schedulable Apex                | `scripts/apex/16_batch_schedulable_apex.apex` (50M records & Stateful) | **COMPLETED & VERIFIED** |
 | **Topic 17** | **Phase E: Testing**      | Apex Unit Testing Fundamentals               | `scripts/apex/17_unit_testing_fundamentals.apex` (Modern Assert)       | **COMPLETED & VERIFIED** |
 | **Topic 18** | **Phase E: Testing**      | `@TestSetup` & Test Data Factory             | `scripts/apex/18_test_data_factory.apex` (Reusable TestDataFactory)    | **COMPLETED & VERIFIED** |
-| **Topic 19** | **Phase E: Testing**      | Positive, Negative & Bulk Testing            | 200-record bulk validation & Governor limit assertion                  | **NEXT TARGET**          |
-| **Topic 19** | **Phase E: Testing**      | Positive, Negative & Bulk Testing            | 200-record bulk validation & Governor limit assertion                  |
-| **Topic 20** | **Phase E: Testing**      | Code Coverage & Deployment Gate              | Reaching 85%+ coverage & release readiness                             |
+| **Topic 19** | **Phase E: Testing**      | Positive, Negative & Bulk Testing            | `scripts/apex/19_positive_negative_bulk_testing.apex` (200 Records)   | **COMPLETED & VERIFIED** |
+| **Topic 20** | **Phase E: Testing**      | Code Coverage & Deployment Gate              | `scripts/apex/20_code_coverage_deployment.apex` (75% Gate & CLI)       | **COMPLETED & VERIFIED** |
+| **Topic 21** | **Phase F: LWC**          | LWC Architecture & ES6+ JavaScript           | Modern Web Components, Shadow DOM, HTML templates                      | **NEXT TARGET**          |
 | **Topic 21** | **Phase F: LWC**          | LWC Architecture & ES6+ JavaScript           | Modern Web Components, Shadow DOM, HTML templates                      |
 | **Topic 22** | **Phase F: LWC**          | Reactive Properties & Data Binding           | `@api` public contracts, `@track`, computed Getters                    |
 | **Topic 23** | **Phase F: LWC**          | Component Communication                      | Custom Events (`dispatchEvent`) & Lightning Message Service (LMS)      |
