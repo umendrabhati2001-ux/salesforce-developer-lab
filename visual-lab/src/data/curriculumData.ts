@@ -419,7 +419,7 @@ export const curriculumTopics: TopicItem[] = [
     phaseTitle: "Lightning Web Components",
     title: "LWC Core Architecture & Reactivity",
     description: "Web Components standard, Shadow DOM, @api, @track, and template directives.",
-    status: "upcoming",
+    status: "completed",
     bullets: [
       "W3C standard Web Components with encapsulated Shadow DOM",
       "@api for public component properties and parent contracts",
