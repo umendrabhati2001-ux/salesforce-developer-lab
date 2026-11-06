@@ -339,7 +339,7 @@ export const curriculumTopics: TopicItem[] = [
     phaseTitle: "Asynchronous Apex",
     title: "Batch Apex & Schedulable Apex",
     description: "Processing millions of records across multiple discrete transactions with Database.Stateful.",
-    status: "upcoming",
+    status: "completed",
     bullets: [
       "Database.Batchable interface: start(), execute(), finish()",
       "Database.Stateful for maintaining counts and variables across batches",
