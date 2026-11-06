@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    allowedDevOrigins: ["*.ngrok-free.dev", "*.ngrok.app", "localhost:3000"],
+  },
   outputFileTracingRoot: path.join(__dirname),
 };
 
