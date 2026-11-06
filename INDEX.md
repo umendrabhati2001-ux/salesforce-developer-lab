@@ -81,16 +81,19 @@ Welcome to your structured, serial-wise Salesforce Developer syllabus. Every sin
 
 ## 📌 Phase C: Architecture, Triggers & Governor Limits
 
-- [ ] **11. Governor Limits & Bulkification Architecture**
+- [x] **11. Governor Limits & Bulkification Architecture**
   - The 100 SOQL / 150 DML Rule
   - The Gold Standard: **Set + Map Bulk Pattern** (Zero SOQL/DML in loops)
   - CPU Timeout & Heap Size limits
   - Practice File: `scripts/apex/11_bulkification_pattern.apex`
+  - Status: **COMPLETED & VERIFIED**
 
-- [ ] **12. Apex Triggers Fundamentals**
+- [x] **12. Apex Triggers Fundamentals**
   - Trigger Events: `before insert`, `after insert`, `before update`, `after update`, `before delete`, `after delete`, `after undelete`
   - Trigger Context Variables: `Trigger.new`, `Trigger.old`, `Trigger.newMap`, `Trigger.oldMap`, `Trigger.isExecuting`
   - When to use `Before` vs `After` triggers
+  - Practice File: `scripts/apex/12_trigger_fundamentals.apex`
+  - Status: **COMPLETED & VERIFIED**
 
 - [ ] **13. Enterprise Trigger Handler Pattern**
   - One Trigger Per Object Rule

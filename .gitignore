@@ -41,6 +41,16 @@ $RECYCLE.BIN/
 
 # Local environment variables
 .env
+.env*.local
+
+# Next.js build artifacts & cache
+.next/
+visual-lab/.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
 
 # Python Salesforce Functions
 **/__pycache__/

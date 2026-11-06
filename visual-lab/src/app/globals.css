@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #030712;
+  --foreground: #f8fafc;
+  --cyan-glow: #00f0ff;
+  --blue-glow: #0176d3;
+  --violet-glow: #6366f1;
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  selection-background-color: #00f0ff;
+  selection-color: #030712;
+}
+
+::selection {
+  background: rgba(0, 240, 255, 0.35);
+  color: #00f0ff;
+}
+
+/* ======================================================== */
+/* 3D PATTERNS & PERSPECTIVE MATRIX                         */
+/* ======================================================== */
+
+/* 1. 3D Isometric Cube Lattice Pattern */
+.pattern-3d-isometric {
+  background-color: #030712;
+  background-image: 
+    linear-gradient(30deg, rgba(0, 240, 255, 0.06) 12%, transparent 12.5%, transparent 87%, rgba(0, 240, 255, 0.06) 87.5%, rgba(0, 240, 255, 0.06)),
+    linear-gradient(150deg, rgba(0, 240, 255, 0.06) 12%, transparent 12.5%, transparent 87%, rgba(0, 240, 255, 0.06) 87.5%, rgba(0, 240, 255, 0.06)),
+    linear-gradient(30deg, rgba(0, 240, 255, 0.06) 12%, transparent 12.5%, transparent 87%, rgba(0, 240, 255, 0.06) 87.5%, rgba(0, 240, 255, 0.06)),
+    linear-gradient(150deg, rgba(0, 240, 255, 0.06) 12%, transparent 12.5%, transparent 87%, rgba(0, 240, 255, 0.06) 87.5%, rgba(0, 240, 255, 0.06)),
+    linear-gradient(60deg, rgba(1, 118, 211, 0.08) 25%, transparent 25.5%, transparent 75%, rgba(1, 118, 211, 0.08) 75%, rgba(1, 118, 211, 0.08)),
+    linear-gradient(60deg, rgba(1, 118, 211, 0.08) 25%, transparent 25.5%, transparent 75%, rgba(1, 118, 211, 0.08) 75%, rgba(1, 118, 211, 0.08));
+  background-size: 80px 140px;
+  background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+}
+
+/* 2. 3D Perspective Horizon Plane Grid */
+.pattern-3d-perspective-plane {
+  perspective: 600px;
+  transform-style: preserve-3d;
+}
+
+.perspective-grid-floor {
+  position: absolute;
+  bottom: -40px;
+  left: -20%;
+  right: -20%;
+  height: 380px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 240, 255, 0.2) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(1, 118, 211, 0.2) 1px, transparent 1px);
+  background-size: 50px 50px;
+  transform: rotateX(72deg);
+  transform-origin: bottom center;
+  mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+  pointer-events: none;
+}
+
+/* 3. 3D Hexagonal Cyber Honeycomb Pattern */
+.pattern-3d-hex {
+  background-color: #030712;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.12) 1px, transparent 1px),
+    radial-gradient(circle at 0% 100%, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* 4. 3D Holographic Card Depth */
+.card-3d-depth {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.card-3d-float {
+  transform: translateZ(40px);
+}
+
+.card-3d-float-high {
+  transform: translateZ(75px);
+}
+
+/* Custom Cyber Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #030712;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0176d3;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+/* Glowing Neon Cards */
+.cyber-card {
+  background: linear-gradient(135deg, rgba(14, 23, 42, 0.75) 0%, rgba(8, 14, 30, 0.85) 100%);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px 0 rgba(0, 240, 255, 0.08);
+}
+
+.cyber-card:hover {
+  border-color: rgba(0, 240, 255, 0.5);
+  box-shadow: 0 10px 40px -5px rgba(0, 240, 255, 0.25);
+}
+
+.cyber-glass {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cyber-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+}
+
+.cyber-glow-bg {
+  background: radial-gradient(circle at 50% 20%, rgba(1, 118, 211, 0.28) 0%, rgba(99, 102, 241, 0.15) 40%, transparent 75%);
+}

@@ -602,6 +602,78 @@ for (Integer i = 0; i < saveResults.size(); i++) {
 
 ---
 
+### 📌 Topic 11: Governor Limits & Bulkification Architecture
+
+#### 💬 Hinglish Mentor Explanation:
+
+- **Salesforce Multitenancy Ka Sach:** Salesforce ek shared apartment building ki tarah hai jahan thousands of companies (tenants) same server aur database share karti hain. Agar ek developer ganda code likhkar 100% CPU ya database connections occupy kar lega, toh doosre tenants ka business ruk jayega! Isliye Salesforce kernel strict **Governor Limits** lagata hai.
+- **The Fatal Anti-Pattern (Loop Me SOQL / DML):**
+  - Developer kabhi-kabhi aalas me `for (Case c : triggerNew)` ke andar `[SELECT Name FROM Account WHERE Id = :c.AccountId]` likh dete hain.
+  - Development me 1 record test karne par code chal jata hai. Lekin production me jab Data Loader se ya integration se 200 records aate hain, toh 101st record par **`System.LimitException: Too many SOQL queries: 101`** phenk kar poora transaction crash ho jata hai!
+  - **Interview Alert:** LimitException ek **fatal uncatchable exception** hoti hai — ise `try-catch` block se bhi pakda ya suppress nahi kiya ja sakta!
+- **The Gold Standard: 3-Step Set + Map Bulkification Pattern:**
+  1. **Step 1 (Loop 1 - ID Harvesting):** Pehle loop me saare foreign key IDs ko ek **`Set<Id>`** me jama karte hain (`if (c.AccountId != null) accountIds.add(c.AccountId);`). Sets duplicate IDs ko auto-remove kar dete hain. Is step me 0 database queries lagti hain!
+  2. **Step 2 (Single Bulk SOQL into Map):** Loop ke bahar sirf **EK SOQL query** lagate hain with `WHERE Id IN :accountIds` bind operator, aur result direct **`Map<Id, Account>`** me store karte hain (`new Map<Id, Account>([SELECT ...])`). 200 records ke liye sirf 1 query consume hui!
+  3. **Step 3 (Loop 2 - O(1) Hash Lookup & Mutation):** Dobara records par iterate karte hain, aur parent data ko Map se `.get(c.AccountId)` karke **O(1) Constant Time** me nikaalte hain bina kisi database query ke!
+- **Limits Class Telemetry (Interview Hack):**
+  - `Limits.getQueries()` vs `Limits.getLimitQueries()` (Kitna use hua vs Max 100).
+  - `Limits.getDMLStatements()` vs `Limits.getLimitDMLStatements()` (Kitna DML hua vs Max 150).
+  - `Limits.getCpuTime()` vs `Limits.getLimitCpuTime()` (Max 10,000ms synchronous / 60,000ms asynchronous).
+
+#### 🌐 English Technical Explanation:
+
+- **Multitenant Resource Isolation:** Governor limits enforce multitenant concurrency barriers. Synchronous threads are strictly constrained to 100 SOQL queries, 150 DML statements, 10,000ms CPU execution time, and 6MB heap size.
+- **Uncatchable LimitExceptions:** A `System.LimitException` is fatal and cannot be trapped or suppressed via standard `try-catch` blocks. The entire transaction rolls back immediately upon reaching the 101st SOQL or 151st DML.
+- **The 3-Step Bulkification Architecture:**
+  1. **Harvest Phase:** Iterate over the record collection (`Trigger.new`) to collect foreign key references into a `Set<Id>`. Eliminates duplicates in memory with zero queries.
+  2. **Bulk Query Phase:** Issue a single SOQL query referencing the Set via the `IN` bind operator, instantiating a `Map<Id, sObject>` hash table outside all iteration constructs.
+  3. **In-Memory Transformation Phase:** Re-iterate over records, invoking `map.get(foreignKeyId)` in $O(1)$ constant time complexity to mutate fields in-memory without invoking secondary queries.
+- **Runtime Telemetry:** The `System.Limits` class exposes methods like `Limits.getQueries()`, `Limits.getDMLStatements()`, and `Limits.getCpuTime()` to measure resource consumption and enforce preemptive threshold guarding.
+
+#### 💻 Verified Implementation (`scripts/apex/11_bulkification_pattern.apex`):
+
+```apex
+// ========================================================
+// TOPIC 11: GOVERNOR LIMITS & BULKIFICATION ARCHITECTURE
+// The Gold Standard: Set<Id> + Map<Id, sObject> Pattern
+// ========================================================
+
+// STEP 1: ID HARVESTING (Zero SOQL consumed)
+Set<Id> accountIds = new Set<Id>();
+for (Case c : triggerNew) {
+    if (c.AccountId != null) {
+        accountIds.add(c.AccountId);
+    }
+}
+
+// STEP 2: SINGLE BULK SOQL QUERY INTO MAP<ID, SOBJECT> (1 Query consumed)
+Map<Id, Account> accountMap = new Map<Id, Account>([
+    SELECT Id, Name, Industry, SLA__c 
+    FROM Account 
+    WHERE Id IN :accountIds
+]);
+
+// STEP 3: O(1) CONSTANT TIME MEMORY LOOKUP & MUTATION (Zero Queries)
+for (Case c : triggerNew) {
+    if (c.AccountId != null && accountMap.containsKey(c.AccountId)) {
+        Account parentAcc = accountMap.get(c.AccountId);
+        c.Description = 'Verified Parent: ' + parentAcc.Name;
+    }
+}
+
+// GOVERNOR LIMIT AUDIT
+System.debug('SOQL Consumed: ' + Limits.getQueries() + ' / ' + Limits.getLimitQueries());
+System.debug('DML Consumed: ' + Limits.getDMLStatements() + ' / ' + Limits.getLimitDMLStatements());
+```
+
+#### 🛡️ Senior Dev Gotchas:
+
+1. **Trigger Chunking at 200 Records:** Salesforce batches bulk operations in chunks of at most 200 records. For a 10,000 record Data Loader insert, the trigger executes 50 distinct times. If code is not bulkified, each chunk crashes on its own.
+2. **CPU Timeout vs Database Time:** `Limits.getCpuTime()` measures Apex execution time on the Salesforce application server. It does **NOT** include database search time or formula evaluation time.
+3. **Heap Size Pitfalls:** Storing massive record payloads in static memory maps can breach the 6MB synchronous heap limit. Always query only the exact fields required.
+
+---
+
 ## 8. Master Interview Question & Word-for-Word Answer Bank
 
 ### 🎯 Q1: Why should you never write logic directly inside an Apex Trigger? Why use the Trigger Handler Pattern?
