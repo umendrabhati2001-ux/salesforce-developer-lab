@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd visual-lab && npm run build",
+  "outputDirectory": "visual-lab/.next",
+  "framework": "nextjs"
+}

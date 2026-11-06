@@ -102,10 +102,12 @@ Welcome to your structured, serial-wise Salesforce Developer syllabus. Every sin
   - Practice File: `scripts/apex/13_trigger_handler_pattern.apex`
   - Status: **COMPLETED & VERIFIED**
 
-- [ ] **14. Exception Handling & Transaction Control**
+- [x] **14. Exception Handling & Transaction Control**
   - `try`, `catch`, `finally` blocks
   - Custom Exception classes (`public class MyException extends Exception {}`)
   - Database Savepoints & Rollbacks (`Database.setSavepoint()`, `Database.rollback()`)
+  - Practice File: `scripts/apex/14_exception_handling_savepoints.apex`
+  - Status: **COMPLETED & VERIFIED**
 
 ---
 

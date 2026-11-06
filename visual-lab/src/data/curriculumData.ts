@@ -307,7 +307,7 @@ export const curriculumTopics: TopicItem[] = [
     phaseTitle: "Architecture, Triggers & Governor Limits",
     title: "Exception Handling & Transaction Control",
     description: "Custom exceptions, try-catch-finally safety, and Database Savepoints.",
-    status: "upcoming",
+    status: "completed",
     bullets: [
       "Custom Exception classes extending Exception",
       "Database.setSavepoint() and Database.rollback(sp)",

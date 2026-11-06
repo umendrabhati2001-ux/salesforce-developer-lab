@@ -916,16 +916,39 @@ for (Case newCase : triggerNew) {
 
 ---
 
+### 🎯 Q17: Can a LimitException (e.g., 101 SOQL or CPU Timeout) be caught in a try-catch block?
+
+> _"**No.** In Apex, `System.LimitException` is an uncatchable exception. Once a Governor Limit (such as 101 SOQL queries, 151 DML statements, or 10-second CPU timeout) is exceeded, Salesforce forcibly aborts the entire transaction immediately. A `try { ... } catch (LimitException le)` block will NOT prevent execution termination. To safeguard against Governor Limits, developers must inspect `Limits.getQueries()` or `Limits.getLimitQueries()` defensively before making database calls."_
+
+---
+
+### 🎯 Q18: What is a Database Savepoint and how does `Database.rollback()` behave?
+
+> _"A Savepoint (`Savepoint sp = Database.setSavepoint();`) captures the exact database state at that moment in execution. If an exception occurs during downstream processing, `Database.rollback(sp);` reverts all DML statements executed after the savepoint was created._  
+> _**Critical Architecture Rules:**_  
+> _1. DML rollbacks do NOT restore in-memory Apex variables (variables retain their updated values)._  
+> _2. Static variables retain their state across rollbacks._  
+> _3. DML Governor Limit consumption is NOT refunded after a rollback (a rolled back DML statement still counts against the 150 DML limit)._  
+> _4. Setting a new savepoint invalidates previous savepoints if intermediate rollbacks occur."_
+
+---
+
+### 🎯 Q19: Why are custom exceptions used instead of generic exceptions?
+
+> _"Custom exceptions (created by declaring `public class DomainException extends Exception {}`) allow domain-specific error differentiation. In enterprise architectures, caller methods can catch specific business failures (e.g., `ComplaintValidationException`) and apply targeted fallback logic or user messages, while letting unexpected system runtime errors propagate or log to telemetry."_
+
+---
+
 ## 9. Remaining Roadmap (Topics 11 to 30)
 
 | Topic #      | Phase                     | Topic Name                                   | Practical Deliverable                                                  | Status                   |
 | :----------- | :------------------------ | :------------------------------------------- | :--------------------------------------------------------------------- | :----------------------- |
 | **Topic 10** | **Phase B Finale**        | DML Operations & Database Methods            | `scripts/apex/10_dml_mastery.apex` (Partial success & SaveResult)      | **COMPLETED & VERIFIED** |
-| **Topic 11** | **Phase C: Triggers**     | Governor Limits & Bulkification Architecture | The Gold-Standard Set + Map Bulk Pattern                               | **NEXT TARGET**          |
-| **Topic 12** | **Phase C: Triggers**     | Trigger Events & Context Variables           | Deep dive into `Trigger.new`, `Trigger.oldMap`, `isInsert`, `isUpdate` |
-| **Topic 13** | **Phase C: Triggers**     | Enterprise Trigger Handler Architecture      | One-trigger pattern & Static Set recursion prevention                  |
-| **Topic 14** | **Phase C: Triggers**     | Exception Handling & Savepoints              | Custom exceptions, `try-catch-finally`, `Database.rollback()`          |
-| **Topic 15** | **Phase D: Async Apex**   | `@future` Methods & Queueable Apex           | Asynchronous callouts and job chaining                                 |
+| **Topic 11** | **Phase C: Triggers**     | Governor Limits & Bulkification Architecture | `scripts/apex/11_bulkification_pattern.apex` (Set + Map Bulk Pattern)  | **COMPLETED & VERIFIED** |
+| **Topic 12** | **Phase C: Triggers**     | Trigger Events & Context Variables           | `scripts/apex/12_trigger_fundamentals.apex` (Context flags & dispatch) | **COMPLETED & VERIFIED** |
+| **Topic 13** | **Phase C: Triggers**     | Enterprise Trigger Handler Architecture      | `scripts/apex/13_trigger_handler_pattern.apex` (One-trigger & Set<Id>) | **COMPLETED & VERIFIED** |
+| **Topic 14** | **Phase C: Triggers**     | Exception Handling & Savepoints              | `scripts/apex/14_exception_handling_savepoints.apex` (Savepoints)      | **COMPLETED & VERIFIED** |
+| **Topic 15** | **Phase D: Async Apex**   | `@future` Methods & Queueable Apex           | Asynchronous callouts and job chaining                                 | **NEXT TARGET**          |
 | **Topic 16** | **Phase D: Async Apex**   | Batch Apex & Schedulable Apex                | `Database.Batchable` for millions of records & cron schedules          |
 | **Topic 17** | **Phase E: Testing**      | Apex Unit Testing Fundamentals               | `@isTest`, `Test.startTest()`, `Assert` assertions                     |
 | **Topic 18** | **Phase E: Testing**      | `@TestSetup` & Test Data Factory             | Reusable `TestDataFactory` class                                       |
