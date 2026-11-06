@@ -939,6 +939,22 @@ for (Case newCase : triggerNew) {
 
 ---
 
+### 🎯 Q20: What are the architectural differences between `@future` methods and `Queueable` Apex?
+
+> _"While both execute asynchronously on background threads with doubled Governor Limits (200 SOQL, 60s CPU), `Queueable` Apex is the enterprise standard that replaces `@future`:_  
+> _1. **Parameter Flexibility:** `@future` only accepts primitive types or collections of primitives. `Queueable` accepts complex objects, sObjects, custom classes, and nested payloads in its constructor._  
+> _2. **Job Tracking:** `@future` returns `void` (no Job ID). `System.enqueueJob()` returns an `AsyncApexJob` ID (type `707...`) for progress and error tracking._  
+> _3. **Job Chaining:** `@future` cannot invoke another `@future` method. A `Queueable` job can enqueue another `Queueable` job directly within its `execute` method, enabling sequential workflow chaining._  
+> _4. **Transaction Monitoring:** Queueable status can be inspected live via `SELECT Id, Status, NumberOfErrors FROM AsyncApexJob`."_
+
+---
+
+### 🎯 Q21: Why does Salesforce forbid passing sObjects to `@future` methods?
+
+> _"Because `@future` methods execute asynchronously, there is an unpredictable time delay between when the future method is called and when the worker thread picks it up. If an sObject were passed by reference, the database record could be updated or deleted by another transaction in the interim, causing the future method to process **stale data** and potentially overwrite newer changes. Passing primitive IDs forces the developer to re-query the freshest record state from the database at execution time."_
+
+---
+
 ## 9. Remaining Roadmap (Topics 11 to 30)
 
 | Topic #      | Phase                     | Topic Name                                   | Practical Deliverable                                                  | Status                   |
@@ -948,7 +964,8 @@ for (Case newCase : triggerNew) {
 | **Topic 12** | **Phase C: Triggers**     | Trigger Events & Context Variables           | `scripts/apex/12_trigger_fundamentals.apex` (Context flags & dispatch) | **COMPLETED & VERIFIED** |
 | **Topic 13** | **Phase C: Triggers**     | Enterprise Trigger Handler Architecture      | `scripts/apex/13_trigger_handler_pattern.apex` (One-trigger & Set<Id>) | **COMPLETED & VERIFIED** |
 | **Topic 14** | **Phase C: Triggers**     | Exception Handling & Savepoints              | `scripts/apex/14_exception_handling_savepoints.apex` (Savepoints)      | **COMPLETED & VERIFIED** |
-| **Topic 15** | **Phase D: Async Apex**   | `@future` Methods & Queueable Apex           | Asynchronous callouts and job chaining                                 | **NEXT TARGET**          |
+| **Topic 15** | **Phase D: Async Apex**   | `@future` Methods & Queueable Apex           | `scripts/apex/15_future_queueable_apex.apex` (Job Chaining & ID)       | **COMPLETED & VERIFIED** |
+| **Topic 16** | **Phase D: Async Apex**   | Batch Apex & Schedulable Apex                | `Database.Batchable` for millions of records & cron schedules          | **NEXT TARGET**          |
 | **Topic 16** | **Phase D: Async Apex**   | Batch Apex & Schedulable Apex                | `Database.Batchable` for millions of records & cron schedules          |
 | **Topic 17** | **Phase E: Testing**      | Apex Unit Testing Fundamentals               | `@isTest`, `Test.startTest()`, `Assert` assertions                     |
 | **Topic 18** | **Phase E: Testing**      | `@TestSetup` & Test Data Factory             | Reusable `TestDataFactory` class                                       |

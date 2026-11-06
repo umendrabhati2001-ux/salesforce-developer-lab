@@ -323,7 +323,7 @@ export const curriculumTopics: TopicItem[] = [
     phaseTitle: "Asynchronous Apex",
     title: "Future Methods & Queueable Apex",
     description: "Non-blocking background computing, callouts, and job chaining.",
-    status: "upcoming",
+    status: "completed",
     bullets: [
       "@future(callout=true) for fire-and-forget REST calls",
       "Queueable Apex: Passing complex sObject types and job chaining",
