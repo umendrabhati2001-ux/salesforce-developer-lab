@@ -729,6 +729,69 @@ for (Case newCase : triggerNew) {
 
 ---
 
+### 📌 Topic 13: Enterprise Trigger Handler Pattern & Recursion Architecture
+
+#### 💬 Hinglish Mentor Explanation:
+
+- **Trigger Me Direct Code Likhna Paap Kyun Hai?**
+  1. **Unpredictable Execution Order:** Agar ek hi object par 2 triggers hain (jaise `CaseTrigger1` aur `CaseTrigger2`), toh Salesforce koi guarantee nahi deta ki pehle kaunsa chalega. Production me random bugs aate hain!
+  2. **Zero Code Reusability:** Trigger body ka code sirf database DML par chalta hai. Usko aap LWC, Batch Apex, ya REST API se call nahi kar sakte.
+  3. **Unit Testing Disaster:** Trigger ke code ko test karne ke liye har bar heavy database DML chalana padta hai, jisse test suites slow ho jaate hain.
+  4. **Sacred Rule: ONE TRIGGER PER OBJECT:** Pure project me har standard ya custom object par sirf **EK TRIGGER** hona chahiye, jo traffic police ki tarah sirf events route karta hai.
+- **Trigger vs Handler vs Service Layer (Separation of Concerns):**
+  - **`CaseTrigger.trigger` (Traffic Police):** Sirf context variables check karta hai (`isBefore`, `isInsert`) aur handler method call karta hai (`CaseTriggerHandler.handleBeforeInsert(Trigger.new)`). Isme 0 lines business logic hoti hai.
+  - **`CaseTriggerHandler.cls` (Dispatcher & Guard):** Records ko filter karta hai, `oldMap` se delta changes check karta hai, recursion guards enforce karta hai, aur service class ko call karta hai.
+  - **`ComplaintService.cls` (Business Engine):** Pure business logic (e.g. SLA targeting, tier calculations, validation rules) execute karta hai bina kisi trigger dependency ke.
+- **The Fatal `isFirstRun` Boolean Trap (Senior Interview Question ⭐):**
+  - *Junior Approach:* `public static Boolean isFirstRun = true;` laga kar `if (isFirstRun) { isFirstRun = false; ... }` likh dete hain.
+  - *Fatal Bug:* Salesforce bulk operations ko 200-200 records ke chunks me batch karta hai. Agar Data Loader se 1000 records insert huye (5 chunks of 200), toh pehle chunk me `isFirstRun = false` ho jayega aur baki 4 chunks (800 records) ka business logic run hi nahi hoga!
+  - *The Gold Standard (Set<Id> Recursion Shield):* Static `Set<Id> processedRecordIds` banayein. Har record ki ID ko verify karein: `if (!processedIds.contains(rec.Id)) { processedIds.add(rec.Id); ... }`. Yeh 200-record chunks ke across 100% safe rehta hai!
+- **Dynamic Trigger Bypass Architecture:**
+  - Data Migration ya Unit Tests me kabhi-kabhi triggers ko temporarily disable karna padta hai bina production code deactivate kiye.
+  - Handler class me static `bypass(String triggerName)` aur `clearBypass(String triggerName)` methods implement kiye jaate hain.
+
+#### 🌐 English Technical Explanation:
+
+- **Enterprise Layered Architecture:**
+  ```text
+  [Database DML Event]
+           │
+           ▼
+  [CaseTrigger.trigger]  ──> (Single Trigger Per Object: Zero Logic)
+           │
+           ▼
+  [CaseTriggerHandler]    ──> (Context Routing, Delta Detection, Recursion Set<Id>)
+           │
+           ▼
+  [ComplaintService]      ──> (Pure Domain Logic, SLA Engine, Reusable by LWC/Batch)
+  ```
+- **Record-Level Recursion Management:**
+  ```apex
+  private static Set<Id> processedCaseIds = new Set<Id>();
+
+  public static void handleBeforeUpdate(List<Case> newCases, Map<Id, Case> oldCases) {
+      List<Case> eligibleCases = new List<Case>();
+      for (Case c : newCases) {
+          if (c.Id != null && !processedCaseIds.contains(c.Id)) {
+              Case oldCase = oldCases.get(c.Id);
+              if (c.Status != oldCase.Status) { // Delta Check
+                  eligibleCases.add(c);
+                  processedCaseIds.add(c.Id);
+              }
+          }
+      }
+      ComplaintService.applySlaTargets(eligibleCases);
+  }
+  ```
+
+#### 🛡️ Senior Dev Gotchas:
+
+1. **Static Variables Reset per Transaction:** Static sets and flags persist across multiple triggers within the **SAME transaction** (e.g., workflow field update re-firing triggers), but reset automatically when the transaction completes.
+2. **Clear Bypasses in Unit Test `finally`:** If a test method calls `TriggerHandler.bypass('CaseTrigger')`, always wrap execution in a `try-finally` block to invoke `clearBypass()`, preventing subsequent unit tests from failing due to an accidental persistent bypass.
+3. **DML Inside Loops inside Services:** Moving code from Trigger to Handler/Service does NOT automatically make it bulkified. The Handler and Service classes must strictly adhere to the Set + Map bulk pattern.
+
+---
+
 ## 8. Master Interview Question & Word-for-Word Answer Bank
 
 ### 🎯 Q1: Why should you never write logic directly inside an Apex Trigger? Why use the Trigger Handler Pattern?
