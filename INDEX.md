@@ -120,10 +120,12 @@ Welcome to your structured, serial-wise Salesforce Developer syllabus. Every sin
   - Practice File: `scripts/apex/15_future_queueable_apex.apex`
   - Status: **COMPLETED & VERIFIED**
 
-- [ ] **16. Batch Apex & Schedulable Apex**
+- [x] **16. Batch Apex & Schedulable Apex**
   - Processing 50,000+ to 50 Million records: `Database.Batchable` (`start`, `execute`, `finish`)
   - `Database.Stateful` for state retention across batches
   - Scheduling jobs with Cron expressions (`System.schedule()`)
+  - Practice File: `scripts/apex/16_batch_schedulable_apex.apex`
+  - Status: **COMPLETED & VERIFIED**
 
 ---
 

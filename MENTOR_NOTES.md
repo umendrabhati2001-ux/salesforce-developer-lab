@@ -955,6 +955,26 @@ for (Case newCase : triggerNew) {
 
 ---
 
+### 🎯 Q22: What is the difference between `Database.QueryLocator` and `Iterable` in Batch Apex?
+
+> _"In the `start()` method of a Batch class:_  
+> _1. **`Database.QueryLocator`**: Executes a SOQL query that can stream **up to 50,000,000 (50 Million)** records from the database directly into batch chunks without loading them all into heap memory simultaneously._  
+> _2. **`Iterable`**: Used when batching non-SOQL data sources (such as custom data structures, external REST callout results, or hardcoded collections). Unlike QueryLocator, an Iterable is subject to the standard **50,000 record heap limit**."_
+
+---
+
+### 🎯 Q23: Why is `Database.Stateful` needed in Batch Apex, and what happens without it?
+
+> _"By default, Batch Apex is **stateless**. This means between every execution chunk, all instance and static member variables are reset to their default initial values. If a developer implements **`Database.Stateful`**, instance member variables (e.g. success counters, error lists, processed record IDs) retain their state across all `execute()` chunk invocations and remain accessible in the `finish()` method."_
+
+---
+
+### 🎯 Q24: How do Governor Limits behave across different chunks of an execute method in Batch Apex?
+
+> _"Every single execution chunk (default 200 records, up to 2,000) represents a **completely distinct, discrete database transaction**. Therefore, each chunk receives its own brand-new set of Governor Limits (200 SOQL queries and 150 DML statements). If Chunk #2 fails due to a validation error, Chunk #1 and Chunk #3 can still succeed independently unless explicit rollback or failure handling is coded."_
+
+---
+
 ## 9. Remaining Roadmap (Topics 11 to 30)
 
 | Topic #      | Phase                     | Topic Name                                   | Practical Deliverable                                                  | Status                   |
@@ -965,8 +985,8 @@ for (Case newCase : triggerNew) {
 | **Topic 13** | **Phase C: Triggers**     | Enterprise Trigger Handler Architecture      | `scripts/apex/13_trigger_handler_pattern.apex` (One-trigger & Set<Id>) | **COMPLETED & VERIFIED** |
 | **Topic 14** | **Phase C: Triggers**     | Exception Handling & Savepoints              | `scripts/apex/14_exception_handling_savepoints.apex` (Savepoints)      | **COMPLETED & VERIFIED** |
 | **Topic 15** | **Phase D: Async Apex**   | `@future` Methods & Queueable Apex           | `scripts/apex/15_future_queueable_apex.apex` (Job Chaining & ID)       | **COMPLETED & VERIFIED** |
-| **Topic 16** | **Phase D: Async Apex**   | Batch Apex & Schedulable Apex                | `Database.Batchable` for millions of records & cron schedules          | **NEXT TARGET**          |
-| **Topic 16** | **Phase D: Async Apex**   | Batch Apex & Schedulable Apex                | `Database.Batchable` for millions of records & cron schedules          |
+| **Topic 16** | **Phase D: Async Apex**   | Batch Apex & Schedulable Apex                | `scripts/apex/16_batch_schedulable_apex.apex` (50M records & Stateful) | **COMPLETED & VERIFIED** |
+| **Topic 17** | **Phase E: Testing**      | Apex Unit Testing Fundamentals               | `@isTest`, `Test.startTest()`, `Assert` assertions                     | **NEXT TARGET**          |
 | **Topic 17** | **Phase E: Testing**      | Apex Unit Testing Fundamentals               | `@isTest`, `Test.startTest()`, `Assert` assertions                     |
 | **Topic 18** | **Phase E: Testing**      | `@TestSetup` & Test Data Factory             | Reusable `TestDataFactory` class                                       |
 | **Topic 19** | **Phase E: Testing**      | Positive, Negative & Bulk Testing            | 200-record bulk validation & Governor limit assertion                  |

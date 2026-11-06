@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npm --prefix visual-lab run dev",
     "visual": "npm --prefix visual-lab run dev",
-    "build": "cd visual-lab && npm run build",
+    "build": "npm --prefix visual-lab run build",
     "build:visual": "npm --prefix visual-lab run build",
     "lint": "eslint **/{aura,lwc}/**/*.js",
     "test": "npm run test:unit",
