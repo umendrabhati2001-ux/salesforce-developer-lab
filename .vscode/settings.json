@@ -6,5 +6,6 @@
   },
   "files.associations": {
     "*.apex": "apex"
-  }
+  },
+  "xml.preferences.showSchemaDocumentationType": "none"
 }
