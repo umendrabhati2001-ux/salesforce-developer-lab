@@ -10,6 +10,11 @@
   --violet-glow: #6366f1;
 }
 
+/* Trending 2026 Ambient Cursor Spotlight */
+.bg-radial-spotlight {
+  background: radial-gradient(circle at center, rgba(0, 240, 255, 0.14) 0%, rgba(1, 118, 211, 0.06) 35%, transparent 70%);
+}
+
 body {
   color: var(--foreground);
   background-color: var(--background);

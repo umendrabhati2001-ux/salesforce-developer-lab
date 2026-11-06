@@ -163,9 +163,12 @@ Welcome to your structured, serial-wise Salesforce Developer syllabus. Every sin
 
 ## 📌 Phase F: Lightning Web Components (LWC)
 
-- [ ] **21. LWC Core Architecture**
+- [x] **21. LWC Core Architecture**
   - Web Components Standard, Shadow DOM, ES6+ JavaScript modules
-  - Template syntax (`template if:true`, `template for:each`)
+  - Template syntax (`lwc:if`, `lwc:elseif`, `lwc:else`, `for:each`)
+  - LWC Lifecycle hooks (`constructor`, `connectedCallback`, `renderedCallback`, `disconnectedCallback`)
+  - Practice File: `scripts/lwc/21_lwc_core_architecture.js`
+  - Status: **COMPLETED & VERIFIED**
 
 - [ ] **22. Reactive Properties & Data Binding**
   - `@api` (Public props / API contract)
