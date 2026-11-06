@@ -1,60 +1,46 @@
 "use client";
 
 import React from "react";
+import { Cloud } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface SalesforceLogoProps {
   className?: string;
   size?: "sm" | "md" | "lg" | "xl";
   animated?: boolean;
-  withGlow?: boolean;
 }
 
 export const SalesforceLogo: React.FC<SalesforceLogoProps> = ({
   className = "",
   size = "md",
   animated = true,
-  withGlow = true,
 }) => {
   const sizeMap = {
     sm: "w-8 h-8",
     md: "w-10 h-10",
-    lg: "w-16 h-16",
-    xl: "w-24 h-24",
+    lg: "w-14 h-14",
+    xl: "w-20 h-20",
+  };
+
+  const iconSizeMap = {
+    sm: "w-4 h-4",
+    md: "w-5 h-5",
+    lg: "w-7 h-7",
+    xl: "w-10 h-10",
   };
 
   const currentSize = sizeMap[size] || sizeMap.md;
+  const currentIconSize = iconSizeMap[size] || iconSizeMap.md;
 
   return (
     <motion.div
-      whileHover={animated ? { scale: 1.08, rotate: [0, -3, 3, 0] } : undefined}
-      transition={{ duration: 0.3 }}
-      className={`relative inline-flex items-center justify-center shrink-0 rounded-xl bg-gradient-to-br from-slate-900/90 via-[#011627] to-cyan-950/60 border border-cyan-500/40 p-1.5 shadow-[0_0_15px_rgba(0,240,255,0.25)] ${currentSize} ${className}`}
+      whileHover={animated ? { scale: 1.05 } : undefined}
+      transition={{ duration: 0.2 }}
+      className={`relative flex items-center justify-center rounded-xl bg-gradient-to-tr from-[#0176D3] via-[#00F0FF] to-indigo-500 p-[1px] shadow-[0_0_15px_rgba(0,240,255,0.25)] shrink-0 ${currentSize} ${className}`}
     >
-      {/* Dynamic Ambient Neon Glow */}
-      {withGlow && (
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#0176D3]/40 via-[#00F0FF]/30 to-[#8B5CF6]/30 rounded-xl blur-sm opacity-80 group-hover:opacity-100 transition-opacity pointer-events-none -z-10 animate-pulse" />
-      )}
-
-      {/* Clean High-Contrast Glowing Salesforce Cloud */}
-      <svg
-        viewBox="0 0 64 48"
-        className="w-full h-full overflow-visible drop-shadow-[0_0_8px_rgba(0,240,255,0.6)]"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M21.5 10.5C24.5 4.5 35.5 3.8 40.5 9.5C44.5 6 52.5 7.5 56 13.5C61.5 15.5 65 21.5 63 27.5C65.5 31.5 63 38.5 57 40.5L14 40.5C8 40.5 4 35.5 6 29.5C3.5 23.5 7 16.5 13 14.5C14.5 9.5 19 7.5 21.5 10.5Z"
-          fill="#0176D3"
-          stroke="#00F0FF"
-          strokeWidth="2"
-        />
-        {/* Subtle Inner Glass Arc */}
-        <path
-          d="M21.5 12C24.5 6.5 34 5.8 39 11C43 8 49 9.5 52 14.5C46 17 34 18 20 18C16 18 13.5 16 15 15C16.5 11 19.5 9.5 21.5 12Z"
-          fill="#FFFFFF"
-          fillOpacity="0.4"
-        />
-      </svg>
+      <div className="w-full h-full bg-[#030712] rounded-[11px] flex items-center justify-center transition-colors group-hover:bg-slate-900">
+        <Cloud className={`${currentIconSize} text-cyan-400 group-hover:text-white transition-colors`} />
+      </div>
     </motion.div>
   );
 };
