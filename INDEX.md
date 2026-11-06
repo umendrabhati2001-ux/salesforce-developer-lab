@@ -95,11 +95,12 @@ Welcome to your structured, serial-wise Salesforce Developer syllabus. Every sin
   - Practice File: `scripts/apex/12_trigger_fundamentals.apex`
   - Status: **COMPLETED & VERIFIED**
 
-- [ ] **13. Enterprise Trigger Handler Pattern**
+- [x] **13. Enterprise Trigger Handler Pattern**
   - One Trigger Per Object Rule
   - Separation of Concerns: Trigger vs Handler vs Service Layer
   - Preventing Recursion with Static Sets/Flags
-  - Practice File: `force-app/main/default/triggers/`
+  - Practice File: `scripts/apex/13_trigger_handler_pattern.apex`
+  - Status: **COMPLETED & VERIFIED**
 
 - [ ] **14. Exception Handling & Transaction Control**
   - `try`, `catch`, `finally` blocks
