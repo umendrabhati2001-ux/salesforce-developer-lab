@@ -131,14 +131,19 @@ Welcome to your structured, serial-wise Salesforce Developer syllabus. Every sin
 
 ## 📌 Phase E: Apex Testing & Quality Assurance
 
-- [ ] **17. Apex Unit Testing Fundamentals**
+- [x] **17. Apex Unit Testing Fundamentals**
   - Annotations: `@isTest`, `@TestVisible`, `seeAllData=false`
   - `Test.startTest()` & `Test.stopTest()` (Resetting governor limits)
   - Modern Assertions: `Assert.areEqual()`, `Assert.isTrue()`, `Assert.isNull()`
+  - Practice File: `scripts/apex/17_unit_testing_fundamentals.apex`
+  - Status: **COMPLETED & VERIFIED**
 
-- [ ] **18. `@TestSetup` & Test Data Factory**
+- [x] **18. `@TestSetup` & Test Data Factory**
   - Creating isolated test records efficiently
   - Building a reusable `TestDataFactory` class
+  - Parameterized bulk creation with `doInsert` flags
+  - Practice File: `scripts/apex/18_test_data_factory.apex`
+  - Status: **COMPLETED & VERIFIED**
 
 - [ ] **19. Positive, Negative & Bulk Unit Testing**
   - Testing happy path vs expected validation failures
