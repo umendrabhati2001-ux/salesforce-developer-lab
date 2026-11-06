@@ -67,24 +67,19 @@ export const HeroSection: React.FC = () => {
         
         {/* Top Developer & Salesforce DX Announcement Pill */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/40 text-xs shadow-[0_0_15px_rgba(0,240,255,0.2)]"
-          >
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/40 text-xs shadow-[0_0_15px_rgba(0,240,255,0.2)]">
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
             </span>
             <span className="font-semibold text-cyan-300">Salesforce DX Command Center:</span>
-            <span className="text-slate-300 font-mono">10 Topics Complete Hands-On</span>
+            <span className="text-slate-300 font-mono">11 Topics Verified Hands-On</span>
             <span className="text-slate-600">|</span>
             <span className="text-emerald-400 flex items-center gap-1 font-mono">
               <ShieldCheck className="w-3.5 h-3.5" />
               Source Isolated 100%
             </span>
-          </motion.div>
+          </div>
 
           {/* Compact Open to Work Pill */}
           <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono text-emerald-300">
@@ -103,12 +98,7 @@ export const HeroSection: React.FC = () => {
           <div className="lg:col-span-7 space-y-6">
             
             {/* Radiant Tech Headline */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="space-y-3"
-            >
+            <div className="space-y-3">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
                 Architectural Mastery <br />
                 <span className="bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400 bg-clip-text text-transparent">
@@ -120,15 +110,10 @@ export const HeroSection: React.FC = () => {
                 code: verified Apex collections, relationship SOQL queries, partial-success DML engines, 
                 and the Enterprise Customer Complaint Management Capstone.
               </p>
-            </motion.div>
+            </div>
 
             {/* Quick Stats Grid with Cyber Colors */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 py-2"
-            >
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 py-2">
               <motion.div
                 whileHover={{ y: -3, borderColor: "#00F0FF" }}
                 className="p-3 sm:p-3.5 rounded-xl bg-gradient-to-b from-slate-900/90 to-slate-950 border border-slate-800 transition-all shadow-sm"
@@ -188,15 +173,10 @@ export const HeroSection: React.FC = () => {
                   Safe &amp; Untouched
                 </div>
               </motion.div>
-            </motion.div>
+            </div>
 
             {/* High-Tech Action Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 pt-2"
-            >
+            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 pt-2">
               <motion.a
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -232,7 +212,7 @@ export const HeroSection: React.FC = () => {
                 <Linkedin className="w-4 h-4 text-[#0A66C2]" />
                 Umendra Bhati
               </motion.a>
-            </motion.div>
+            </div>
 
           </div>
 

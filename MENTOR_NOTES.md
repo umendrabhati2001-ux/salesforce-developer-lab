@@ -674,6 +674,61 @@ System.debug('DML Consumed: ' + Limits.getDMLStatements() + ' / ' + Limits.getLi
 
 ---
 
+### 📌 Topic 12: Apex Triggers Fundamentals & Context Variables
+
+#### 💬 Hinglish Mentor Explanation:
+
+- **Trigger Kya Hai?** Apex Trigger ek automated event listener hai jo Salesforce database par kisi specific sObject par DML (insert, update, delete, undelete) hone par automatically fire hota hai.
+- **7 Trigger Events:**
+  1. `before insert`: Database me record save hone se pehle. Default field values set karne aur custom validation ke liye perfect.
+  2. `after insert`: Database me record save hone aur Salesforce ID generate hone ke turant baad. Child records (e.g., related Tasks ya Action Items) create karne ke liye.
+  3. `before update`: Record update hone se pehle. Field change detect karne aur values modify karne ke liye.
+  4. `after update`: Record update commit hone ke baad. Parent ya related sibling records update karne ke liye.
+  5. `before delete`: Record delete hone se pehle. Business rules check karke deletion block karne ke liye (`addError()`).
+  6. `after delete`: Record delete hone ke baad. Cascade audit log ya parent counters update karne ke liye.
+  7. `after undelete`: Recycle Bin se record restore hone par relationships re-link karne ke liye.
+- **Trigger Context Variables Matrix (Golden Interview Question ⭐):**
+  - **`Trigger.new`**: New in-memory records ka `List<sObject>`. Available in *Insert, Update, Undelete*. **Delete me NULL hota hai!**
+  - **`Trigger.old`**: Database me purane values ka `List<sObject>`. Available in *Update, Delete*. **Insert me NULL hota hai!**
+  - **`Trigger.newMap`**: `Map<Id, sObject>`. **Before Insert me NULL hota hai** kyunki Salesforce ID abhi database se allocate nahi hui! *After Insert, Before Update, After Update, After Undelete* me available rehta hai.
+  - **`Trigger.oldMap`**: `Map<Id, sObject>`. *Update aur Delete* me available rehta hai. Iska sabse bada use **Field Change Detection** hai:
+    `if (newCase.Priority != oldMap.get(newCase.Id).Priority)`
+- **Before vs After Golden Rule:**
+  - *Before Trigger me*: `Trigger.new` ke fields ko direct in-memory modify kar sakte hain (`c.Priority = 'High';`). **DML statement (`update c;`) KABHI NAHI lagana**, warna infinite loop ya exception aa jayega!
+  - *After Trigger me*: `Trigger.new` **READ-ONLY** ho jata hai. Agar after trigger me `c.Priority = 'High'` likhenge toh `System.FinalException: Record is read-only` throw hoga!
+- **`addError()` Method:** Record-level ya Field-level error phenkne ke liye use hota hai (`c.addError('Description cannot be empty!');`). Yeh current record ke DML ko rollback kar deta hai aur user ko UI par clean error message dikhata hai.
+
+#### 🌐 English Technical Explanation:
+
+- **Execution Context:** Triggers execute within atomic multitenant transaction boundaries. Salesforce partitions incoming DML batches into chunks of up to 200 records, invoking the trigger once per 200-record chunk.
+- **Context Variable Availability:**
+  | Context Variable | Type | before insert | after insert | before update | after update | before delete | after delete | after undelete |
+  |---|---|---|---|---|---|---|---|---|
+  | `Trigger.new` | `List<sObject>` | ✅ Mutable | ✅ Read-only | ✅ Mutable | ✅ Read-only | ❌ null | ❌ null | ✅ Read-only |
+  | `Trigger.old` | `List<sObject>` | ❌ null | ❌ null | ✅ Read-only | ✅ Read-only | ✅ Read-only | ✅ Read-only | ❌ null |
+  | `Trigger.newMap` | `Map<Id, sObject>` | ❌ null | ✅ Read-only | ✅ Mutable Keys | ✅ Read-only | ❌ null | ❌ null | ✅ Read-only |
+  | `Trigger.oldMap` | `Map<Id, sObject>` | ❌ null | ❌ null | ✅ Read-only | ✅ Read-only | ✅ Read-only | ✅ Read-only | ❌ null |
+- **Delta Tracking Pattern:** Production trigger handlers always guard logic with field-level change detection using `oldMap` to prevent redundant computations and unnecessary downstream automation triggers.
+
+```apex
+// FIELD LEVEL CHANGE DETECTION PATTERN
+for (Case newCase : triggerNew) {
+    Case oldCase = oldMap.get(newCase.Id);
+    if (newCase.Status != oldCase.Status && newCase.Status == 'Closed') {
+        // Only executes when status transitions specifically to Closed
+        newCase.Closed_Reason__c = 'Auto-documented via Trigger';
+    }
+}
+```
+
+#### 🛡️ Senior Dev Gotchas:
+
+1. **Never DML on `Trigger.new` in Before Triggers:** Before triggers automatically persist changes to `Trigger.new` when the database step executes. Calling `update triggerNew;` triggers recursive handler loops.
+2. **`Trigger.newMap` is null in `before insert`:** Many junior developers write `Trigger.newMap.keySet()` in a before insert trigger, causing an immediate `NullPointerException`. Always use a loop or Set extraction for foreign keys in before insert.
+3. **Partial vs AllOrNone with `addError()`:** If a trigger uses `addError()` on 5 out of 200 records in a `Database.insert(records, false)` call, only the 5 errored records fail; the remaining 195 records commit successfully.
+
+---
+
 ## 8. Master Interview Question & Word-for-Word Answer Bank
 
 ### 🎯 Q1: Why should you never write logic directly inside an Apex Trigger? Why use the Trigger Handler Pattern?
