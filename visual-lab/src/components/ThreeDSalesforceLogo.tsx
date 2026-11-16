@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { Cloud, Sparkles, Terminal } from "lucide-react";
 
 interface ThreeDSalesforceLogoProps {
   size?: "sm" | "md" | "lg" | "xl";
@@ -17,17 +18,17 @@ export const ThreeDSalesforceLogo: React.FC<ThreeDSalesforceLogoProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Motion values for smooth 3D tilt
+  // Smooth 3D tilt springs
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [16, -16]), {
-    damping: 20,
-    stiffness: 140,
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [14, -14]), {
+    damping: 24,
+    stiffness: 160,
   });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-18, 18]), {
-    damping: 20,
-    stiffness: 140,
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-16, 16]), {
+    damping: 24,
+    stiffness: 160,
   });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -46,10 +47,10 @@ export const ThreeDSalesforceLogo: React.FC<ThreeDSalesforceLogoProps> = ({
   };
 
   const sizeClasses = {
-    sm: "w-28 h-24",
-    md: "w-60 h-44",
-    lg: "w-80 h-60 sm:w-96 sm:h-72",
-    xl: "w-full max-w-[460px] h-80",
+    sm: "w-32 h-28",
+    md: "w-64 h-52",
+    lg: "w-full max-w-[420px] h-72 sm:h-80",
+    xl: "w-full max-w-[480px] h-88",
   }[size];
 
   return (
@@ -58,9 +59,9 @@ export const ThreeDSalesforceLogo: React.FC<ThreeDSalesforceLogoProps> = ({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      className={`relative flex flex-col items-center justify-center perspective-1000 ${sizeClasses}`}
+      className={`relative flex items-center justify-center perspective-1000 ${sizeClasses} select-none`}
     >
-      {/* 3D Tilting Container */}
+      {/* 3D Holo-Container */}
       <motion.div
         style={{
           rotateX: interactive ? rotateX : 0,
@@ -68,83 +69,89 @@ export const ThreeDSalesforceLogo: React.FC<ThreeDSalesforceLogoProps> = ({
           transformStyle: "preserve-3d",
         }}
         animate={{
-          y: [0, -6, 0],
+          y: [0, -8, 0],
         }}
         transition={{
           repeat: Infinity,
-          duration: 4.5,
+          duration: 5,
           ease: "easeInOut",
         }}
-        className="relative w-full h-full flex flex-col items-center justify-center"
+        className="relative w-full h-full flex items-center justify-center"
       >
-        {/* Top Header Floating Pill: Umendra Bhati • #OPENTOWORK */}
-        {showCircuits && (
-          <motion.div
-            style={{ transform: "translateZ(45px)" }}
-            className="mb-3 px-3.5 py-1 rounded-full bg-slate-900/90 border border-emerald-500/40 text-[11px] font-mono text-slate-200 shadow-[0_0_15px_rgba(16,185,129,0.25)] flex items-center gap-2 select-none"
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-semibold text-white">Umendra Bhati</span>
-            <span className="text-slate-500">&bull;</span>
-            <span className="text-emerald-400 font-bold">#OPENTOWORK</span>
-            <span className="text-slate-500">&bull;</span>
-            <span className="text-cyan-300">Cloud Solutions</span>
-          </motion.div>
-        )}
+        {/* 1. Deep Cyber Nebula Ambient Backlight */}
+        <div className="absolute inset-4 rounded-full bg-gradient-to-tr from-[#0176D3]/35 via-[#00F0FF]/25 to-[#7C3AED]/20 blur-3xl -z-10 pointer-events-none" />
 
-        {/* Ambient Multi-layer Radial Glow */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#0176D3]/35 via-[#00F0FF]/25 to-[#9333EA]/20 blur-3xl -z-10 animate-pulse pointer-events-none" />
-
-        {/* Orbit Rings (Cyber Ecosystem) with SVG connector lines */}
+        {/* 2. Concentric Orbit Rings (SVG Precision, Non-Overlapping) */}
         {showCircuits && (
           <div
-            style={{ transform: "translateZ(-15px)" }}
-            className="absolute inset-2 sm:inset-0 rounded-[40%] border border-cyan-500/25 pointer-events-none"
+            style={{ transform: "translateZ(-20px)" }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
           >
-            <div className="absolute top-2 left-10 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#00F0FF] animate-ping" />
-            <div className="absolute bottom-6 right-6 w-2.5 h-2.5 rounded-full bg-purple-400 shadow-[0_0_12px_#A855F7]" />
-            <div className="absolute top-1/2 left-2 w-1.5 h-1.5 rounded-full bg-cyan-400/80" />
-            <div className="absolute top-1/3 right-2 w-1.5 h-1.5 rounded-full bg-pink-400/80" />
+            {/* Outer Orbit Path */}
+            <div className="w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] rounded-full border border-cyan-500/15 border-dashed animate-[spin_60s_linear_infinite] relative">
+              <span className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#00F0FF]" />
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_10px_#A855F7]" />
+            </div>
+
+            {/* Inner Elliptical Cyber Ring */}
+            <div className="absolute w-[260px] h-[210px] sm:w-[300px] sm:h-[240px] rounded-[48%] border border-cyan-500/25 shadow-[0_0_20px_rgba(0,240,255,0.1)] -rotate-6" />
           </div>
         )}
 
-        {/* Central Official Salesforce Logo inside 3D Elevation */}
-        <div
-          style={{ transform: "translateZ(35px)" }}
-          className="relative w-56 h-36 sm:w-64 sm:h-44 flex items-center justify-center p-2"
+        {/* 3. Central 3D Elevated Official Salesforce Cloud Logo */}
+        <motion.div
+          style={{ transform: "translateZ(40px)" }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="relative w-64 h-40 sm:w-72 sm:h-44 flex items-center justify-center cursor-pointer group"
         >
-          {/* Neon Aura Behind Logo */}
-          <div className="absolute inset-4 bg-gradient-to-tr from-[#0176D3]/50 to-[#00A1E0]/30 rounded-full blur-xl pointer-events-none" />
+          {/* Intense Cloud Backlight Aura */}
+          <div className="absolute inset-2 bg-gradient-to-r from-[#0176D3]/60 via-[#00A1E0]/50 to-[#00F0FF]/40 rounded-full blur-2xl group-hover:blur-3xl transition-all pointer-events-none opacity-80 group-hover:opacity-100" />
 
           {/* Official Salesforce Vector SVG */}
-          <div className="relative w-full h-full flex items-center justify-center filter drop-shadow-[0_15px_30px_rgba(1,118,211,0.55)]">
+          <div className="relative w-full h-full flex items-center justify-center filter drop-shadow-[0_15px_35px_rgba(1,118,211,0.6)] group-hover:drop-shadow-[0_20px_45px_rgba(0,240,255,0.7)] transition-all">
             <img
               src="/salesforce.svg"
               alt="Official Salesforce Cloud Ecosystem"
-              className="w-full h-full object-contain select-none pointer-events-none"
+              className="w-full h-full object-contain pointer-events-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
             />
           </div>
-        </div>
+        </motion.div>
 
-        {/* 3D Floating Trailhead & SFDX Dev Micro-badges with Connector Lines */}
+        {/* 4. Balanced Orbital Satellite Badges (Zero Overlap Guaranteed) */}
         {showCircuits && (
           <>
-            {/* Top Right Trailhead Badge */}
+            {/* Top-Right Satellite: TRAILHEAD */}
             <motion.div
-              style={{ transform: "translateZ(55px)" }}
-              className="absolute top-12 right-0 sm:right-4 px-2.5 py-1 rounded-full bg-slate-900/90 border border-purple-500/50 text-[10px] font-mono text-purple-300 shadow-[0_0_12px_rgba(168,85,247,0.35)] flex items-center gap-1.5 select-none"
+              style={{ transform: "translateZ(60px)" }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="absolute top-4 sm:top-6 right-2 sm:right-6 px-3 py-1 rounded-full bg-[#080e22]/90 border border-purple-500/40 text-[10px] font-mono text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.35),inset_0_1px_0_rgba(255,255,255,0.1)] flex items-center gap-1.5 backdrop-blur-md"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
-              TRAILHEAD
+              <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_6px_#A855F7] animate-pulse" />
+              <span className="font-bold tracking-wider">TRAILHEAD</span>
             </motion.div>
 
-            {/* Bottom Left SFDX DEV Badge */}
+            {/* Bottom-Left Satellite: SFDX DEV */}
             <motion.div
-              style={{ transform: "translateZ(55px)" }}
-              className="absolute bottom-6 left-0 sm:left-4 px-2.5 py-1 rounded-full bg-slate-900/90 border border-cyan-500/50 text-[10px] font-mono text-cyan-300 shadow-[0_0_12px_rgba(0,240,255,0.35)] flex items-center gap-1.5 select-none"
+              style={{ transform: "translateZ(60px)" }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="absolute bottom-4 sm:bottom-6 left-2 sm:left-6 px-3 py-1 rounded-full bg-[#080e22]/90 border border-cyan-500/40 text-[10px] font-mono text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.35),inset_0_1px_0_rgba(255,255,255,0.1)] flex items-center gap-1.5 backdrop-blur-md"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              SFDX DEV
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#00F0FF] animate-pulse" />
+              <span className="font-bold tracking-wider">SFDX DEV</span>
+            </motion.div>
+
+            {/* Bottom-Right Satellite: APEX & LWC */}
+            <motion.div
+              style={{ transform: "translateZ(60px)" }}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="hidden sm:flex absolute bottom-2 right-4 px-3 py-1 rounded-full bg-[#080e22]/90 border border-emerald-500/40 text-[10px] font-mono text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.35),inset_0_1px_0_rgba(255,255,255,0.1)] items-center gap-1.5 backdrop-blur-md"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#10B981] animate-pulse" />
+              <span className="font-bold tracking-wider">APEX &bull; LWC</span>
             </motion.div>
           </>
         )}

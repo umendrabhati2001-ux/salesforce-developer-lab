@@ -220,16 +220,9 @@ export const HeroSection: React.FC = () => {
           <div className="lg:col-span-5 flex flex-col items-center gap-6 perspective-1000">
             
             {/* 3D Salesforce Cloud Logo with Circuit Network */}
-            <motion.div
-              style={{
-                rotateX: rotateX,
-                rotateY: rotateY,
-                transformStyle: "preserve-3d",
-              }}
-              className="w-full flex justify-center py-2"
-            >
+            <div className="w-full flex justify-center py-2">
               <ThreeDSalesforceLogo size="lg" showCircuits={true} interactive={true} />
-            </motion.div>
+            </div>
 
             {/* Umendra Bhati Profile Badge Card */}
             <div className="w-full max-w-[420px]">
