@@ -128,18 +128,20 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Raycast Action Pill / Command Button */}
-          <a
-            href="#visualizers"
-            onClick={playClickSound}
-            className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold bg-gradient-to-r from-cyan-400 via-blue-500 to-[#0176D3] text-slate-950 hover:brightness-110 shadow-[0_0_15px_rgba(0,240,255,0.35)] transition-all active:scale-95"
+          <button
+            onClick={() => {
+              playClickSound();
+              window.dispatchEvent(new CustomEvent("open-command-palette"));
+            }}
+            className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold bg-gradient-to-r from-cyan-400 via-blue-500 to-[#0176D3] text-slate-950 hover:brightness-110 shadow-[0_0_15px_rgba(0,240,255,0.35)] transition-all active:scale-95 cursor-pointer"
           >
             <Zap className="w-3.5 h-3.5 fill-current" />
-            <span className="hidden sm:inline">Launch Lab</span>
-            <span className="sm:hidden">Launch</span>
+            <span className="hidden sm:inline">Command</span>
+            <span className="sm:hidden">Menu</span>
             <span className="hidden sm:inline-flex items-center gap-0.5 text-[9px] font-mono px-1 py-0.5 rounded bg-black/20 text-slate-950/90 font-bold ml-0.5">
               <Command className="w-2.5 h-2.5 inline" />K
             </span>
-          </a>
+          </button>
 
           {/* Mobile Hamburger Menu Button */}
           <button
