@@ -62,7 +62,7 @@ export const Footer: React.FC = () => {
           {/* Umendra Bhati LinkedIn Button */}
           <div className="flex items-center gap-3">
             <a
-              href="https://www.linkedin.com"
+              href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-white hover:text-cyan-300 text-xs font-mono transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.2)] group"

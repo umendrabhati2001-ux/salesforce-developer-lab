@@ -20,7 +20,7 @@ export const DeveloperBadgeCard: React.FC<{ compact?: boolean }> = ({ compact = 
 
   const handleCopyLink = () => {
     playClickSound();
-    navigator.clipboard.writeText("https://www.linkedin.com");
+    navigator.clipboard.writeText("https://www.linkedin.com/in/umendra-bhati-5243aa36a/");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -28,7 +28,7 @@ export const DeveloperBadgeCard: React.FC<{ compact?: boolean }> = ({ compact = 
   if (compact) {
     return (
       <a
-        href="https://www.linkedin.com"
+        href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"
         target="_blank"
         rel="noopener noreferrer"
         onClick={playClickSound}
@@ -151,7 +151,7 @@ export const DeveloperBadgeCard: React.FC<{ compact?: boolean }> = ({ compact = 
         <motion.a
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          href="https://www.linkedin.com"
+          href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"
           target="_blank"
           rel="noopener noreferrer"
           onClick={playClickSound}

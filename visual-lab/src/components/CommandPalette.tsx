@@ -189,7 +189,7 @@ export const CommandPalette: React.FC = () => {
       badge: "#OPENTOWORK",
       badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
       action: () => {
-        window.open("https://www.linkedin.com", "_blank");
+        window.open("https://www.linkedin.com/in/umendra-bhati-5243aa36a/", "_blank");
         setIsOpen(false);
       },
     },
@@ -459,7 +459,7 @@ export const CommandPalette: React.FC = () => {
                     </ul>
                   </div>
                   <a
-                    href="https://www.linkedin.com"
+                    href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={playClickSound}
@@ -502,7 +502,7 @@ export const CommandPalette: React.FC = () => {
                     </ul>
                   </div>
                   <a
-                    href="https://www.linkedin.com"
+                    href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={playClickSound}

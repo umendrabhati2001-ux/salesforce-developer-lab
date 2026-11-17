@@ -219,7 +219,7 @@ export const Navbar: React.FC = () => {
               </a>
 
               <a
-                href="https://www.linkedin.com"
+                href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="py-2 px-3 rounded-full bg-[#0A66C2] text-white text-xs font-mono font-bold flex items-center gap-1 hover:brightness-110"

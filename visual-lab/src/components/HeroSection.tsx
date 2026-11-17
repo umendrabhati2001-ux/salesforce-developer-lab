@@ -203,7 +203,7 @@ export const HeroSection: React.FC = () => {
               <motion.a
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                href="https://www.linkedin.com"
+                href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={playClickSound}
