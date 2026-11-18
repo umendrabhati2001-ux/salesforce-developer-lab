@@ -24,8 +24,16 @@ import {
   Lock,
 } from "lucide-react";
 
-export const VisualizersSection: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"trigger" | "memory" | "governor" | "bulktracer" | "soql">("trigger");
+interface VisualizersSectionProps {
+  initialTab?: "trigger" | "memory" | "governor" | "bulktracer" | "soql";
+  standalone?: boolean;
+}
+
+export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
+  initialTab = "trigger",
+  standalone = false,
+}) => {
+  const [activeTab, setActiveTab] = useState<"trigger" | "memory" | "governor" | "bulktracer" | "soql">(initialTab);
 
   // -------------------------------------------------------------
   // SIMULATOR 1: TRIGGER FLOW SIMULATOR STATE
@@ -437,15 +445,27 @@ export const VisualizersSection: React.FC = () => {
   };
 
   return (
-    <section id="visualizers" className="py-24 border-b border-[#222222] bg-[#0A0A0A]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="visualizers" className={standalone ? "py-4 bg-transparent" : "py-24 border-b border-[#222222] bg-[#0A0A0A]"}>
+      <div className={standalone ? "w-full" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"}>
         
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/30 text-xs font-mono text-cyan-300 mb-3 shadow-[0_0_15px_rgba(0,240,255,0.15)]">
-              <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Interactive Architectural Lab</span>
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/30 text-xs font-mono text-cyan-300 shadow-[0_0_15px_rgba(0,240,255,0.15)]">
+                <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+                <span>{standalone ? "Dedicated Fullscreen Workspace" : "Interactive Architectural Lab"}</span>
+              </div>
+              {!standalone && (
+                <a
+                  href="/studio"
+                  onClick={() => sound.playClick()}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-xs font-mono text-cyan-300 transition-all cursor-pointer hover:shadow-[0_0_15px_rgba(0,240,255,0.25)]"
+                >
+                  <Sparkles className="w-3 h-3 text-cyan-400" />
+                  <span>Open Fullscreen Studio ↗</span>
+                </a>
+              )}
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
               Motion Simulators &amp;{" "}

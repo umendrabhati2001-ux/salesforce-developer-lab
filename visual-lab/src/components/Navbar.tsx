@@ -45,12 +45,13 @@ export const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { label: "Overview", href: "#hero", icon: null },
-    { label: "Roadmap", href: "#roadmap", badge: "17/25+", icon: Award },
-    { label: "Simulators", href: "#visualizers", icon: Cpu },
-    { label: "3D Tower", href: "#pattern-matrix", icon: Boxes },
-    { label: "Code Arena", href: "#code-arena", icon: Terminal },
-    { label: "Flashcards", href: "#interview-prep", icon: BookOpen },
+    { label: "Overview", href: "/#hero", icon: null },
+    { label: "Roadmap", href: "/#roadmap", badge: "17/25+", icon: Award },
+    { label: "Simulators", href: "/#visualizers", icon: Cpu },
+    { label: "Studio", href: "/studio", badge: "IDE", icon: Zap },
+    { label: "3D Tower", href: "/#pattern-matrix", icon: Boxes },
+    { label: "Code Arena", href: "/#code-arena", icon: Terminal },
+    { label: "Flashcards", href: "/#interview-prep", icon: BookOpen },
   ];
 
   return (
@@ -68,7 +69,7 @@ export const Navbar: React.FC = () => {
       >
         {/* Brand: Authentic 3D Salesforce Cloud Logo + Lab Title */}
         <a
-          href="#hero"
+          href="/#hero"
           onClick={playClickSound}
           className="flex items-center gap-2 sm:gap-2.5 group shrink-0"
         >
@@ -207,7 +208,7 @@ export const Navbar: React.FC = () => {
             {/* Mobile Actions */}
             <div className="pt-2 flex items-center gap-2">
               <a
-                href="#visualizers"
+                href="/studio"
                 onClick={() => {
                   playClickSound();
                   setMobileMenuOpen(false);
@@ -215,7 +216,7 @@ export const Navbar: React.FC = () => {
                 className="flex-1 py-2 px-3 rounded-full text-center text-xs font-mono font-bold bg-gradient-to-r from-cyan-400 to-[#0176D3] text-slate-950 shadow-[0_0_15px_rgba(0,240,255,0.3)] flex items-center justify-center gap-1.5"
               >
                 <Zap className="w-3.5 h-3.5" />
-                Launch All Simulators
+                Launch Studio IDE
               </a>
 
               <a

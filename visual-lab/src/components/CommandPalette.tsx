@@ -119,6 +119,19 @@ export const CommandPalette: React.FC = () => {
       },
     },
     {
+      id: "sim-fullscreen-studio",
+      title: "Launch Fullscreen Runtime Studio (/studio)",
+      subtitle: "Dedicated standalone IDE with Live SOQL Query Studio & Apex Simulators",
+      icon: Zap,
+      category: "Simulators",
+      badge: "Standalone IDE",
+      badgeColor: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+      action: () => {
+        setIsOpen(false);
+        window.location.href = "/studio";
+      },
+    },
+    {
       id: "sim-governor-limits",
       title: "Apex Governor Limits Live Simulator",
       subtitle: "SOQL, DML & Heap Usage real-time limiter with warning breaches",
