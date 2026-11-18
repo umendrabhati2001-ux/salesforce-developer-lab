@@ -215,7 +215,7 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
   // -------------------------------------------------------------
   interface SoqlPreset {
     id: string;
-    level: "Basic" | "Intermediate" | "Advanced" | "Architect";
+    level: "Basic" | "Intermediate" | "Advanced" | "Architect" | "Lead" | "Principal";
     levelNum: number;
     badgeColor: string;
     levelLabel: string;
@@ -310,6 +310,46 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
       plan: "Aggregate Hash Grouping (StageName_Idx)",
       rows: 5,
     },
+    {
+      id: "preset-lead-semijoin",
+      level: "Lead",
+      levelNum: 5,
+      badgeColor: "text-rose-400 border-rose-500/40 bg-rose-500/10",
+      levelLabel: "Level 5: Lead",
+      label: "Semi-Join & Anti-Join (IN / NOT IN Subquery)",
+      concept: "Selective Set Filtering in Database",
+      explanation: "Filters Accounts having Won Deals but NO Escalated Cases directly inside DB index without Apex heap consumption.",
+      query: "SELECT Id, Name, Industry, AnnualRevenue FROM Account WHERE Id IN (SELECT AccountId FROM Opportunity WHERE IsWon = TRUE) AND Id NOT IN (SELECT AccountId FROM Case WHERE Status = 'Escalated') LIMIT 4",
+      records: [
+        { Id: "0015g000004KkLmAAB", Name: "Apex Aeronautics Corp", Industry: "Aerospace", AnnualRevenue: "$42,000,000", SubqueryMatch: "Won Deals: YES | Open Cases: 0" },
+        { Id: "0015g000005LlMnAAC", Name: "BioGenetics Global Health", Industry: "Healthcare", AnnualRevenue: "$18,500,000", SubqueryMatch: "Won Deals: YES | Open Cases: 0" },
+        { Id: "0015g000006MmNoAAD", Name: "Nexus FinTech Vaults", Industry: "Financial Services", AnnualRevenue: "$31,000,000", SubqueryMatch: "Won Deals: YES | Open Cases: 0" },
+        { Id: "0015g000007NnOpAAE", Name: "HyperScale Logistics Hub", Industry: "Transportation", AnnualRevenue: "$14,200,000", SubqueryMatch: "Won Deals: YES | Open Cases: 0" },
+      ],
+      costIndex: "0.38 (Selective)",
+      plan: "Semi-Join Spool Scan (Account_Id IN Opp.AccountId)",
+      rows: 4,
+    },
+    {
+      id: "preset-cta-polymorphic",
+      level: "Principal",
+      levelNum: 6,
+      badgeColor: "text-fuchsia-400 border-fuchsia-500/40 bg-fuchsia-500/10",
+      levelLabel: "Level 6: Principal CTA",
+      label: "Polymorphic Traversal (TYPEOF / Multi-sObject)",
+      concept: "Polymorphic Foreign-Key Introspection",
+      explanation: "Uses TYPEOF on polymorphic WhatId/WhoId to extract distinct schema fields based on parent sObject type (Account vs Opportunity).",
+      query: "SELECT Id, Subject, Priority, TYPEOF What WHEN Account THEN Name, AnnualRevenue WHEN Opportunity THEN StageName, Amount END FROM Task WHERE IsClosed = FALSE LIMIT 4",
+      records: [
+        { Id: "00T5g000001Poly01", Subject: "Q4 Enterprise Architectural Review", Priority: "High", ParentType: "Account", TargetDetails: "Name: Stark Industries | Rev: $125M" },
+        { Id: "00T5g000002Poly02", Subject: "Final SOW & License Sign-off", Priority: "Normal", ParentType: "Opportunity", TargetDetails: "Stage: Negotiation | Amt: $280k" },
+        { Id: "00T5g000003Poly03", Subject: "Disaster Recovery Drill Scheduling", Priority: "High", ParentType: "Account", TargetDetails: "Name: Cyberdyne Systems | Rev: $88M" },
+        { Id: "00T5g000004Poly04", Subject: "Production Sandbox Data Refresh", Priority: "Normal", ParentType: "Opportunity", TargetDetails: "Stage: Closed Won | Amt: $450k" },
+      ],
+      costIndex: "0.46 (Multi-Branch)",
+      plan: "Polymorphic Index Dispatch (Task_WhatId_FK)",
+      rows: 4,
+    },
   ];
 
   const [selectedPresetId, setSelectedPresetId] = useState<string>("preset-basic-where");
@@ -344,7 +384,7 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
     if (!trimmed) {
       return { 
         type: "info", 
-        text: "💡 Editor Empty: Enter a valid SOQL query or click one of the 4 level presets above.", 
+        text: "💡 Editor Empty: Enter a valid SOQL query or click one of the 6 level presets above.", 
         canExecute: false,
         fixQuery: soqlPresets.find(p => p.id === selectedPresetId)?.query || soqlPresets[0].query
       };
@@ -1248,22 +1288,22 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
           return (
             <div className="space-y-6">
               
-              {/* 4-Level Progressive Learning Curriculum Header */}
+              {/* 6-Level Progressive Learning Curriculum Header */}
               <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0d121f] via-[#101728] to-[#0d121f] border border-cyan-500/30 space-y-3.5 shadow-[0_0_20px_rgba(0,240,255,0.08)]">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-cyan-400" />
                     <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
-                      SOQL Mastery Ladder (Basic to Architect)
+                      SOQL Mastery Ladder (Basic to Principal CTA)
                     </span>
                   </div>
                   <span className="text-[11px] font-mono text-cyan-300/80 bg-cyan-950/60 border border-cyan-500/30 px-2.5 py-1 rounded-full">
-                    Step-by-step enterprise progression
+                    Complete 6-Tier Enterprise Progression
                   </span>
                 </div>
 
                 {/* Level Selector Buttons */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2.5">
                   {soqlPresets.map((preset) => {
                     const isSelected = selectedPresetId === preset.id;
                     return (

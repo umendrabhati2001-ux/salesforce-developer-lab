@@ -23,7 +23,7 @@
 **Salesforce Developer Lab** is an end-to-end cloud engineering portal designed by **[Umendra Bhati](https://www.linkedin.com/in/umendra-bhati-5243aa36a/)**. It bridges the gap between static code repositories and live runtime demonstration, providing:
 
 * 🚀 **Interactive Motion Simulators**: Step-by-step debugger for CaseTrigger lifecycle events, Heap Memory consumption, and 200-record batch chunking.
-* 🛡️ **Crash-Proof SOQL Query Studio**: 4-Tier progression ladder (Basic to Architect) with Governor Limit syntax blockers, dual-siren audio telemetry, and 1-click query repair.
+* 🛡️ **Crash-Proof SOQL Query Studio**: 6-Tier progression ladder (Basic to Principal CTA) with Governor Limit syntax blockers, dual-siren audio telemetry, and 1-click query repair.
 * 📦 **25 Complete Apex & LWC Enterprise Modules**: Covering Phase A through Phase F (Triggers, Async Apex, Batch, Queueable, REST Callouts, and modern Lightning Web Components).
 * ⚡ **Hybrid Architecture Deployment**: Full-screen dedicated Studio (`/studio`) and flagship showcase portfolio (`/`) built on Next.js 15, TypeScript, and Tailwind CSS.
 

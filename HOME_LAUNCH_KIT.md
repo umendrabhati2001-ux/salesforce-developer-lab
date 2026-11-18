@@ -48,7 +48,7 @@ I am Umendra Bhati, a Salesforce Admin & Developer. I have engineered and deploy
 - Source Code: https://github.com/umendrabhati2001-ux/salesforce-developer-lab
 
 Key Innovations:
-1. Live SOQL Query Studio with 4-Tier Ladder (Basic to Architect) and multi-tenant Governor Limit safeguards.
+1. Live SOQL Query Studio with 6-Tier Ladder (Basic to Principal CTA) and multi-tenant Governor Limit safeguards.
 2. Motion visualizers for CaseTrigger lifecycle, Heap memory, and 200-record batch chunking.
 3. 25 enterprise Apex & LWC modules (Phase A through Phase F).
 4. Audio & visual telemetry: Dual-siren alarms for syntax errors, dual-cannon star fireworks for success.
