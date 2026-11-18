@@ -318,6 +318,7 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
   const [soqlResultView, setSoqlResultView] = useState<"table" | "json">("table");
   const [soqlExecutionTime, setSoqlExecutionTime] = useState<number>(14);
   const [soqlSyntaxError, setSoqlSyntaxError] = useState<string | null>(null);
+  const [soqlEditorShake, setSoqlEditorShake] = useState<boolean>(false);
   const [copiedSoqlJson, setCopiedSoqlJson] = useState<boolean>(false);
   const [currentRecords, setCurrentRecords] = useState<any[]>(soqlPresets[0].records);
   const [currentCostIndex, setCurrentCostIndex] = useState<string>(soqlPresets[0].costIndex);
@@ -406,11 +407,31 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
     };
   };
 
+  const triggerSoqlErrorFeedback = (msg: string) => {
+    sound.playWarning();
+    setSoqlSyntaxError(msg);
+    setSoqlEditorShake(true);
+    setTimeout(() => setSoqlEditorShake(false), 650);
+
+    // Red warning spark burst (Execution rejection particles)
+    try {
+      confetti({
+        particleCount: 28,
+        spread: 55,
+        origin: { y: 0.62 },
+        colors: ["#EF4444", "#DC2626", "#F97316", "#B91C1C"],
+        ticks: 55,
+        gravity: 1.15,
+      });
+    } catch {
+      // Fallback
+    }
+  };
+
   const handleRunSoql = () => {
     const hint = getLiveHint(activeQuery);
     if (!hint.canExecute) {
-      sound.playWarning();
-      setSoqlSyntaxError(hint.text);
+      triggerSoqlErrorFeedback(hint.text);
       return;
     }
 
@@ -426,8 +447,8 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
       setSoqlExecutionTime(randomMs);
       try {
         confetti({
-          particleCount: 25,
-          spread: 45,
+          particleCount: 30,
+          spread: 50,
           origin: { y: 0.85 },
           colors: ["#00F0FF", "#0176D3", "#10B981"],
         });
@@ -1290,17 +1311,18 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
                     </span>
                   )}
 
-                  {/* Strict Gated Run Button */}
+                  {/* Strict Gated Run Button with Active Failure Feedback */}
                   <motion.button
-                    whileHover={isQueryValid && !soqlExecuting ? { scale: 1.02 } : {}}
-                    whileTap={isQueryValid && !soqlExecuting ? { scale: 0.98 } : {}}
+                    whileHover={!soqlExecuting ? { scale: 1.02 } : {}}
+                    whileTap={!soqlExecuting ? { scale: 0.98 } : {}}
                     onClick={handleRunSoql}
-                    disabled={!isQueryValid || soqlExecuting}
-                    className={`px-5 py-2.5 rounded-xl font-black text-xs font-mono transition-all flex items-center gap-2 ${
+                    disabled={soqlExecuting}
+                    className={`px-5 py-2.5 rounded-xl font-black text-xs font-mono transition-all flex items-center gap-2 cursor-pointer ${
                       !isQueryValid
-                        ? "bg-red-950/40 border border-red-500/40 text-red-300/80 cursor-not-allowed opacity-70 shadow-none"
-                        : "bg-gradient-to-r from-cyan-400 to-[#0176D3] text-slate-950 shadow-[0_0_15px_rgba(0,240,255,0.35)] hover:brightness-110 cursor-pointer"
+                        ? "bg-red-950/60 border border-red-500/60 text-red-300 hover:bg-red-900/60 hover:border-red-400 shadow-[0_0_15px_rgba(239,68,68,0.25)] hover:shadow-[0_0_25px_rgba(239,68,68,0.4)]"
+                        : "bg-gradient-to-r from-cyan-400 to-[#0176D3] text-slate-950 shadow-[0_0_15px_rgba(0,240,255,0.35)] hover:brightness-110"
                     }`}
+                    title={!isQueryValid ? "Query invalid! Click to test Governor Guard failure & sparks" : "Execute valid SOQL"}
                   >
                     {soqlExecuting ? (
                       <>
@@ -1309,8 +1331,8 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
                       </>
                     ) : !isQueryValid ? (
                       <>
-                        <Lock className="w-3.5 h-3.5" />
-                        Locked (Fix Error)
+                        <Lock className="w-3.5 h-3.5 text-red-400 animate-pulse" />
+                        Blocked (Click to Test Error)
                       </>
                     ) : (
                       <>
@@ -1322,18 +1344,27 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
                 </div>
               </div>
 
-              {/* Error Banner (if wildcard SELECT * or invalid syntax) */}
+              {/* Error Banner with Dramatic Red Rejection Alert */}
               {soqlSyntaxError && (
                 <motion.div
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="p-4 rounded-xl bg-red-950/60 border border-red-500/50 text-red-200 text-xs font-mono flex flex-wrap items-center justify-between gap-3 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
+                  initial={{ opacity: 0, y: -10, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-red-950/90 via-red-900/60 to-red-950/90 border-2 border-red-500 text-red-200 text-xs font-mono flex flex-wrap items-center justify-between gap-4 shadow-[0_0_30px_rgba(239,68,68,0.35)] animate-pulse"
                 >
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-3.5">
+                    <div className="p-2 rounded-xl bg-red-500/20 border border-red-500/40 shrink-0 mt-0.5">
+                      <AlertTriangle className="w-5 h-5 text-red-400" />
+                    </div>
                     <div className="space-y-1">
-                      <span className="font-bold text-red-300">SOQL Exception Thrown:</span>
-                      <p className="text-red-200/90">{soqlSyntaxError}</p>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-red-300 uppercase tracking-wider text-[11px] px-2 py-0.5 rounded bg-red-500/20 border border-red-500/40">
+                          🚨 GOVERNOR GUARD: EXECUTION REJECTED
+                        </span>
+                      </div>
+                      <p className="text-red-100 font-semibold text-xs leading-relaxed">{soqlSyntaxError}</p>
+                      <p className="text-[11px] text-red-300/80">
+                        Salesforce Multi-Tenant Database blocked this query before it could consume resources.
+                      </p>
                     </div>
                   </div>
                   <button
@@ -1341,20 +1372,29 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
                       if (liveHint.fixQuery) {
                         setActiveQuery(liveHint.fixQuery);
                         setSoqlSyntaxError(null);
-                        sound.playClick();
+                        sound.playSuccess();
                       } else {
                         handleSelectPreset("preset-basic-where");
                       }
                     }}
-                    className="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-200 text-xs font-bold font-mono transition-colors cursor-pointer shrink-0"
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-red-500 to-amber-500 hover:brightness-110 text-slate-950 font-black text-xs font-mono transition-all cursor-pointer shrink-0 shadow-[0_0_15px_rgba(239,68,68,0.4)] flex items-center gap-1.5"
                   >
+                    <Sparkles className="w-3.5 h-3.5 fill-current" />
                     Auto-Fix Query Syntax
                   </button>
                 </motion.div>
               )}
 
-              {/* Interactive Query Editor Box */}
-              <div className="rounded-2xl bg-[#060913] border border-cyan-500/30 overflow-hidden shadow-[0_0_20px_rgba(0,240,255,0.08)]">
+              {/* Interactive Query Editor Box with Dynamic Error Shake & Red Glow */}
+              <motion.div
+                animate={soqlEditorShake ? { x: [-14, 14, -10, 10, -5, 5, 0] } : {}}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className={`rounded-2xl bg-[#060913] transition-all duration-300 overflow-hidden ${
+                  soqlEditorShake || !isQueryValid
+                    ? "border-2 border-red-500/60 shadow-[0_0_30px_rgba(239,68,68,0.3)]"
+                    : "border border-cyan-500/30 shadow-[0_0_20px_rgba(0,240,255,0.08)]"
+                }`}
+              >
                 <div className="px-4 py-2.5 bg-slate-950/90 border-b border-cyan-500/20 flex items-center justify-between text-xs font-mono">
                   <div className="flex items-center gap-2 text-slate-400">
                     <FileCode className="w-3.5 h-3.5 text-cyan-400" />
@@ -1435,7 +1475,7 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
                   <span>Tip: Try editing the query text. If an error is detected, the Execute button automatically locks.</span>
                   <span className="text-cyan-400/80">Press ⌘↵ / Ctrl+Enter or click Execute when valid.</span>
                 </div>
-              </div>
+              </motion.div>
 
             {/* Real-time Query Telemetry HUD */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
