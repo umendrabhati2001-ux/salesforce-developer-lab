@@ -21,6 +21,7 @@ import {
   Copy,
   Table as TableIcon,
   FileCode,
+  Lock,
 } from "lucide-react";
 
 export const VisualizersSection: React.FC = () => {
@@ -204,10 +205,32 @@ export const VisualizersSection: React.FC = () => {
   // -------------------------------------------------------------
   // SIMULATOR 5: LIVE SOQL QUERY STUDIO STATE
   // -------------------------------------------------------------
-  const soqlPresets = [
+  interface SoqlPreset {
+    id: string;
+    level: "Basic" | "Intermediate" | "Advanced" | "Architect";
+    levelNum: number;
+    badgeColor: string;
+    levelLabel: string;
+    label: string;
+    concept: string;
+    explanation: string;
+    query: string;
+    records: Record<string, any>[];
+    costIndex: string;
+    plan: string;
+    rows: number;
+  }
+
+  const soqlPresets: SoqlPreset[] = [
     {
-      id: "preset-opps",
-      label: "Filtered Opportunities (WHERE & ORDER BY)",
+      id: "preset-basic-where",
+      level: "Basic",
+      levelNum: 1,
+      badgeColor: "text-emerald-400 border-emerald-500/40 bg-emerald-500/10",
+      levelLabel: "Level 1: Basic",
+      label: "Filter & Order (WHERE & ORDER BY)",
+      concept: "Single Object Index Filtering",
+      explanation: "Applies indexed filters (Amount > $50k) and sorts descending with an optimal governor-safe limit.",
       query: "SELECT Id, Name, StageName, Amount, CloseDate FROM Opportunity WHERE Amount > 50000 ORDER BY Amount DESC LIMIT 4",
       records: [
         { Id: "0065g000001AbCdEAA", Name: "Acme Global Cloud Migration", StageName: "Negotiation/Review", Amount: "$145,000", CloseDate: "2026-12-15" },
@@ -220,8 +243,14 @@ export const VisualizersSection: React.FC = () => {
       rows: 4,
     },
     {
-      id: "preset-contact-account",
-      label: "Child-to-Parent Contact -> Account (Dot Notation)",
+      id: "preset-inter-dot",
+      level: "Intermediate",
+      levelNum: 2,
+      badgeColor: "text-sky-400 border-sky-500/40 bg-sky-500/10",
+      levelLabel: "Level 2: Intermediate",
+      label: "Child-to-Parent Dot Notation (Contact -> Account)",
+      concept: "Upward Relationship Traversal",
+      explanation: "Navigates foreign keys upward from Child (Contact) to Parent (Account) without expensive SQL joins.",
       query: "SELECT Id, FirstName, LastName, Title, Account.Name, Account.Industry FROM Contact LIMIT 4",
       records: [
         { Id: "0035g000001KkLlMAA", FirstName: "Sarah", LastName: "Connor", Title: "VP Technology", "Account.Name": "Cyberdyne Systems", "Account.Industry": "Technology" },
@@ -234,8 +263,14 @@ export const VisualizersSection: React.FC = () => {
       rows: 4,
     },
     {
-      id: "preset-account-subquery",
-      label: "Parent-to-Child Account -> Contacts (Subquery)",
+      id: "preset-adv-subquery",
+      level: "Advanced",
+      levelNum: 3,
+      badgeColor: "text-amber-400 border-amber-500/40 bg-amber-500/10",
+      levelLabel: "Level 3: Advanced",
+      label: "Parent-to-Child Subquery (Account -> Contacts)",
+      concept: "Downward 1-to-Many Subquery",
+      explanation: "Fetches parent Account and its related child Contacts in 1 single SOQL call without N+1 query loops.",
       query: "SELECT Id, Name, AnnualRevenue, (SELECT Id, LastName, Email FROM Contacts) FROM Account LIMIT 3",
       records: [
         { Id: "0015g000001ZzYxWAA", Name: "Salesforce Tower Apex Lab", AnnualRevenue: "$24,000,000", Contacts: "[2 Contacts: Bhati, Sharma]" },
@@ -247,8 +282,14 @@ export const VisualizersSection: React.FC = () => {
       rows: 3,
     },
     {
-      id: "preset-aggregate-stages",
-      label: "Aggregate COUNT & SUM with GROUP BY",
+      id: "preset-arch-aggregate",
+      level: "Architect",
+      levelNum: 4,
+      badgeColor: "text-purple-400 border-purple-500/40 bg-purple-500/10",
+      levelLabel: "Level 4: Architect",
+      label: "Multi-Tenant Aggregations (GROUP BY & SUM)",
+      concept: "Enterprise Aggregation Engine",
+      explanation: "Computes deal pipeline sums and count metrics directly at the database layer without hitting Apex heap limits.",
       query: "SELECT StageName, COUNT(Id) totalDeals, SUM(Amount) totalPipeline FROM Opportunity GROUP BY StageName",
       records: [
         { StageName: "Prospecting", totalDeals: 14, totalPipeline: "$420,000" },
@@ -263,7 +304,7 @@ export const VisualizersSection: React.FC = () => {
     },
   ];
 
-  const [selectedPresetId, setSelectedPresetId] = useState<string>("preset-opps");
+  const [selectedPresetId, setSelectedPresetId] = useState<string>("preset-basic-where");
   const [activeQuery, setActiveQuery] = useState<string>(soqlPresets[0].query);
   const [soqlExecuting, setSoqlExecuting] = useState<boolean>(false);
   const [soqlResultView, setSoqlResultView] = useState<"table" | "json">("table");
@@ -287,41 +328,87 @@ export const VisualizersSection: React.FC = () => {
     }
   };
 
-  const getLiveHint = (q: string): { type: "info" | "warning" | "error" | "success"; text: string } => {
+  const getLiveHint = (q: string): { type: "info" | "warning" | "error" | "success"; text: string; canExecute: boolean; fixQuery?: string } => {
     const trimmed = q.trim();
     if (!trimmed) {
-      return { type: "info", text: "💡 Hint: Choose a preset above or start typing: SELECT Id, Name FROM Opportunity" };
+      return { 
+        type: "info", 
+        text: "💡 Editor Empty: Enter a valid SOQL query or click one of the 4 level presets above.", 
+        canExecute: false,
+        fixQuery: soqlPresets.find(p => p.id === selectedPresetId)?.query || soqlPresets[0].query
+      };
     }
     const upper = trimmed.toUpperCase();
     if (upper.includes("SELECT *")) {
-      return { type: "error", text: "🚫 SOQL Rule: 'SELECT *' is prohibited in Salesforce. Specify exact field names like SELECT Id, Name, Amount" };
+      return { 
+        type: "error", 
+        text: "🚫 SOQL Rule: 'SELECT *' is prohibited in Salesforce! You must explicitly name fields (e.g. SELECT Id, Name, StageName).", 
+        canExecute: false,
+        fixQuery: trimmed.replace(/SELECT\s+\*\s+FROM/i, "SELECT Id, Name FROM")
+      };
     }
     if (!upper.startsWith("SELECT")) {
-      return { type: "warning", text: "⚠️ Missing 'SELECT': SOQL queries must begin with the SELECT statement followed by field names" };
+      return { 
+        type: "error", 
+        text: "⚠️ Syntax Error: SOQL queries must start with the 'SELECT' keyword followed by field names.", 
+        canExecute: false,
+        fixQuery: `SELECT Id, Name ${trimmed}`
+      };
     }
     if (!upper.includes(" FROM ")) {
-      return { type: "warning", text: "⚠️ Missing 'FROM': Specify which sObject to query. Example: FROM Opportunity or FROM Contact" };
+      return { 
+        type: "error", 
+        text: "⚠️ Target Missing: Add 'FROM <sObject>' (e.g. FROM Opportunity, Contact, or Account).", 
+        canExecute: false,
+        fixQuery: `${trimmed} FROM Opportunity LIMIT 5`
+      };
     }
-    if (upper.includes("INSERT ") || upper.includes("UPDATE ") || upper.includes("DELETE ") || upper.includes("DROP ")) {
-      return { type: "error", text: "🛡️ Read-Only Guard: DML operations (INSERT/UPDATE/DELETE) cannot be run in SOQL query blocks" };
+    const selectPart = trimmed.substring(6, upper.indexOf(" FROM ")).trim();
+    if (!selectPart) {
+      return {
+        type: "error",
+        text: "⚠️ Missing Fields: Specify at least one field to query between 'SELECT' and 'FROM' (e.g. SELECT Id, Name FROM Opportunity).",
+        canExecute: false,
+        fixQuery: trimmed.replace(/SELECT\s+FROM/i, "SELECT Id, Name FROM")
+      };
     }
-    return { type: "success", text: "✨ Valid SOQL Syntax: Complies with Salesforce Multi-Tenant Database standards" };
+    if (upper.includes("INSERT ") || upper.includes("UPDATE ") || upper.includes("DELETE ") || upper.includes("DROP ") || upper.includes("UPSERT ")) {
+      return { 
+        type: "error", 
+        text: "🛡️ Read-Only Guard: DML operations (INSERT/UPDATE/DELETE) cannot be run in SOQL query blocks.", 
+        canExecute: false,
+        fixQuery: soqlPresets.find(p => p.id === selectedPresetId)?.query || soqlPresets[0].query
+      };
+    }
+    const openParens = (trimmed.match(/\(/g) || []).length;
+    const closeParens = (trimmed.match(/\)/g) || []).length;
+    if (openParens !== closeParens) {
+      return {
+        type: "warning",
+        text: `⚠️ Syntax Warning: Unmatched parentheses detected (${openParens} opening vs ${closeParens} closing).`,
+        canExecute: false,
+        fixQuery: soqlPresets.find(p => p.id === selectedPresetId)?.query || soqlPresets[0].query
+      };
+    }
+
+    return { 
+      type: "success", 
+      text: "✨ Valid SOQL Syntax: Query verified against Salesforce Multi-Tenant Database standards.", 
+      canExecute: true 
+    };
   };
 
   const handleRunSoql = () => {
+    const hint = getLiveHint(activeQuery);
+    if (!hint.canExecute) {
+      sound.playWarning();
+      setSoqlSyntaxError(hint.text);
+      return;
+    }
+
     sound.playClick();
     setSoqlExecuting(true);
     setSoqlSyntaxError(null);
-
-    const hint = getLiveHint(activeQuery);
-    if (hint.type === "error" || hint.type === "warning") {
-      setTimeout(() => {
-        sound.playWarning();
-        setSoqlExecuting(false);
-        setSoqlSyntaxError(hint.text);
-      }, 250);
-      return;
-    }
 
     // Simulate query execution
     const randomMs = Math.floor(Math.random() * 12) + 8;
@@ -1077,143 +1164,258 @@ export const VisualizersSection: React.FC = () => {
         {/* ========================================================= */}
         {/* TAB 5: LIVE SOQL QUERY STUDIO & RUNTIME SIMULATOR         */}
         {/* ========================================================= */}
-        {activeTab === "soql" && (
-          <div className="space-y-6">
-            
-            {/* Control Bar & Preset Picker */}
-            <div className="p-5 rounded-2xl bg-gradient-to-b from-[#141824] to-[#0A0D16] border border-cyan-500/30 flex flex-wrap items-center justify-between gap-4 shadow-[0_0_25px_rgba(0,240,255,0.1)]">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="text-xs font-mono text-cyan-300 flex items-center gap-1.5 font-bold">
-                  <Terminal className="w-4 h-4 text-cyan-400" />
-                  Select Query Preset:
-                </span>
-                <select
-                  value={selectedPresetId}
-                  onChange={(e) => handleSelectPreset(e.target.value)}
-                  className="bg-[#080B14] border border-cyan-500/40 text-white font-mono text-xs rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-cyan-400 shadow-inner"
-                >
-                  {soqlPresets.map((preset) => (
-                    <option key={preset.id} value={preset.id}>
-                      {preset.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+        {activeTab === "soql" && (() => {
+          const liveHint = getLiveHint(activeQuery);
+          const isQueryValid = liveHint.canExecute;
+          const activePreset = soqlPresets.find((p) => p.id === selectedPresetId) || soqlPresets[0];
 
-              <div className="flex items-center gap-3">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleRunSoql}
-                  disabled={soqlExecuting}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-[#0176D3] text-slate-950 font-black text-xs font-mono transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(0,240,255,0.35)] disabled:opacity-50 hover:brightness-110 cursor-pointer"
-                >
-                  <Play className={`w-3.5 h-3.5 fill-current ${soqlExecuting ? "animate-spin" : ""}`} />
-                  {soqlExecuting ? "Executing SOQL..." : "Execute Query (⌘↵)"}
-                </motion.button>
-              </div>
-            </div>
+          return (
+            <div className="space-y-6">
+              
+              {/* 4-Level Progressive Learning Curriculum Header */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0d121f] via-[#101728] to-[#0d121f] border border-cyan-500/30 space-y-3.5 shadow-[0_0_20px_rgba(0,240,255,0.08)]">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-cyan-400" />
+                    <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
+                      SOQL Mastery Ladder (Basic to Architect)
+                    </span>
+                  </div>
+                  <span className="text-[11px] font-mono text-cyan-300/80 bg-cyan-950/60 border border-cyan-500/30 px-2.5 py-1 rounded-full">
+                    Step-by-step enterprise progression
+                  </span>
+                </div>
 
-            {/* Error Banner (if wildcard SELECT * or invalid syntax) */}
-            {soqlSyntaxError && (
-              <motion.div
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-4 rounded-xl bg-red-950/60 border border-red-500/50 text-red-200 text-xs font-mono flex flex-wrap items-center justify-between gap-3 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
-              >
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                  <div className="space-y-1">
-                    <span className="font-bold text-red-300">SOQL Exception Thrown:</span>
-                    <p className="text-red-200/90">{soqlSyntaxError}</p>
+                {/* Level Selector Buttons */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+                  {soqlPresets.map((preset) => {
+                    const isSelected = selectedPresetId === preset.id;
+                    return (
+                      <button
+                        key={preset.id}
+                        onClick={() => handleSelectPreset(preset.id)}
+                        className={`p-3 rounded-xl border text-left font-mono transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between ${
+                          isSelected
+                            ? `${preset.badgeColor} border-current ring-1 ring-current shadow-[0_0_15px_rgba(0,240,255,0.2)] bg-opacity-20`
+                            : "bg-slate-900/60 border-white/[0.08] text-slate-400 hover:border-white/20 hover:text-white"
+                        }`}
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-[10px] font-bold tracking-wider uppercase opacity-90">
+                              {preset.levelLabel}
+                            </span>
+                            <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-300">
+                              {preset.costIndex.split(" ")[0]}
+                            </span>
+                          </div>
+                          <div className="text-xs font-bold truncate text-white">
+                            {preset.label}
+                          </div>
+                        </div>
+                        <div className="text-[10px] text-slate-400 mt-2 line-clamp-1">
+                          {preset.concept}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Active Level Concept & Explanation Banner */}
+                <div className="p-3 rounded-xl bg-slate-950/80 border border-white/[0.08] flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${activePreset.badgeColor}`}>
+                      {activePreset.levelLabel}
+                    </span>
+                    <span className="text-white font-bold">{activePreset.concept}:</span>
+                    <span className="text-slate-300">{activePreset.explanation}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[11px] text-cyan-400">
+                    <span>Scan Strategy: {activePreset.plan}</span>
                   </div>
                 </div>
-                <button
-                  onClick={() => handleSelectPreset("preset-opps")}
-                  className="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-200 text-xs font-bold font-mono transition-colors cursor-pointer shrink-0"
+              </div>
+
+              {/* Control Bar & Execution Guard */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-b from-[#141824] to-[#0A0D16] border border-cyan-500/30 flex flex-wrap items-center justify-between gap-4 shadow-[0_0_25px_rgba(0,240,255,0.1)]">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-xs font-mono text-cyan-300 flex items-center gap-1.5 font-bold">
+                    <Terminal className="w-4 h-4 text-cyan-400" />
+                    Query Preset:
+                  </span>
+                  <select
+                    value={selectedPresetId}
+                    onChange={(e) => handleSelectPreset(e.target.value)}
+                    className="bg-[#080B14] border border-cyan-500/40 text-white font-mono text-xs rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-cyan-400 shadow-inner"
+                  >
+                    {soqlPresets.map((preset) => (
+                      <option key={preset.id} value={preset.id}>
+                        {preset.levelLabel} — {preset.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  {/* Visual Guard Status Badge */}
+                  {!isQueryValid ? (
+                    <span className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-500/10 border border-red-500/30 text-[11px] font-mono text-red-400 font-bold">
+                      <Lock className="w-3.5 h-3.5 text-red-400" />
+                      Execution Guard: Blocked
+                    </span>
+                  ) : (
+                    <span className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-[11px] font-mono text-emerald-400 font-bold">
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      Syntax Guard: Ready
+                    </span>
+                  )}
+
+                  {/* Strict Gated Run Button */}
+                  <motion.button
+                    whileHover={isQueryValid && !soqlExecuting ? { scale: 1.02 } : {}}
+                    whileTap={isQueryValid && !soqlExecuting ? { scale: 0.98 } : {}}
+                    onClick={handleRunSoql}
+                    disabled={!isQueryValid || soqlExecuting}
+                    className={`px-5 py-2.5 rounded-xl font-black text-xs font-mono transition-all flex items-center gap-2 ${
+                      !isQueryValid
+                        ? "bg-red-950/40 border border-red-500/40 text-red-300/80 cursor-not-allowed opacity-70 shadow-none"
+                        : "bg-gradient-to-r from-cyan-400 to-[#0176D3] text-slate-950 shadow-[0_0_15px_rgba(0,240,255,0.35)] hover:brightness-110 cursor-pointer"
+                    }`}
+                  >
+                    {soqlExecuting ? (
+                      <>
+                        <Play className="w-3.5 h-3.5 fill-current animate-spin" />
+                        Executing SOQL...
+                      </>
+                    ) : !isQueryValid ? (
+                      <>
+                        <Lock className="w-3.5 h-3.5" />
+                        Locked (Fix Error)
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-3.5 h-3.5 fill-current" />
+                        Execute Query (⌘↵)
+                      </>
+                    )}
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Error Banner (if wildcard SELECT * or invalid syntax) */}
+              {soqlSyntaxError && (
+                <motion.div
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 rounded-xl bg-red-950/60 border border-red-500/50 text-red-200 text-xs font-mono flex flex-wrap items-center justify-between gap-3 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
                 >
-                  Auto-Fix to Standard Query
-                </button>
-              </motion.div>
-            )}
-
-            {/* Interactive Query Editor Box */}
-            <div className="rounded-2xl bg-[#060913] border border-cyan-500/30 overflow-hidden shadow-[0_0_20px_rgba(0,240,255,0.08)]">
-              <div className="px-4 py-2.5 bg-slate-950/90 border-b border-cyan-500/20 flex items-center justify-between text-xs font-mono">
-                <div className="flex items-center gap-2 text-slate-400">
-                  <FileCode className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Apex Anonymous / SOQL Studio Editor</span>
-                </div>
-                <div className="flex items-center gap-2 text-[10px] text-emerald-400">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Read-Only Safe Mode</span>
-                </div>
-              </div>
-
-              <div className="p-4">
-                <textarea
-                  value={activeQuery}
-                  onChange={(e) => {
-                    setActiveQuery(e.target.value);
-                    setSoqlSyntaxError(null);
-                  }}
-                  rows={3}
-                  className="w-full bg-transparent text-cyan-300 font-mono text-xs sm:text-sm focus:outline-none resize-none leading-relaxed"
-                  placeholder="SELECT Id, Name FROM Opportunity WHERE ..."
-                />
-
-                {/* Real-Time Live Hint & Validation Bar */}
-                {(() => {
-                  const hint = getLiveHint(activeQuery);
-                  return (
-                    <div className="mt-2 pt-2.5 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                            hint.type === "success"
-                              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                              : hint.type === "warning"
-                              ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                              : hint.type === "error"
-                              ? "bg-red-500/20 text-red-300 border border-red-500/30"
-                              : "bg-cyan-500/10 text-cyan-300 border border-cyan-500/20"
-                          }`}
-                        >
-                          {hint.type.toUpperCase()}
-                        </span>
-                        <span
-                          className={`${
-                            hint.type === "success"
-                              ? "text-emerald-300"
-                              : hint.type === "warning"
-                              ? "text-amber-300"
-                              : hint.type === "error"
-                              ? "text-red-300"
-                              : "text-slate-400"
-                          }`}
-                        >
-                          {hint.text}
-                        </span>
-                      </div>
-
-                      {hint.type !== "success" && (
-                        <button
-                          onClick={() => handleSelectPreset("preset-opps")}
-                          className="px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-white text-[10px] font-bold transition-colors cursor-pointer"
-                        >
-                          Auto-Fix Query
-                        </button>
-                      )}
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <span className="font-bold text-red-300">SOQL Exception Thrown:</span>
+                      <p className="text-red-200/90">{soqlSyntaxError}</p>
                     </div>
-                  );
-                })()}
-              </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (liveHint.fixQuery) {
+                        setActiveQuery(liveHint.fixQuery);
+                        setSoqlSyntaxError(null);
+                        sound.playClick();
+                      } else {
+                        handleSelectPreset("preset-basic-where");
+                      }
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-200 text-xs font-bold font-mono transition-colors cursor-pointer shrink-0"
+                  >
+                    Auto-Fix Query Syntax
+                  </button>
+                </motion.div>
+              )}
 
-              <div className="px-4 py-2 bg-slate-950/60 border-t border-cyan-500/15 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-slate-500">
-                <span>Tip: Try editing the query directly or choose a preset above.</span>
-                <span className="text-cyan-400/80">Press Execute to simulate database retrieval.</span>
+              {/* Interactive Query Editor Box */}
+              <div className="rounded-2xl bg-[#060913] border border-cyan-500/30 overflow-hidden shadow-[0_0_20px_rgba(0,240,255,0.08)]">
+                <div className="px-4 py-2.5 bg-slate-950/90 border-b border-cyan-500/20 flex items-center justify-between text-xs font-mono">
+                  <div className="flex items-center gap-2 text-slate-400">
+                    <FileCode className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Apex Anonymous / SOQL Studio Editor</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[10px] text-emerald-400">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>Read-Only Safe Mode</span>
+                  </div>
+                </div>
+
+                <div className="p-4">
+                  <textarea
+                    value={activeQuery}
+                    onChange={(e) => {
+                      setActiveQuery(e.target.value);
+                      setSoqlSyntaxError(null);
+                    }}
+                    onKeyDown={(e) => {
+                      if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+                        e.preventDefault();
+                        handleRunSoql();
+                      }
+                    }}
+                    rows={3}
+                    className="w-full bg-transparent text-cyan-300 font-mono text-xs sm:text-sm focus:outline-none resize-none leading-relaxed"
+                    placeholder="SELECT Id, Name FROM Opportunity WHERE ..."
+                  />
+
+                  {/* Real-Time Live Hint & Validation Bar */}
+                  <div className="mt-2 pt-2.5 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                          liveHint.type === "success"
+                            ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                            : liveHint.type === "warning"
+                            ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                            : liveHint.type === "error"
+                            ? "bg-red-500/20 text-red-300 border border-red-500/30"
+                            : "bg-cyan-500/10 text-cyan-300 border border-cyan-500/20"
+                        }`}
+                      >
+                        {liveHint.type.toUpperCase()}
+                      </span>
+                      <span
+                        className={`${
+                          liveHint.type === "success"
+                            ? "text-emerald-300"
+                            : liveHint.type === "warning"
+                            ? "text-amber-300"
+                            : liveHint.type === "error"
+                            ? "text-red-300"
+                            : "text-slate-400"
+                        }`}
+                      >
+                        {liveHint.text}
+                      </span>
+                    </div>
+
+                    {!liveHint.canExecute && liveHint.fixQuery && (
+                      <button
+                        onClick={() => {
+                          sound.playClick();
+                          setActiveQuery(liveHint.fixQuery!);
+                          setSoqlSyntaxError(null);
+                        }}
+                        className="px-2.5 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 text-[10px] font-bold transition-colors cursor-pointer flex items-center gap-1"
+                      >
+                        <Sparkles className="w-3 h-3 text-cyan-400" />
+                        Auto-Fix Query
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="px-4 py-2 bg-slate-950/60 border-t border-cyan-500/15 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-slate-500">
+                  <span>Tip: Try editing the query text. If an error is detected, the Execute button automatically locks.</span>
+                  <span className="text-cyan-400/80">Press ⌘↵ / Ctrl+Enter or click Execute when valid.</span>
+                </div>
               </div>
-            </div>
 
             {/* Real-time Query Telemetry HUD */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -1355,7 +1557,8 @@ export const VisualizersSection: React.FC = () => {
             </div>
 
           </div>
-        )}
+        );
+      })()}
 
       </div>
     </section>
