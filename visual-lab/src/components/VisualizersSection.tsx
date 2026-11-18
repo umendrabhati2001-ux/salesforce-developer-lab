@@ -287,20 +287,39 @@ export const VisualizersSection: React.FC = () => {
     }
   };
 
+  const getLiveHint = (q: string): { type: "info" | "warning" | "error" | "success"; text: string } => {
+    const trimmed = q.trim();
+    if (!trimmed) {
+      return { type: "info", text: "💡 Hint: Choose a preset above or start typing: SELECT Id, Name FROM Opportunity" };
+    }
+    const upper = trimmed.toUpperCase();
+    if (upper.includes("SELECT *")) {
+      return { type: "error", text: "🚫 SOQL Rule: 'SELECT *' is prohibited in Salesforce. Specify exact field names like SELECT Id, Name, Amount" };
+    }
+    if (!upper.startsWith("SELECT")) {
+      return { type: "warning", text: "⚠️ Missing 'SELECT': SOQL queries must begin with the SELECT statement followed by field names" };
+    }
+    if (!upper.includes(" FROM ")) {
+      return { type: "warning", text: "⚠️ Missing 'FROM': Specify which sObject to query. Example: FROM Opportunity or FROM Contact" };
+    }
+    if (upper.includes("INSERT ") || upper.includes("UPDATE ") || upper.includes("DELETE ") || upper.includes("DROP ")) {
+      return { type: "error", text: "🛡️ Read-Only Guard: DML operations (INSERT/UPDATE/DELETE) cannot be run in SOQL query blocks" };
+    }
+    return { type: "success", text: "✨ Valid SOQL Syntax: Complies with Salesforce Multi-Tenant Database standards" };
+  };
+
   const handleRunSoql = () => {
     sound.playClick();
     setSoqlExecuting(true);
     setSoqlSyntaxError(null);
 
-    // Syntax check: SOQL does not allow SELECT *
-    if (activeQuery.toUpperCase().includes("SELECT *")) {
+    const hint = getLiveHint(activeQuery);
+    if (hint.type === "error" || hint.type === "warning") {
       setTimeout(() => {
         sound.playWarning();
         setSoqlExecuting(false);
-        setSoqlSyntaxError(
-          "MALFORMED_QUERY: Wildcard 'SELECT *' is strictly prohibited in Salesforce SOQL. Explicit field names are mandatory to protect multitenant memory."
-        );
-      }, 300);
+        setSoqlSyntaxError(hint.text);
+      }, 250);
       return;
     }
 
@@ -1100,13 +1119,21 @@ export const VisualizersSection: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-4 rounded-xl bg-red-950/60 border border-red-500/50 text-red-200 text-xs font-mono flex items-start gap-3 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
+                className="p-4 rounded-xl bg-red-950/60 border border-red-500/50 text-red-200 text-xs font-mono flex flex-wrap items-center justify-between gap-3 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
               >
-                <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                <div className="space-y-1">
-                  <span className="font-bold text-red-300">SOQL Exception Thrown:</span>
-                  <p className="text-red-200/90">{soqlSyntaxError}</p>
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <span className="font-bold text-red-300">SOQL Exception Thrown:</span>
+                    <p className="text-red-200/90">{soqlSyntaxError}</p>
+                  </div>
                 </div>
+                <button
+                  onClick={() => handleSelectPreset("preset-opps")}
+                  className="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-200 text-xs font-bold font-mono transition-colors cursor-pointer shrink-0"
+                >
+                  Auto-Fix to Standard Query
+                </button>
               </motion.div>
             )}
 
@@ -1132,8 +1159,54 @@ export const VisualizersSection: React.FC = () => {
                   }}
                   rows={3}
                   className="w-full bg-transparent text-cyan-300 font-mono text-xs sm:text-sm focus:outline-none resize-none leading-relaxed"
-                  placeholder="SELECT Id, Name FROM Account WHERE ..."
+                  placeholder="SELECT Id, Name FROM Opportunity WHERE ..."
                 />
+
+                {/* Real-Time Live Hint & Validation Bar */}
+                {(() => {
+                  const hint = getLiveHint(activeQuery);
+                  return (
+                    <div className="mt-2 pt-2.5 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                            hint.type === "success"
+                              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                              : hint.type === "warning"
+                              ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                              : hint.type === "error"
+                              ? "bg-red-500/20 text-red-300 border border-red-500/30"
+                              : "bg-cyan-500/10 text-cyan-300 border border-cyan-500/20"
+                          }`}
+                        >
+                          {hint.type.toUpperCase()}
+                        </span>
+                        <span
+                          className={`${
+                            hint.type === "success"
+                              ? "text-emerald-300"
+                              : hint.type === "warning"
+                              ? "text-amber-300"
+                              : hint.type === "error"
+                              ? "text-red-300"
+                              : "text-slate-400"
+                          }`}
+                        >
+                          {hint.text}
+                        </span>
+                      </div>
+
+                      {hint.type !== "success" && (
+                        <button
+                          onClick={() => handleSelectPreset("preset-opps")}
+                          className="px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-white text-[10px] font-bold transition-colors cursor-pointer"
+                        >
+                          Auto-Fix Query
+                        </button>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
 
               <div className="px-4 py-2 bg-slate-950/60 border-t border-cyan-500/15 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-slate-500">
