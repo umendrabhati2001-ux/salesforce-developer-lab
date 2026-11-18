@@ -9,6 +9,29 @@ export const metadata: Metadata = {
   title: "Live Apex & SOQL Studio | Umendra Bhati",
   description:
     "Full-screen enterprise Salesforce Apex runtime simulator, Governor Limits HUD, and crash-proof SOQL Query Studio by Umendra Bhati.",
+  openGraph: {
+    title: "Live Apex & SOQL Studio | Umendra Bhati",
+    description:
+      "Full-screen enterprise Salesforce Apex runtime simulator, Governor Limits HUD, and crash-proof SOQL Query Studio by Umendra Bhati.",
+    url: "https://salesforce-developer-lab.vercel.app/studio",
+    siteName: "Salesforce Developer Lab",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Live Apex & SOQL Studio - Umendra Bhati",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Live Apex & SOQL Studio | Umendra Bhati",
+    description: "Full-screen enterprise Salesforce Apex runtime simulator and crash-proof SOQL Studio by Umendra Bhati.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function StudioPage() {
