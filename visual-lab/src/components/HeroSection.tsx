@@ -1,23 +1,20 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import { playClickSound } from "@/lib/sound";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
-  ShieldCheck,
-  CheckCircle2,
-  Cpu,
-  Layers,
-  Database,
-  Zap,
-  ArrowRight,
-  GitBranch,
-  Terminal,
-  Linkedin,
-  Sparkles,
+    ArrowRight,
+    CheckCircle2,
+    Cpu,
+    GitBranch,
+    Linkedin,
+    ShieldCheck,
+    Terminal,
+    Zap
 } from "lucide-react";
-import { ThreeDSalesforceLogo } from "./ThreeDSalesforceLogo";
+import React, { useRef } from "react";
 import { DeveloperBadgeCard } from "./DeveloperBadgeCard";
-import { playClickSound } from "@/lib/sound";
+import { ThreeDSalesforceLogo } from "./ThreeDSalesforceLogo";
 
 export const HeroSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -64,7 +61,7 @@ export const HeroSection: React.FC = () => {
       <div className="absolute bottom-10 left-10 w-72 h-72 bg-purple-600/10 blur-[100px] pointer-events-none -z-10 rounded-full" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Top Developer & Salesforce DX Announcement Pill */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-cyan-500/40 text-xs shadow-[0_0_15px_rgba(0,240,255,0.2)]">
@@ -93,10 +90,10 @@ export const HeroSection: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
+
           {/* Left Column: Hero Text & Status Badges */}
           <div className="lg:col-span-7 space-y-6">
-            
+
             {/* Radiant Tech Headline */}
             <div className="space-y-3">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
@@ -106,8 +103,8 @@ export const HeroSection: React.FC = () => {
                 </span>
               </h1>
               <p className="text-sm sm:text-lg text-slate-300 max-w-2xl pt-1 leading-relaxed">
-                Step inside an engineering-grade interactive visual portal loaded with real workspace 
-                code: verified Apex collections, relationship SOQL queries, partial-success DML engines, 
+                Step inside an engineering-grade interactive visual portal loaded with real workspace
+                code: verified Apex collections, relationship SOQL queries, partial-success DML engines,
                 and the Enterprise Customer Complaint Management Capstone.
               </p>
             </div>
@@ -218,7 +215,7 @@ export const HeroSection: React.FC = () => {
 
           {/* Right Column: 3D Salesforce Logo & Architect Card Showcase */}
           <div className="lg:col-span-5 flex flex-col items-center gap-6 perspective-1000">
-            
+
             {/* 3D Salesforce Cloud Logo with Circuit Network */}
             <div className="w-full flex justify-center py-2">
               <ThreeDSalesforceLogo size="lg" showCircuits={true} interactive={true} />

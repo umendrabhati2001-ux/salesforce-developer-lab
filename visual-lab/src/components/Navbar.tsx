@@ -1,24 +1,24 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  ShieldCheck,
-  Terminal,
-  BookOpen,
-  Cpu,
-  Award,
-  Zap,
-  Menu,
-  X,
-  Boxes,
-  ExternalLink,
-  Linkedin,
-  Command,
-} from "lucide-react";
-import { SalesforceLogo } from "./SalesforceLogo";
-import { DeveloperBadgeCard } from "./DeveloperBadgeCard";
 import { playClickSound } from "@/lib/sound";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+    Award,
+    BookOpen,
+    Boxes,
+    Command,
+    Cpu,
+    ExternalLink,
+    Linkedin,
+    Menu,
+    ShieldCheck,
+    Terminal,
+    X,
+    Zap,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { DeveloperBadgeCard } from "./DeveloperBadgeCard";
+import { SalesforceLogo } from "./SalesforceLogo";
 
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);

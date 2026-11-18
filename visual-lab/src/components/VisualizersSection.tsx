@@ -17,10 +17,14 @@ import {
   Code2,
   Check,
   Sparkles,
+  Terminal,
+  Copy,
+  Table as TableIcon,
+  FileCode,
 } from "lucide-react";
 
 export const VisualizersSection: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"trigger" | "memory" | "governor" | "bulktracer">("trigger");
+  const [activeTab, setActiveTab] = useState<"trigger" | "memory" | "governor" | "bulktracer" | "soql">("trigger");
 
   // -------------------------------------------------------------
   // SIMULATOR 1: TRIGGER FLOW SIMULATOR STATE
@@ -197,6 +201,135 @@ export const VisualizersSection: React.FC = () => {
     },
   ];
 
+  // -------------------------------------------------------------
+  // SIMULATOR 5: LIVE SOQL QUERY STUDIO STATE
+  // -------------------------------------------------------------
+  const soqlPresets = [
+    {
+      id: "preset-opps",
+      label: "Filtered Opportunities (WHERE & ORDER BY)",
+      query: "SELECT Id, Name, StageName, Amount, CloseDate FROM Opportunity WHERE Amount > 50000 ORDER BY Amount DESC LIMIT 4",
+      records: [
+        { Id: "0065g000001AbCdEAA", Name: "Acme Global Cloud Migration", StageName: "Negotiation/Review", Amount: "$145,000", CloseDate: "2026-12-15" },
+        { Id: "0065g000002BcDeFAA", Name: "TechCorp Enterprise ERP Sync", StageName: "Closed Won", Amount: "$98,000", CloseDate: "2026-11-20" },
+        { Id: "0065g000003CdEfGAA", Name: "FinServ Multi-Org Bridge", StageName: "Id. Decision Makers", Amount: "$75,000", CloseDate: "2026-12-01" },
+        { Id: "0065g000004DeFgHAA", Name: "OmniChannel Support Portal", StageName: "Proposal/Quote", Amount: "$62,000", CloseDate: "2027-01-10" },
+      ],
+      costIndex: "0.18 (Optimal)",
+      plan: "Index Scan (Opportunity_Amount_Idx)",
+      rows: 4,
+    },
+    {
+      id: "preset-contact-account",
+      label: "Child-to-Parent Contact -> Account (Dot Notation)",
+      query: "SELECT Id, FirstName, LastName, Title, Account.Name, Account.Industry FROM Contact LIMIT 4",
+      records: [
+        { Id: "0035g000001KkLlMAA", FirstName: "Sarah", LastName: "Connor", Title: "VP Technology", "Account.Name": "Cyberdyne Systems", "Account.Industry": "Technology" },
+        { Id: "0035g000002LlMmNAA", FirstName: "Bruce", LastName: "Wayne", Title: "Managing Director", "Account.Name": "Wayne Enterprises", "Account.Industry": "Manufacturing" },
+        { Id: "0035g000003MmNnOAA", FirstName: "Tony", LastName: "Stark", Title: "Chief Architect", "Account.Name": "Stark Industries", "Account.Industry": "Aerospace" },
+        { Id: "0035g000004NnOoPAA", FirstName: "Diana", LastName: "Prince", Title: "Head of Operations", "Account.Name": "Themyscira Logistics", "Account.Industry": "Government" },
+      ],
+      costIndex: "0.24 (Fast)",
+      plan: "Leading-Foreign-Key Scan (Contact_AccountId_FK)",
+      rows: 4,
+    },
+    {
+      id: "preset-account-subquery",
+      label: "Parent-to-Child Account -> Contacts (Subquery)",
+      query: "SELECT Id, Name, AnnualRevenue, (SELECT Id, LastName, Email FROM Contacts) FROM Account LIMIT 3",
+      records: [
+        { Id: "0015g000001ZzYxWAA", Name: "Salesforce Tower Apex Lab", AnnualRevenue: "$24,000,000", Contacts: "[2 Contacts: Bhati, Sharma]" },
+        { Id: "0015g000002YxWvUAA", Name: "Global Cloud Stream Inc", AnnualRevenue: "$12,500,000", Contacts: "[1 Contact: Alexander]" },
+        { Id: "0015g000003XwVuTAA", Name: "Apex Fleet Robotics", AnnualRevenue: "$8,900,000", Contacts: "[3 Contacts: Chen, Roy, Lee]" },
+      ],
+      costIndex: "0.32 (Indexed)",
+      plan: "Nested Subquery Join (Account_1:N_Contacts)",
+      rows: 3,
+    },
+    {
+      id: "preset-aggregate-stages",
+      label: "Aggregate COUNT & SUM with GROUP BY",
+      query: "SELECT StageName, COUNT(Id) totalDeals, SUM(Amount) totalPipeline FROM Opportunity GROUP BY StageName",
+      records: [
+        { StageName: "Prospecting", totalDeals: 14, totalPipeline: "$420,000" },
+        { StageName: "Qualification", totalDeals: 9, totalPipeline: "$680,000" },
+        { StageName: "Proposal/Quote", totalDeals: 6, totalPipeline: "$890,000" },
+        { StageName: "Negotiation/Review", totalDeals: 4, totalPipeline: "$1,250,000" },
+        { StageName: "Closed Won", totalDeals: 28, totalPipeline: "$3,480,000" },
+      ],
+      costIndex: "0.41 (Optimized)",
+      plan: "Aggregate Hash Grouping (StageName_Idx)",
+      rows: 5,
+    },
+  ];
+
+  const [selectedPresetId, setSelectedPresetId] = useState<string>("preset-opps");
+  const [activeQuery, setActiveQuery] = useState<string>(soqlPresets[0].query);
+  const [soqlExecuting, setSoqlExecuting] = useState<boolean>(false);
+  const [soqlResultView, setSoqlResultView] = useState<"table" | "json">("table");
+  const [soqlExecutionTime, setSoqlExecutionTime] = useState<number>(14);
+  const [soqlSyntaxError, setSoqlSyntaxError] = useState<string | null>(null);
+  const [copiedSoqlJson, setCopiedSoqlJson] = useState<boolean>(false);
+  const [currentRecords, setCurrentRecords] = useState<any[]>(soqlPresets[0].records);
+  const [currentCostIndex, setCurrentCostIndex] = useState<string>(soqlPresets[0].costIndex);
+  const [currentPlan, setCurrentPlan] = useState<string>(soqlPresets[0].plan);
+
+  const handleSelectPreset = (presetId: string) => {
+    sound.playClick();
+    setSelectedPresetId(presetId);
+    const found = soqlPresets.find((p) => p.id === presetId);
+    if (found) {
+      setActiveQuery(found.query);
+      setCurrentRecords(found.records);
+      setCurrentCostIndex(found.costIndex);
+      setCurrentPlan(found.plan);
+      setSoqlSyntaxError(null);
+    }
+  };
+
+  const handleRunSoql = () => {
+    sound.playClick();
+    setSoqlExecuting(true);
+    setSoqlSyntaxError(null);
+
+    // Syntax check: SOQL does not allow SELECT *
+    if (activeQuery.toUpperCase().includes("SELECT *")) {
+      setTimeout(() => {
+        sound.playWarning();
+        setSoqlExecuting(false);
+        setSoqlSyntaxError(
+          "MALFORMED_QUERY: Wildcard 'SELECT *' is strictly prohibited in Salesforce SOQL. Explicit field names are mandatory to protect multitenant memory."
+        );
+      }, 300);
+      return;
+    }
+
+    // Simulate query execution
+    const randomMs = Math.floor(Math.random() * 12) + 8;
+    setTimeout(() => {
+      sound.playSuccess();
+      setSoqlExecuting(false);
+      setSoqlExecutionTime(randomMs);
+      try {
+        confetti({
+          particleCount: 25,
+          spread: 45,
+          origin: { y: 0.85 },
+          colors: ["#00F0FF", "#0176D3", "#10B981"],
+        });
+      } catch {
+        // Fallback
+      }
+    }, 450);
+  };
+
+  const handleCopyJson = () => {
+    sound.playClick();
+    navigator.clipboard.writeText(JSON.stringify(currentRecords, null, 2));
+    setCopiedSoqlJson(true);
+    setTimeout(() => setCopiedSoqlJson(false), 2000);
+  };
+
   return (
     <section id="visualizers" className="py-24 border-b border-[#222222] bg-[#0A0A0A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -278,6 +411,20 @@ export const VisualizersSection: React.FC = () => {
               >
                 <Code2 className="w-3.5 h-3.5" />
                 4. Topic 11 Tracer
+              </button>
+              <button
+                onClick={() => {
+                  sound.playClick();
+                  setActiveTab("soql");
+                }}
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold font-mono transition-all flex items-center gap-1.5 ${
+                  activeTab === "soql"
+                    ? "bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(0,240,255,0.35)]"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <Terminal className="w-3.5 h-3.5" />
+                5. Live SOQL Studio
               </button>
             </div>
           </div>
@@ -904,6 +1051,235 @@ export const VisualizersSection: React.FC = () => {
                 </div>
               );
             })()}
+
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB 5: LIVE SOQL QUERY STUDIO & RUNTIME SIMULATOR         */}
+        {/* ========================================================= */}
+        {activeTab === "soql" && (
+          <div className="space-y-6">
+            
+            {/* Control Bar & Preset Picker */}
+            <div className="p-5 rounded-2xl bg-gradient-to-b from-[#141824] to-[#0A0D16] border border-cyan-500/30 flex flex-wrap items-center justify-between gap-4 shadow-[0_0_25px_rgba(0,240,255,0.1)]">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="text-xs font-mono text-cyan-300 flex items-center gap-1.5 font-bold">
+                  <Terminal className="w-4 h-4 text-cyan-400" />
+                  Select Query Preset:
+                </span>
+                <select
+                  value={selectedPresetId}
+                  onChange={(e) => handleSelectPreset(e.target.value)}
+                  className="bg-[#080B14] border border-cyan-500/40 text-white font-mono text-xs rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-cyan-400 shadow-inner"
+                >
+                  {soqlPresets.map((preset) => (
+                    <option key={preset.id} value={preset.id}>
+                      {preset.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleRunSoql}
+                  disabled={soqlExecuting}
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-[#0176D3] text-slate-950 font-black text-xs font-mono transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(0,240,255,0.35)] disabled:opacity-50 hover:brightness-110 cursor-pointer"
+                >
+                  <Play className={`w-3.5 h-3.5 fill-current ${soqlExecuting ? "animate-spin" : ""}`} />
+                  {soqlExecuting ? "Executing SOQL..." : "Execute Query (⌘↵)"}
+                </motion.button>
+              </div>
+            </div>
+
+            {/* Error Banner (if wildcard SELECT * or invalid syntax) */}
+            {soqlSyntaxError && (
+              <motion.div
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-4 rounded-xl bg-red-950/60 border border-red-500/50 text-red-200 text-xs font-mono flex items-start gap-3 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
+              >
+                <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <span className="font-bold text-red-300">SOQL Exception Thrown:</span>
+                  <p className="text-red-200/90">{soqlSyntaxError}</p>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Interactive Query Editor Box */}
+            <div className="rounded-2xl bg-[#060913] border border-cyan-500/30 overflow-hidden shadow-[0_0_20px_rgba(0,240,255,0.08)]">
+              <div className="px-4 py-2.5 bg-slate-950/90 border-b border-cyan-500/20 flex items-center justify-between text-xs font-mono">
+                <div className="flex items-center gap-2 text-slate-400">
+                  <FileCode className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Apex Anonymous / SOQL Studio Editor</span>
+                </div>
+                <div className="flex items-center gap-2 text-[10px] text-emerald-400">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Read-Only Safe Mode</span>
+                </div>
+              </div>
+
+              <div className="p-4">
+                <textarea
+                  value={activeQuery}
+                  onChange={(e) => {
+                    setActiveQuery(e.target.value);
+                    setSoqlSyntaxError(null);
+                  }}
+                  rows={3}
+                  className="w-full bg-transparent text-cyan-300 font-mono text-xs sm:text-sm focus:outline-none resize-none leading-relaxed"
+                  placeholder="SELECT Id, Name FROM Account WHERE ..."
+                />
+              </div>
+
+              <div className="px-4 py-2 bg-slate-950/60 border-t border-cyan-500/15 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-slate-500">
+                <span>Tip: Try editing the query directly or choose a preset above.</span>
+                <span className="text-cyan-400/80">Press Execute to simulate database retrieval.</span>
+              </div>
+            </div>
+
+            {/* Real-time Query Telemetry HUD */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-3.5 rounded-xl bg-slate-900/80 border border-cyan-500/20 flex flex-col">
+                <span className="text-[10px] font-mono text-slate-400 flex items-center gap-1">
+                  <Zap className="w-3 h-3 text-cyan-400" />
+                  Execution Time
+                </span>
+                <span className="text-lg font-mono font-bold text-white mt-1">
+                  {soqlExecutionTime} ms
+                </span>
+                <span className="text-[10px] font-mono text-emerald-400 mt-0.5">Lightning DB Cached</span>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-slate-900/80 border border-cyan-500/20 flex flex-col">
+                <span className="text-[10px] font-mono text-slate-400 flex items-center gap-1">
+                  <Cpu className="w-3 h-3 text-emerald-400" />
+                  SOQL Limit
+                </span>
+                <span className="text-lg font-mono font-bold text-emerald-300 mt-1">
+                  1 <span className="text-xs text-slate-500 font-normal">/ 100 max</span>
+                </span>
+                <span className="text-[10px] font-mono text-slate-400 mt-0.5">1% Governor Limit</span>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-slate-900/80 border border-cyan-500/20 flex flex-col">
+                <span className="text-[10px] font-mono text-slate-400 flex items-center gap-1">
+                  <Database className="w-3 h-3 text-purple-400" />
+                  Rows Retrieved
+                </span>
+                <span className="text-lg font-mono font-bold text-purple-200 mt-1">
+                  {currentRecords.length} <span className="text-xs text-slate-500 font-normal">/ 50k max</span>
+                </span>
+                <span className="text-[10px] font-mono text-slate-400 mt-0.5">Heap Impact: Negligible</span>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-slate-900/80 border border-cyan-500/20 flex flex-col">
+                <span className="text-[10px] font-mono text-slate-400 flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-amber-400" />
+                  Query Plan Index
+                </span>
+                <span className="text-sm font-mono font-bold text-amber-200 mt-1 truncate">
+                  {currentCostIndex}
+                </span>
+                <span className="text-[10px] font-mono text-slate-400 mt-0.5 truncate">{currentPlan}</span>
+              </div>
+            </div>
+
+            {/* Results Viewer: Table vs Raw JSON */}
+            <div className="rounded-2xl bg-[#070b16] border border-cyan-500/25 overflow-hidden">
+              <div className="px-4 py-3 bg-slate-950/80 border-b border-cyan-500/20 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono font-bold text-white">Query Results</span>
+                  <span className="px-2 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-[10px] font-mono text-cyan-300">
+                    {currentRecords.length} records returned
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {/* View Switcher */}
+                  <div className="flex items-center bg-white/[0.04] p-0.5 rounded-lg border border-white/[0.08]">
+                    <button
+                      onClick={() => {
+                        sound.playClick();
+                        setSoqlResultView("table");
+                      }}
+                      className={`px-2.5 py-1 rounded text-[11px] font-mono transition-colors flex items-center gap-1.5 ${
+                        soqlResultView === "table"
+                          ? "bg-cyan-500 text-slate-950 font-bold"
+                          : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      <TableIcon className="w-3 h-3" />
+                      Table
+                    </button>
+                    <button
+                      onClick={() => {
+                        sound.playClick();
+                        setSoqlResultView("json");
+                      }}
+                      className={`px-2.5 py-1 rounded text-[11px] font-mono transition-colors flex items-center gap-1.5 ${
+                        soqlResultView === "json"
+                          ? "bg-cyan-500 text-slate-950 font-bold"
+                          : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      <FileCode className="w-3 h-3" />
+                      JSON
+                    </button>
+                  </div>
+
+                  {/* Copy JSON Button */}
+                  <button
+                    onClick={handleCopyJson}
+                    className="p-1.5 rounded-lg bg-white/[0.06] hover:bg-white/10 border border-white/10 text-slate-300 hover:text-cyan-300 text-xs font-mono transition-colors flex items-center gap-1"
+                    title="Copy Result JSON"
+                  >
+                    {copiedSoqlJson ? (
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Table Render */}
+              {soqlResultView === "table" ? (
+                <div className="overflow-x-auto p-2">
+                  <table className="w-full text-left font-mono text-xs">
+                    <thead>
+                      <tr className="border-b border-cyan-500/20 text-slate-400 text-[11px]">
+                        {Object.keys(currentRecords[0] || {}).map((col) => (
+                          <th key={col} className="p-2.5 font-bold text-cyan-300 uppercase">
+                            {col}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/[0.04]">
+                      {currentRecords.map((row, rIdx) => (
+                        <tr key={rIdx} className="hover:bg-cyan-500/[0.03] transition-colors">
+                          {Object.keys(row).map((k) => (
+                            <td key={k} className="p-2.5 text-slate-300 truncate max-w-[200px]">
+                              {typeof row[k] === "object" ? JSON.stringify(row[k]) : String(row[k])}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                /* JSON Render */
+                <pre className="p-4 text-xs font-mono text-cyan-200 bg-[#040711] overflow-x-auto leading-relaxed">
+                  {JSON.stringify(currentRecords, null, 2)}
+                </pre>
+              )}
+            </div>
 
           </div>
         )}

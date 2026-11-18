@@ -170,26 +170,32 @@ Welcome to your structured, serial-wise Salesforce Developer syllabus. Every sin
   - Practice File: `scripts/lwc/21_lwc_core_architecture.js`
   - Status: **COMPLETED & VERIFIED**
 
-- [ ] **22. Reactive Properties & Data Binding**
+- [x] **22. Reactive Properties & Data Binding**
   - `@api` (Public props / API contract)
   - `@track` vs Primitive reactivity
   - Conditional rendering & computed Getters
+  - Practice File: `scripts/lwc/22_reactive_properties_data_binding.js`
+  - Status: **COMPLETED & VERIFIED**
 
-- [ ] **23. Component Communication**
+- [x] **23. Component Communication**
   - Parent to Child: `@api` properties & methods
   - Child to Parent: Custom Events (`new CustomEvent('myevent')`, `this.dispatchEvent()`)
   - Sibling components: Lightning Message Service (LMS)
+  - Practice File: `scripts/lwc/23_component_communication.js`
+  - Status: **COMPLETED & VERIFIED**
 
-- [ ] **24. Lightning Data Service (LDS)**
+- [x] **24. Lightning Data Service (LDS)**
   - Zero-code UI components: `lightning-record-form`, `lightning-record-view-form`, `lightning-record-edit-form`
+  - Wire adapters: `getRecord`, `updateRecord`, `deleteRecord` with LDS client cache
+  - Practice File: `scripts/lwc/24_lightning_data_service.js`
+  - Status: **COMPLETED & VERIFIED**
 
-- [ ] **25. Wire Service (`@wire`) with Apex**
+- [x] **25. Wire Service (`@wire`) with Apex & Imperative Execution**
   - Connecting LWC to Apex classes (`@AuraEnabled(cacheable=true)`)
-  - Wire functions vs Wire properties
-
-- [ ] **26. Imperative Apex & Toast Notifications**
-  - Calling Apex methods imperatively on button click (`handleSave()`)
-  - Displaying success/error toast alerts (`ShowToastEvent`)
+  - Wire functions vs Wire properties & `refreshApex()` cache invalidation
+  - Imperative Apex execution on button click
+  - Practice File: `scripts/lwc/25_wire_service_apex.js`
+  - Status: **COMPLETED & VERIFIED**
 
 ---
 

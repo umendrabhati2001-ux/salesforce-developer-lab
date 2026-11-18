@@ -1,9 +1,9 @@
 "use client";
 
+import { ExternalLink, Linkedin, ShieldCheck } from "lucide-react";
 import React from "react";
-import { ShieldCheck, Linkedin, ExternalLink, Sparkles, Heart } from "lucide-react";
-import { SalesforceLogo } from "./SalesforceLogo";
 import { ParticleSalesforceFooter } from "./ParticleSalesforceFooter";
+import { SalesforceLogo } from "./SalesforceLogo";
 
 export const Footer: React.FC = () => {
   return (
@@ -16,10 +16,10 @@ export const Footer: React.FC = () => {
       <div className="absolute inset-0 bg-[radial-gradient(#00F0FF_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.07] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         {/* Top Info & Links Row */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-12 border-b border-slate-900/80">
-          
+
           {/* Brand & Safety with Official 3D Salesforce Logo */}
           <div className="flex items-center gap-3">
             <SalesforceLogo size="sm" />
@@ -99,7 +99,7 @@ export const Footer: React.FC = () => {
       {/* Hovering cursor scatters particles; moving away springs them back     */}
       {/* ===================================================================== */}
       <div className="relative w-full pt-6 pb-2 overflow-hidden">
-        
+
         {/* Ambient Backlight */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-gradient-to-t from-[#0176D3]/20 via-[#00F0FF]/15 to-transparent blur-3xl pointer-events-none" />
 

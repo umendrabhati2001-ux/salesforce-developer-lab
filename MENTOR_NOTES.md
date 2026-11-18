@@ -1069,13 +1069,13 @@ for (Case newCase : triggerNew) {
 | **Topic 18** | **Phase E: Testing**      | `@TestSetup` & Test Data Factory             | `scripts/apex/18_test_data_factory.apex` (Reusable TestDataFactory)    | **COMPLETED & VERIFIED** |
 | **Topic 19** | **Phase E: Testing**      | Positive, Negative & Bulk Testing            | `scripts/apex/19_positive_negative_bulk_testing.apex` (200 Records)   | **COMPLETED & VERIFIED** |
 | **Topic 20** | **Phase E: Testing**      | Code Coverage & Deployment Gate              | `scripts/apex/20_code_coverage_deployment.apex` (75% Gate & CLI)       | **COMPLETED & VERIFIED** |
-| **Topic 21** | **Phase F: LWC**          | LWC Architecture & ES6+ JavaScript           | Modern Web Components, Shadow DOM, HTML templates                      | **NEXT TARGET**          |
-| **Topic 21** | **Phase F: LWC**          | LWC Architecture & ES6+ JavaScript           | Modern Web Components, Shadow DOM, HTML templates                      |
-| **Topic 22** | **Phase F: LWC**          | Reactive Properties & Data Binding           | `@api` public contracts, `@track`, computed Getters                    |
-| **Topic 23** | **Phase F: LWC**          | Component Communication                      | Custom Events (`dispatchEvent`) & Lightning Message Service (LMS)      |
-| **Topic 24** | **Phase F: LWC**          | Lightning Data Service (LDS)                 | Zero-code `lightning-record-form` UI                                   |
-| **Topic 25** | **Phase F: LWC**          | Wire Service (`@wire`) with Apex             | Connecting LWC UI to `@AuraEnabled(cacheable=true)` methods            |
-| **Topic 26** | **Phase F: LWC**          | Imperative Apex & Toast Notifications        | On-click server execution & `ShowToastEvent` alerts                    |
+| **Topic 21** | **Phase F: LWC**          | LWC Architecture & ES6+ JavaScript           | `scripts/lwc/21_lwc_core_architecture.js` (Shadow DOM, Lifecycle Hooks) | **COMPLETED & VERIFIED** |
+| **Topic 22** | **Phase F: LWC**          | Reactive Properties & Data Binding           | `scripts/lwc/22_reactive_properties_data_binding.js` (@api, @track)     | **COMPLETED & VERIFIED** |
+| **Topic 23** | **Phase F: LWC**          | Component Communication                      | `scripts/lwc/23_component_communication.js` (CustomEvent, LMS Pub/Sub)  | **COMPLETED & VERIFIED** |
+| **Topic 24** | **Phase F: LWC**          | Lightning Data Service (LDS)                 | `scripts/lwc/24_lightning_data_service.js` (getRecord, updateRecord)    | **COMPLETED & VERIFIED** |
+| **Topic 25** | **Phase F: LWC**          | Wire Service (`@wire`) with Apex             | `scripts/lwc/25_wire_service_apex.js` (@AuraEnabled & refreshApex)      | **COMPLETED & VERIFIED** |
+| **Topic 26** | **Phase F: LWC**          | Imperative Apex & Toast Notifications        | `scripts/lwc/25_wire_service_apex.js` (On-click DML & ShowToastEvent)   | **COMPLETED & VERIFIED** |
+| **Topic 27** | **Phase G: Visualforce**  | Visualforce Fundamentals                     | `<apex:page>`, standard controllers & actions                          | **NEXT TARGET**          |
 | **Topic 27** | **Phase G: Visualforce**  | Visualforce Fundamentals                     | `<apex:page>`, standard controllers & actions                          |
 | **Topic 28** | **Phase G: Visualforce**  | Custom Controllers & Extensions              | Controller extensions extending standard pages                         |
 | **Topic 29** | **Phase H: Integrations** | REST API HTTP Callouts                       | `HttpRequest`, `HttpResponse`, JSON deserialization, Named Credentials |
