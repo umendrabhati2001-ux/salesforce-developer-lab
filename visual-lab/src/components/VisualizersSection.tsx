@@ -319,6 +319,8 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
   const [soqlExecutionTime, setSoqlExecutionTime] = useState<number>(14);
   const [soqlSyntaxError, setSoqlSyntaxError] = useState<string | null>(null);
   const [soqlEditorShake, setSoqlEditorShake] = useState<boolean>(false);
+  const [laserScanState, setLaserScanState] = useState<"success" | "error" | null>(null);
+  const [soqlToast, setSoqlToast] = useState<{ type: "success" | "error"; title: string; message: string } | null>(null);
   const [copiedSoqlJson, setCopiedSoqlJson] = useState<boolean>(false);
   const [currentRecords, setCurrentRecords] = useState<any[]>(soqlPresets[0].records);
   const [currentCostIndex, setCurrentCostIndex] = useState<string>(soqlPresets[0].costIndex);
@@ -408,20 +410,30 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
   };
 
   const triggerSoqlErrorFeedback = (msg: string) => {
-    sound.playWarning();
+    sound.playAlarm();
     setSoqlSyntaxError(msg);
     setSoqlEditorShake(true);
-    setTimeout(() => setSoqlEditorShake(false), 650);
+    setLaserScanState("error");
+    setSoqlToast({
+      type: "error",
+      title: "SECURITY REJECTION: QUERY BLOCKED",
+      message: msg,
+    });
 
-    // Red warning spark burst (Execution rejection particles)
+    setTimeout(() => setSoqlEditorShake(false), 700);
+    setTimeout(() => setLaserScanState(null), 1400);
+    setTimeout(() => setSoqlToast(null), 5000);
+
+    // Dramatic Cyber Red-Alert Fallout (Ruby, Scarlet & Amber embers)
     try {
       confetti({
-        particleCount: 28,
-        spread: 55,
-        origin: { y: 0.62 },
-        colors: ["#EF4444", "#DC2626", "#F97316", "#B91C1C"],
-        ticks: 55,
-        gravity: 1.15,
+        particleCount: 45,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ["#EF4444", "#DC2626", "#F97316", "#B91C1C", "#F59E0B"],
+        shapes: ["circle"],
+        ticks: 75,
+        gravity: 1.25,
       });
     } catch {
       // Fallback
@@ -445,12 +457,35 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
       sound.playSuccess();
       setSoqlExecuting(false);
       setSoqlExecutionTime(randomMs);
+      setLaserScanState("success");
+      setSoqlToast({
+        type: "success",
+        title: "QUERY EXECUTED • 0 RUNTIME EXCEPTIONS",
+        message: `Database fetched ${currentRecords.length} records in ${randomMs}ms using ${currentCostIndex} index scan.`,
+      });
+
+      setTimeout(() => setLaserScanState(null), 1400);
+      setTimeout(() => setSoqlToast(null), 4000);
+
+      // Dual Cyber Cannons (Inward Holographic Star Fireworks from both corners)
       try {
         confetti({
-          particleCount: 30,
-          spread: 50,
-          origin: { y: 0.85 },
-          colors: ["#00F0FF", "#0176D3", "#10B981"],
+          particleCount: 50,
+          angle: 60,
+          spread: 70,
+          origin: { x: 0.15, y: 0.72 },
+          colors: ["#00F0FF", "#0176D3", "#10B981", "#FACC15", "#A855F7"],
+          shapes: ["star", "circle"],
+          ticks: 85,
+        });
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 70,
+          origin: { x: 0.85, y: 0.72 },
+          colors: ["#00F0FF", "#0176D3", "#10B981", "#FACC15", "#A855F7"],
+          shapes: ["star", "circle"],
+          ticks: 85,
         });
       } catch {
         // Fallback
@@ -1389,12 +1424,26 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
               <motion.div
                 animate={soqlEditorShake ? { x: [-14, 14, -10, 10, -5, 5, 0] } : {}}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                className={`rounded-2xl bg-[#060913] transition-all duration-300 overflow-hidden ${
+                className={`rounded-2xl bg-[#060913] transition-all duration-300 overflow-hidden relative ${
                   soqlEditorShake || !isQueryValid
                     ? "border-2 border-red-500/60 shadow-[0_0_30px_rgba(239,68,68,0.3)]"
                     : "border border-cyan-500/30 shadow-[0_0_20px_rgba(0,240,255,0.08)]"
                 }`}
               >
+                {/* Sci-Fi Laser Scan Line on Success or Error */}
+                {laserScanState && (
+                  <motion.div
+                    initial={{ top: 0, opacity: 1 }}
+                    animate={{ top: "100%", opacity: 0 }}
+                    transition={{ duration: 1.1, ease: "linear" }}
+                    className={`absolute inset-x-0 h-1 pointer-events-none z-20 ${
+                      laserScanState === "success"
+                        ? "bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_20px_#00F0FF]"
+                        : "bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_20px_#EF4444]"
+                    }`}
+                  />
+                )}
+
                 <div className="px-4 py-2.5 bg-slate-950/90 border-b border-cyan-500/20 flex items-center justify-between text-xs font-mono">
                   <div className="flex items-center gap-2 text-slate-400">
                     <FileCode className="w-3.5 h-3.5 text-cyan-400" />
@@ -1405,6 +1454,33 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
                     <span>Read-Only Safe Mode</span>
                   </div>
                 </div>
+
+                {/* Animated Cyber Status Toast Bar */}
+                <AnimatePresence>
+                  {soqlToast && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className={`px-4 py-2 text-xs font-mono border-b flex items-center justify-between gap-3 overflow-hidden ${
+                        soqlToast.type === "success"
+                          ? "bg-emerald-950/80 border-emerald-500/40 text-emerald-200"
+                          : "bg-red-950/80 border-red-500/40 text-red-200"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 truncate">
+                        {soqlToast.type === "success" ? (
+                          <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                        ) : (
+                          <AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                        )}
+                        <span className="font-bold shrink-0">{soqlToast.title}:</span>
+                        <span className="opacity-90 truncate">{soqlToast.message}</span>
+                      </div>
+                      <span className="text-[10px] opacity-60 uppercase shrink-0">Telemetry HUD</span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 <div className="p-4">
                   <textarea

@@ -55,9 +55,9 @@ const astroQuotes: AstroQuote[] = [
 ];
 
 export const AiMascotCompanion: React.FC = () => {
-  const [minimized, setMinimized] = useState<boolean>(false);
+  const [minimized, setMinimized] = useState<boolean>(true);
   const [quoteIndex, setQuoteIndex] = useState<number>(0);
-  const [bubbleOpen, setBubbleOpen] = useState<boolean>(true);
+  const [bubbleOpen, setBubbleOpen] = useState<boolean>(false);
   const [scrollDir, setScrollDir] = useState<"up" | "down" | "idle">("idle");
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [isWaving, setIsWaving] = useState<boolean>(false);

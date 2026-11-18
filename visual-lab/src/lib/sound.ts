@@ -75,30 +75,63 @@ class SoundEngine {
     }
   }
 
-  // Warning buzz when governor limit is breached
-  playWarning() {
+  // Sci-Fi Cyber Security ALARM (Governor Guard Breach)
+  playAlarm() {
     if (!this.enabled) return;
     const ctx = this.initCtx();
     if (!ctx) return;
 
     try {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sawtooth";
-      osc.frequency.setValueAtTime(160, ctx.currentTime);
-      osc.frequency.linearRampToValueAtTime(120, ctx.currentTime + 0.15);
+      const now = ctx.currentTime;
 
-      gain.gain.setValueAtTime(0.08, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+      // 1. Dual Siren Pulse (wee-woo emergency siren)
+      const sirenPulses = [
+        { startFreq: 880, endFreq: 460, timeOffset: 0.0, duration: 0.17 },
+        { startFreq: 980, endFreq: 520, timeOffset: 0.15, duration: 0.20 },
+      ];
 
-      osc.connect(gain);
-      gain.connect(ctx.destination);
+      sirenPulses.forEach((pulse) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sawtooth";
 
-      osc.start();
-      osc.stop(ctx.currentTime + 0.15);
+        osc.frequency.setValueAtTime(pulse.startFreq, now + pulse.timeOffset);
+        osc.frequency.exponentialRampToValueAtTime(pulse.endFreq, now + pulse.timeOffset + pulse.duration);
+
+        gain.gain.setValueAtTime(0.09, now + pulse.timeOffset);
+        gain.gain.linearRampToValueAtTime(0.06, now + pulse.timeOffset + pulse.duration * 0.6);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + pulse.timeOffset + pulse.duration);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now + pulse.timeOffset);
+        osc.stop(now + pulse.timeOffset + pulse.duration);
+      });
+
+      // 2. Heavy Sub-Bass Lockdown Thud (Industrial security lock punch)
+      const subOsc = ctx.createOscillator();
+      const subGain = ctx.createGain();
+      subOsc.type = "sine";
+      subOsc.frequency.setValueAtTime(120, now);
+      subOsc.frequency.exponentialRampToValueAtTime(35, now + 0.28);
+
+      subGain.gain.setValueAtTime(0.14, now);
+      subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+      subOsc.connect(subGain);
+      subGain.connect(ctx.destination);
+
+      subOsc.start(now);
+      subOsc.stop(now + 0.28);
     } catch {
       // Audio fallback
     }
+  }
+
+  // Warning buzz when governor limit is breached
+  playWarning() {
+    this.playAlarm();
   }
 }
 
@@ -106,5 +139,6 @@ export const sound = new SoundEngine();
 
 export const playClickSound = () => sound.playClick();
 export const playChimeSound = () => sound.playSuccess();
-export const playWarningSound = () => sound.playWarning();
+export const playWarningSound = () => sound.playAlarm();
+export const playAlarmSound = () => sound.playAlarm();
 
