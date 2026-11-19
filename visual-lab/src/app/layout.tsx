@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { CustomCursor } from "@/components/CustomCursor";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://salesforce-developer-lab.vercel.app"),
@@ -110,6 +111,7 @@ export default function RootLayout({
       <body className="bg-[#030712] text-slate-100 min-h-screen antialiased selection:bg-cyan-500/30 selection:text-cyan-300">
         <CustomCursor />
         {children}
+        <Analytics />
       </body>
     </html>
   );
