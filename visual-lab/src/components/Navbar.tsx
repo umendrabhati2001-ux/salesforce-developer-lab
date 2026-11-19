@@ -6,12 +6,14 @@ import {
     Award,
     BookOpen,
     Boxes,
+    Briefcase,
     Command,
     Cpu,
     ExternalLink,
     Linkedin,
     Menu,
     ShieldCheck,
+    Sparkles,
     Terminal,
     X,
     Zap,
@@ -121,12 +123,22 @@ export const Navbar: React.FC = () => {
           })}
         </nav>
 
-        {/* Right Action: Developer Badge + Raycast CTA */}
+        {/* Right Action: Developer Badge + Hire CTA + Raycast CTA */}
         <div className="flex items-center gap-2 shrink-0">
           {/* Developer Profile Pill */}
           <div className="hidden md:block">
             <DeveloperBadgeCard compact={true} />
           </div>
+
+          {/* Hire for Contract CTA Button */}
+          <a
+            href="mailto:umendrabhati2001@gmail.com?subject=Salesforce%20Contract%20Engagement%20-%20Umendra%20Bhati&body=Hi%20Umendra%2C%0A%0AWe%20reviewed%20your%20Salesforce%20Developer%20Lab%20and%20would%20like%20to%20discuss%20a%20remote%20contract%20%2F%20consulting%20engagement.%0A%0ABest%20regards"
+            onClick={playClickSound}
+            className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.25)] transition-all active:scale-95 cursor-pointer"
+          >
+            <Briefcase className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Hire Contract</span>
+          </a>
 
           {/* Raycast Action Pill / Command Button */}
           <button
@@ -206,28 +218,48 @@ export const Navbar: React.FC = () => {
             </div>
 
             {/* Mobile Actions */}
-            <div className="pt-2 flex items-center gap-2">
-              <a
-                href="/studio"
-                onClick={() => {
-                  playClickSound();
-                  setMobileMenuOpen(false);
-                }}
-                className="flex-1 py-2 px-3 rounded-full text-center text-xs font-mono font-bold bg-gradient-to-r from-cyan-400 to-[#0176D3] text-slate-950 shadow-[0_0_15px_rgba(0,240,255,0.3)] flex items-center justify-center gap-1.5"
-              >
-                <Zap className="w-3.5 h-3.5" />
-                Launch Studio IDE
-              </a>
+            <div className="pt-2 flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <a
+                  href="/studio"
+                  onClick={() => {
+                    playClickSound();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex-1 py-2 px-3 rounded-full text-center text-xs font-mono font-bold bg-gradient-to-r from-cyan-400 to-[#0176D3] text-slate-950 shadow-[0_0_15px_rgba(0,240,255,0.3)] flex items-center justify-center gap-1.5"
+                >
+                  <Zap className="w-3.5 h-3.5" />
+                  Launch Studio IDE
+                </a>
 
-              <a
-                href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="py-2 px-3 rounded-full bg-[#0A66C2] text-white text-xs font-mono font-bold flex items-center gap-1 hover:brightness-110"
-              >
-                <Linkedin className="w-3.5 h-3.5" />
-                <ExternalLink className="w-3 h-3" />
-              </a>
+                <a
+                  href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-2 px-3 rounded-full bg-[#0A66C2] text-white text-xs font-mono font-bold flex items-center gap-1 hover:brightness-110"
+                >
+                  <Linkedin className="w-3.5 h-3.5" />
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <a
+                  href="mailto:umendrabhati2001@gmail.com?subject=Salesforce%20Contract%20Engagement%20-%20Umendra%20Bhati&body=Hi%20Umendra%2C%0A%0AWe%20reviewed%20your%20Salesforce%20Developer%20Lab%20and%20would%20like%20to%20discuss%20a%20remote%20contract%20%2F%20consulting%20engagement.%0A%0ABest%20regards"
+                  className="flex-1 py-2 px-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold flex items-center justify-center gap-1.5 hover:bg-emerald-500/30 transition-colors"
+                >
+                  <Briefcase className="w-3.5 h-3.5 text-emerald-400" />
+                  Hire for Remote Contract
+                </a>
+
+                <a
+                  href="mailto:umendrabhati2001@gmail.com?subject=Inquiry%3A%20Commercial%20Source%20Code%20License%20(%24149)&body=Hi%20Umendra%2C%0A%0AI%20would%20like%20to%20purchase%20the%20commercial%20source%20code%20license%20for%20the%20Salesforce%20Developer%20Lab%20(%24149).%0A%0APlease%20provide%20payment%20and%20repository%20access%20details.%0A%0ABest%20regards"
+                  className="py-2 px-3 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold flex items-center justify-center gap-1 hover:bg-cyan-500/30 transition-colors"
+                >
+                  <Sparkles className="w-3.5 h-3.5 fill-current" />
+                  Buy Code ($149)
+                </a>
+              </div>
             </div>
           </motion.div>
         )}

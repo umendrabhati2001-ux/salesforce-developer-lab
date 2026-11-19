@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { VisualizersSection } from "@/components/VisualizersSection";
 import { CommandPalette } from "@/components/CommandPalette";
-import { ArrowLeft, ExternalLink, Linkedin, ShieldCheck, Sparkles, Terminal, Award } from "lucide-react";
+import { ArrowLeft, ExternalLink, Linkedin, ShieldCheck, Sparkles, Terminal, Award, Briefcase } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Live Apex & SOQL Studio | Umendra Bhati",
@@ -78,18 +78,29 @@ export default function StudioPage() {
           </div>
         </div>
 
-        {/* Right Actions: Developer Badge & LinkedIn */}
-        <div className="flex items-center gap-3">
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[11px] font-mono text-emerald-300">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Strict Execution Guard: Active</span>
-          </div>
+        {/* Right Actions: Conversion CTAs & Developer Profile */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          <a
+            href="mailto:umendrabhati2001@gmail.com?subject=Salesforce%20Contract%20Engagement%20-%20Umendra%20Bhati&body=Hi%20Umendra%2C%0A%0AWe%20reviewed%20your%20Salesforce%20Developer%20Lab%20and%20would%20like%20to%20discuss%20a%20remote%20contract%20%2F%20consulting%20engagement.%0A%0ABest%20regards"
+            className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 text-xs font-mono font-bold transition-all flex items-center gap-1.5 shadow-[0_0_20px_rgba(16,185,129,0.35)] cursor-pointer active:scale-95"
+          >
+            <Briefcase className="w-3.5 h-3.5" />
+            <span>Hire for Contract</span>
+          </a>
+
+          <a
+            href="mailto:umendrabhati2001@gmail.com?subject=Inquiry%3A%20Commercial%20Source%20Code%20License%20(%24149)&body=Hi%20Umendra%2C%0A%0AI%20would%20like%20to%20purchase%20the%20commercial%20source%20code%20license%20for%20the%20Salesforce%20Developer%20Lab%20(%24149).%0A%0APlease%20provide%20payment%20and%20repository%20access%20details.%0A%0ABest%20regards"
+            className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 text-xs font-mono font-bold transition-all flex items-center gap-1.5 shadow-[0_0_18px_rgba(0,240,255,0.35)] cursor-pointer active:scale-95"
+          >
+            <Sparkles className="w-3.5 h-3.5 fill-current" />
+            <span>Buy Code ($149)</span>
+          </a>
 
           <a
             href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-3.5 py-1.5 rounded-xl bg-[#0A66C2] hover:bg-[#004182] text-white text-xs font-mono font-bold transition-all flex items-center gap-1.5 shadow-[0_0_15px_rgba(10,102,194,0.3)] cursor-pointer"
+            className="px-3 py-1.5 rounded-xl bg-[#0A66C2] hover:bg-[#004182] text-white text-xs font-mono font-bold transition-all flex items-center gap-1.5 shadow-[0_0_15px_rgba(10,102,194,0.3)] cursor-pointer"
           >
             <Linkedin className="w-3.5 h-3.5 fill-current" />
             <span>Umendra Bhati</span>
