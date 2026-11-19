@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { CustomCursor } from "@/components/CustomCursor";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://salesforce-developer-lab.vercel.app"),
