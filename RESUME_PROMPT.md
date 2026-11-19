@@ -15,7 +15,7 @@ Main apna Salesforce Developer Mastery project resume kar raha hoon. Hamara poor
 - **Student:** Umendra Bhati (Aspiring Salesforce Developer)
 - **Local Machine:** Ubuntu Linux
 - **Repository Path:** `~/Desktop/salesforce/personal/salesforce-developer-lab`
-- **Connected Org:** `personal-dev` (Alias: `personal-dev`, User: `umendrabhati@technoglobe.com`)
+- **Connected Org:** `personal-dev` (Alias: `personal-dev`, User: `umendrabhati2001@gmail.com`)
 - **Capstone Project:** Customer Complaint & Support Management System (_NexGen Cloud Solutions_)
 
 ---
