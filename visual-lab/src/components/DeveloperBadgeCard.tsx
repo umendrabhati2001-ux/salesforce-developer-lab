@@ -70,7 +70,7 @@ export const DeveloperBadgeCard: React.FC<{ compact?: boolean }> = ({ compact = 
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
           <span className="font-bold">#OPENTOWORK</span>
           <span className="text-slate-500">&bull;</span>
-          <span className="text-slate-300">Jaipur &amp; Remote</span>
+          <span className="text-slate-300">Remote Available</span>
         </div>
 
         <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-400">
@@ -111,7 +111,7 @@ export const DeveloperBadgeCard: React.FC<{ compact?: boolean }> = ({ compact = 
           <div className="flex flex-wrap items-center gap-2 mt-2 text-[11px] text-slate-400 font-mono">
             <span className="flex items-center gap-1">
               <MapPin className="w-3 h-3 text-red-400" />
-              Rajasthan, India
+              Remote Available
             </span>
             <span>&bull;</span>
             <span className="flex items-center gap-1 text-slate-300">

@@ -108,7 +108,7 @@ System.debug('--- 3. TEST DATA FACTORY EXECUTION VERIFICATION ---');
 
 // Generate 1 Account in memory
 Account clientAcc = TestDataFactory.createAccount('Acme Logistics Corp', false);
-clientAcc.BillingCity = 'Jaipur';
+clientAcc.BillingCity = 'San Francisco';
 clientAcc.BillingCountry = 'India';
 System.debug('>> Generated Account: ' + clientAcc.Name + ' (City: ' + clientAcc.BillingCity + ')');
 

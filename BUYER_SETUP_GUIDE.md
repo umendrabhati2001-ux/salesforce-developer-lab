@@ -1,7 +1,7 @@
 # 🏛️ Salesforce Developer Lab (v2.0) — Buyer Setup & Deployment Guide
 
 > **Commercial Distribution & License Package**  
-> **Author & Architect:** Umendra Bhati (Rajasthan, India)  
+> **Author & Architect:** Umendra Bhati (Remote Available)  
 > **LinkedIn:** [https://www.linkedin.com/in/umendra-bhati-5243aa36a/](https://www.linkedin.com/in/umendra-bhati-5243aa36a/)  
 > **Live Demo:** [https://salesforce-developer-lab.vercel.app/](https://salesforce-developer-lab.vercel.app/)
 

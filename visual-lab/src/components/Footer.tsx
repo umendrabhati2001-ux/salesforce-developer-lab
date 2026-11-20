@@ -82,7 +82,7 @@ export const Footer: React.FC = () => {
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             <span className="text-slate-300 font-mono">Live Interactive Developer Hub</span>
             <span className="text-slate-700">&bull;</span>
-            <span>Jaipur &amp; Remote</span>
+            <span>Remote Available</span>
           </div>
 
           <div className="flex items-center gap-3">
