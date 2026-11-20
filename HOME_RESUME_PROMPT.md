@@ -38,12 +38,15 @@
 
 ## 🚀 International Cold Outreach Dispatched (UK Business Hours)
 
-Dispatched on **Friday, Nov 20, 2026 (7:30 - 8:30 AM GMT / London Time)**:
+Dispatched on **Friday, Nov 20, 2026 (7:30 - 8:45 AM GMT / London Time)**:
 1. **Nebula Consulting (London, UK)**: `info@nebulaconsulting.co.uk` ✅ Dispatched
 2. **Coacto (UK)**: `hello@coacto.co.uk` ✅ Dispatched
 3. **CloudAnalysts (London, UK)**: `enquiries@cloudanalysts.com` ✅ Dispatched
 4. **Silver Softworks (UK Summit Partner)**: `hello@silversoftworks.com` ✅ Dispatched
 5. **Steadman Brown (UK Dedicated Staffing)**: `info@steadmanbrown.com` ✅ Dispatched
+6. **Desynit (Bristol, UK - Apex Engineering)**: `info@desynit.com` ✅ Dispatched
+7. **Ignyto (London/Manchester, UK - Summit Partner)**: `hello@ignyto.com` ✅ Dispatched
+8. **MarCloud Consulting (UK - Integrations)**: `info@marcloudconsulting.com` ✅ Dispatched
 
 ---
 
