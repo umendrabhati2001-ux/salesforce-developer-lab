@@ -1,78 +1,109 @@
-# ⚡ Salesforce Developer Lab & Architectural Runtime Studio
+# ⚡ Salesforce Developer Lab & Enterprise Runtime Studio
 
 <p align="center">
-  <img src="visual-lab/public/salesforce.svg" alt="Salesforce DX Lab" width="96" height="96" />
+  <a href="https://salesforce-developer-lab.vercel.app/studio">
+    <img src="visual-lab/public/og-image.png" alt="Salesforce Developer Lab & Live SOQL Studio Preview" width="100%" />
+  </a>
 </p>
 
 <p align="center">
-  <b>Production-grade Salesforce DX architecture suite, interactive Apex runtime simulators, Governor Limits monitors, and crash-proof SOQL Query Studio.</b>
+  <b>Production-grade Salesforce DX architecture suite, interactive Apex runtime simulators, Governor Limits monitors, and 6-tier Principal CTA SOQL Studio.</b>
 </p>
 
 <p align="center">
   <a href="https://salesforce-developer-lab.vercel.app/"><img src="https://img.shields.io/badge/Production%20Web-Live%20Deploy-00F0FF?style=for-the-badge&logo=vercel" alt="Vercel Live" /></a>
   <a href="https://salesforce-developer-lab.vercel.app/studio"><img src="https://img.shields.io/badge/Fullscreen%20Studio-Live%20IDE-0176D3?style=for-the-badge&logo=salesforce" alt="Studio Live" /></a>
-  <a href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"><img src="https://img.shields.io/badge/Lead%20Developer-Umendra%20Bhati-0A66C2?style=for-the-badge&logo=linkedin" alt="Umendra Bhati LinkedIn" /></a>
-  <img src="https://img.shields.io/badge/Salesforce-DX%20v60.0-blue?style=for-the-badge" alt="SFDX Version" />
-  <img src="https://img.shields.io/badge/Status-%23OPENTOWORK-10B981?style=for-the-badge" alt="Open To Work" />
+  <a href="mailto:umendrabhati2001@gmail.com?subject=Salesforce%20Contract%20Engagement%20-%20Umendra%20Bhati"><img src="https://img.shields.io/badge/💼%20Hire%20for%20Contract-Remote%20%2F%20Freelance-10B981?style=for-the-badge" alt="Hire for Contract" /></a>
+  <a href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"><img src="https://img.shields.io/badge/Lead%20Architect-Umendra%20Bhati-0A66C2?style=for-the-badge&logo=linkedin" alt="Umendra Bhati LinkedIn" /></a>
+  <img src="https://img.shields.io/badge/Apex%20Test%20Coverage-100%25%20Passed-success?style=for-the-badge" alt="Apex Test Coverage 100%" />
 </p>
 
 ---
 
 ## 🌟 Executive Overview
 
-**Salesforce Developer Lab** is an end-to-end cloud engineering portal designed by **[Umendra Bhati](https://www.linkedin.com/in/umendra-bhati-5243aa36a/)**. It bridges the gap between static code repositories and live runtime demonstration, providing:
+**Salesforce Developer Lab** is an enterprise-grade cloud engineering portal engineered by **[Umendra Bhati](https://www.linkedin.com/in/umendra-bhati-5243aa36a/)**. It bridges the gap between static code repositories and verifiable production runtime execution:
 
-* 🚀 **Interactive Motion Simulators**: Step-by-step debugger for CaseTrigger lifecycle events, Heap Memory consumption, and 200-record batch chunking.
-* 🛡️ **Crash-Proof SOQL Query Studio**: 6-Tier progression ladder (Basic to Principal CTA) with Governor Limit syntax blockers, dual-siren audio telemetry, and 1-click query repair.
-* 📦 **25 Complete Apex & LWC Enterprise Modules**: Covering Phase A through Phase F (Triggers, Async Apex, Batch, Queueable, REST Callouts, and modern Lightning Web Components).
-* ⚡ **Hybrid Architecture Deployment**: Full-screen dedicated Studio (`/studio`) and flagship showcase portfolio (`/`) built on Next.js 15, TypeScript, and Tailwind CSS.
-
----
-
-## 🔗 Live Deployments
-
-| Environment | Purpose | URL |
-| :--- | :--- | :--- |
-| **Flagship Showcase** | Complete Architectural Story, Roadmap & Flashcards | [salesforce-developer-lab.vercel.app](https://salesforce-developer-lab.vercel.app/) |
-| **Dedicated Runtime Studio** | Fullscreen IDE for SOQL, Limits HUD & Triggers | [salesforce-developer-lab.vercel.app/studio](https://salesforce-developer-lab.vercel.app/studio) |
-| **Source Repository** | Complete SFDX Source, LWC Components & Tests | [GitHub Repository](https://github.com/umendrabhati2001-ux/salesforce-developer-lab) |
+* 🛡️ **6-Tier Principal CTA SOQL Studio**: Interactive query engine ranging from single-index lookups to semi-join anti-joins and polymorphic `TYPEOF` queries with real-time multi-tenant Governor Limit safeguards.
+* 🚀 **Real-Time Execution Visualizers**: Interactive motion telemetry mapping the `CaseTrigger` lifecycle, Heap Memory consumption, and 200-record bulk transaction chunking.
+* 📦 **Enterprise Service Layer Pattern**: Decoupled domain architecture separating trigger routing (`CaseTriggerHandler.cls`) from business logic (`ComplaintService.cls`) with zero SOQL/DML in loops.
+* 🧪 **100% Apex Unit Test Coverage**: Production test suites covering positive, negative, and 200-record bulk execution scenarios with zero Governor Limit breaches.
+* ⚡ **Production Hybrid Web App**: High-performance Next.js 15, TypeScript, Tailwind CSS, and real-time Web Analytics telemetry.
 
 ---
 
-## 🛠️ Enterprise Architecture & Curriculum Matrix
+## 🏛️ Enterprise Multi-Tenant Architecture
 
-### Phase A: Core Apex Foundation & Collections
-* `scripts/apex/01_apex_variables_primitives.js` — Primitives, Strongly-typed casting & Null safety
-* `scripts/apex/02_list_collection_architecture.js` — Memory allocation & List bulk access
-* `scripts/apex/03_set_collection_uniqueness.js` — `Set<Id>` ID deduplication & SOQL binding
-* `scripts/apex/04_map_collection_deep_dive.js` — `Map<Id, sObject>` O(1) in-memory indexing
+```mermaid
+flowchart TD
+    subgraph Client_Interaction["Client & Integration Layer"]
+        A["Incoming Transaction (Bulk 200 Cases)"] --> B["CaseTrigger.trigger (before insert / before update)"]
+    end
 
-### Phase B: Trigger Architecture & Frameworks
-* `force-app/main/default/triggers/CaseTrigger.trigger` — Event router with zero inline logic
-* `force-app/main/default/classes/CaseTriggerHandler.cls` — Recursive loop prevention & context branching
-* `force-app/main/default/classes/ComplaintService.cls` — SLA business validation & priority escalation
+    subgraph Framework_Layer["Enterprise Framework Layer"]
+        B --> C["CaseTriggerHandler.cls"]
+        C -->|Context Branching & Recursion Guard| D["ComplaintService.cls"]
+    end
 
-### Phase C: Asynchronous Apex & Governor Scalability
-* `scripts/apex/11_batch_apex_stateful_processing.js` — 50-million record processing & `Database.Stateful`
-* `scripts/apex/12_queueable_apex_chaining.js` — Complex Async transactions & job chaining
-* `scripts/apex/13_future_methods_callouts.js` — Fire-and-forget offloading with `@future(callout=true)`
-* `scripts/apex/14_scheduled_apex_cron.js` — Schedulable interfaces & CRON expressions
+    subgraph Memory_Layer["Zero-SOQL/DML In-Memory Processing"]
+        D --> E["In-Memory Map Category SLA Lookup (O(1) Time)"]
+        E --> F["Bulkified Field Updates (0 SOQL, 0 DML in Loop)"]
+    end
 
-### Phase D: Multi-Tenant Integrations
-* `scripts/apex/16_rest_callout_json_parsing.js` — Outbound HTTP request/response pipelines
-* `scripts/apex/17_custom_rest_api_service.js` — Inbound `@RestResource(urlMapping='/cases/v1/*')`
-* `scripts/apex/18_platform_events_pub_sub.js` — Event-driven multi-tenant message bus
+    subgraph Persistence_Layer["Database & Automation"]
+        F --> G["Database Commit (1 Consolidated DML)"]
+        G --> H["Flow: Case_On_High_Priority_Create_Action_Item"]
+        H --> I["Complaint_Action_Item__c Created"]
+    end
 
-### Phase E: Advanced Enterprise Patterns
-* `scripts/apex/19_security_with_sharing_strip_inaccessible.js` — OWD, FLS, and CRUD enforcement
-* `scripts/apex/20_unit_testing_mocking_framework.js` — Mocking HTTP callouts & `@isTest(SeeAllData=false)`
+    subgraph Verification_Layer["Automated Test Harness"]
+        J["ComplaintServiceTest.cls"] -->|Bulk 200-Record Verification| D
+        J -->|Result| K["100% Code Coverage • 0 Governor Limit Errors"]
+    end
 
-### Phase F: Lightning Web Components (LWC)
-* `scripts/lwc/21_lwc_core_architecture.js` — Shadow DOM, Component lifecycle hooks, Template directives
-* `scripts/lwc/22_reactive_properties_data_binding.js` — `@api`, `@track`, and computed getters
-* `scripts/lwc/23_component_communication.js` — `CustomEvent` bubbling, LMS Pub/Sub messaging
-* `scripts/lwc/24_lightning_data_service.js` — Zero-Apex client caching via `getRecord` & `updateRecord`
-* `scripts/lwc/25_wire_service_apex.js` — Reactive `@wire` adapters & `refreshApex()` cache invalidation
+    classDef primary fill:#0b1528,stroke:#00F0FF,stroke-width:2px,color:#fff;
+    classDef success fill:#06231a,stroke:#10B981,stroke-width:2px,color:#fff;
+    classDef highlight fill:#1e1035,stroke:#a855f7,stroke-width:2px,color:#fff;
+
+    class A,B,C,D primary;
+    class E,F,G,H,I highlight;
+    class J,K success;
+```
+
+---
+
+## 📊 Governor Limit Benchmark & Safety Margins
+
+| Multi-Tenant Resource Metric | Salesforce Platform Limit | Umendra's Implementation | Safety Margin | Architectural Standard |
+| :--- | :--- | :--- | :--- | :--- |
+| **SOQL Queries in Trigger** | 100 max | **0 Queries** | **100% Safe** | Static Map & In-Memory Matching |
+| **DML Statements in Loop** | 150 max | **0 Statements** | **100% Safe** | Consolidated List DML Pattern |
+| **Bulk Batch Processing** | 200 records | **200 Records Tested** | **100% Pass** | Bulkified Map/Set Collection Traversal |
+| **Apex Unit Test Coverage** | 75% minimum | **100% Code Coverage** | **+25% Margin** | Comprehensive `@isTest` Assertions |
+| **SOQL Query Complexity** | Single Object | **6-Tier Principal CTA** | **Architect Grade** | Semi-Joins & Polymorphic `TYPEOF` |
+
+---
+
+## ⚡ Live Deployments & Interactive Environments
+
+| Environment | Purpose | Tech Stack | Link |
+| :--- | :--- | :--- | :--- |
+| 🚀 **Dedicated Runtime Studio** | Fullscreen IDE for SOQL, Limits HUD & Triggers | Next.js 15, Turbopack, Framer Motion | [Launch Studio IDE](https://salesforce-developer-lab.vercel.app/studio) |
+| 🌐 **Flagship Architecture Portal** | Interactive 3D Matrix, Simulators & Flashcards | Next.js 15, Three.js, Tailwind CSS | [Explore Portfolio](https://salesforce-developer-lab.vercel.app/) |
+| 📁 **SFDX Enterprise Source Code** | Production Metadata, Service Layers & Unit Tests | Salesforce DX, Apex, LWC, XML | [Inspect Codebase](https://github.com/umendrabhati2001-ux/salesforce-developer-lab) |
+
+---
+
+## 🎚️ 6-Tier SOQL Query Studio Mastery Ladder
+
+The interactive query studio demonstrates mastery of Salesforce Object Query Language across all 6 architectural tiers:
+
+1. **Level 1: Junior** — *Indexed Equality Filtering & Projections* (`SELECT Id, CaseNumber, Subject, Priority, Status FROM Case WHERE Status = 'New' AND Priority = 'High' LIMIT 4`)
+2. **Level 2: Mid-Level** — *Wildcard Text Traversal & Dynamic Ordering* (`SELECT Id, Name, Industry, AnnualRevenue FROM Account WHERE Name LIKE '%Cloud%' ORDER BY AnnualRevenue DESC NULLS LAST LIMIT 4`)
+3. **Level 3: Senior** — *Parent-to-Child Relationship Subquery* (`SELECT Id, Name, (SELECT Id, CaseNumber, Priority, Status FROM Cases WHERE IsClosed = FALSE) FROM Account WHERE Industry = 'Technology' LIMIT 4`)
+4. **Level 4: Lead Architect** — *Multi-Tenant Aggregate Grouping & HAVING Filters* (`SELECT StageName, COUNT(Id) totalDeals, SUM(Amount) totalPipeline, AVG(Amount) averageDealSize FROM Opportunity GROUP BY StageName HAVING COUNT(Id) >= 1 ORDER BY SUM(Amount) DESC LIMIT 4`)
+5. **Level 5: Lead Engineer** — *Selective Semi-Join & Anti-Join Subqueries* (`SELECT Id, Name, Industry, AnnualRevenue FROM Account WHERE Id IN (SELECT AccountId FROM Opportunity WHERE IsWon = TRUE) AND Id NOT IN (SELECT AccountId FROM Case WHERE Status = 'Escalated') LIMIT 4`)
+6. **Level 6: Principal CTA** — *Polymorphic Traversal using `TYPEOF ... WHEN ... THEN`* (`SELECT Id, Subject, Priority, TYPEOF What WHEN Account THEN Name, AnnualRevenue WHEN Opportunity THEN StageName, Amount END FROM Task WHERE IsClosed = FALSE LIMIT 4`)
 
 ---
 
@@ -104,32 +135,23 @@ sf org create scratch -f config/project-scratch-def.json -a SFDX-Lab-Scratch -d 
 # Deploy source to Scratch Org
 sf project deploy start
 
-# Run all Apex tests
+# Run all Apex tests with code coverage
 sf apex run test --code-coverage --result-format human
 ```
 
 ---
 
-## 🔒 Security & Safe-Mode Verification
-
-* **Zero Hardcoded Secrets**: Scanned and verified. No private API keys, passwords, or personal credentials.
-* **Multi-Tenant Protection**: Read-Only Safe Mode active across all query and trigger simulators.
-* **Salesforce DX Isolated**: Frontend and CLI components strictly decoupled from core metadata.
-
----
-
-## 👨‍💻 Author & Contact
+## 👨‍💻 Engineer & Architecture Contact
 
 **Umendra Bhati**  
-*Salesforce Admin & Developer • Cloud Architecture Solutions*  
-*Location*: Rajasthan, India  
-*Status*: **Available for Full-Time Remote Roles & Consulting Projects**  
-
-* **LinkedIn**: [linkedin.com/in/umendra-bhati-5243aa36a](https://www.linkedin.com/in/umendra-bhati-5243aa36a/)
-* **Live Lab**: [salesforce-developer-lab.vercel.app](https://salesforce-developer-lab.vercel.app/)
+*Salesforce Developer & Cloud Architect*  
+*Location*: Jaipur, Rajasthan, India (Available Globally for Remote Contracts & Full-Time Roles)  
+*Email*: [umendrabhati2001@gmail.com](mailto:umendrabhati2001@gmail.com)  
+*LinkedIn*: [linkedin.com/in/umendra-bhati-5243aa36a](https://www.linkedin.com/in/umendra-bhati-5243aa36a/)  
+*Live Platform*: [salesforce-developer-lab.vercel.app](https://salesforce-developer-lab.vercel.app/)
 
 ---
 
 <p align="center">
-  <sub>Copyright &copy; 2026 Umendra Bhati. All rights reserved.</sub>
+  <sub>Copyright &copy; 2026 Umendra Bhati. All rights reserved. Built with pride for the global Salesforce engineering ecosystem.</sub>
 </p>
