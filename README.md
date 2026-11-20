@@ -145,7 +145,7 @@ sf apex run test --code-coverage --result-format human
 
 **Umendra Bhati**  
 *Salesforce Developer & Cloud Architect*  
-*Location*: Jaipur, Rajasthan, India (Available Globally for Remote Contracts & Full-Time Roles)  
+*Availability*: **Available Globally for Remote Contracts & Development Engagements**  
 *Email*: [umendrabhati2001@gmail.com](mailto:umendrabhati2001@gmail.com)  
 *LinkedIn*: [linkedin.com/in/umendra-bhati-5243aa36a](https://www.linkedin.com/in/umendra-bhati-5243aa36a/)  
 *Live Platform*: [salesforce-developer-lab.vercel.app](https://salesforce-developer-lab.vercel.app/)
