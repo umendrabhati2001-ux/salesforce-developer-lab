@@ -21,11 +21,14 @@ import {
 import React, { useEffect, useState } from "react";
 import { DeveloperBadgeCard } from "./DeveloperBadgeCard";
 import { SalesforceLogo } from "./SalesforceLogo";
+import { ContactModal } from "./ContactModal";
 
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [contactModalMode, setContactModalMode] = useState<"contract" | "buyCode">("contract");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -133,14 +136,17 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Hire for Contract CTA Button */}
-          <a
-            href="mailto:umendrabhati2001@gmail.com?subject=Salesforce%20Contract%20Engagement%20-%20Umendra%20Bhati&body=Hi%20Umendra%2C%0A%0AWe%20reviewed%20your%20Salesforce%20Developer%20Lab%20and%20would%20like%20to%20discuss%20a%20remote%20contract%20%2F%20consulting%20engagement.%0A%0ABest%20regards"
-            onClick={playClickSound}
+          <button
+            onClick={() => {
+              playClickSound();
+              setContactModalMode("contract");
+              setContactModalOpen(true);
+            }}
             className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.25)] transition-all active:scale-95 cursor-pointer"
           >
             <Briefcase className="w-3.5 h-3.5 text-emerald-400" />
             <span>Hire Contract</span>
-          </a>
+          </button>
 
           {/* Raycast Action Pill / Command Button */}
           <button
@@ -250,26 +256,42 @@ export const Navbar: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-2">
-                <a
-                  href="mailto:umendrabhati2001@gmail.com?subject=Salesforce%20Contract%20Engagement%20-%20Umendra%20Bhati&body=Hi%20Umendra%2C%0A%0AWe%20reviewed%20your%20Salesforce%20Developer%20Lab%20and%20would%20like%20to%20discuss%20a%20remote%20contract%20%2F%20consulting%20engagement.%0A%0ABest%20regards"
-                  className="flex-1 py-2 px-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold flex items-center justify-center gap-1.5 hover:bg-emerald-500/30 transition-colors"
+                <button
+                  onClick={() => {
+                    playClickSound();
+                    setContactModalMode("contract");
+                    setContactModalOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex-1 py-2 px-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold flex items-center justify-center gap-1.5 hover:bg-emerald-500/30 transition-colors cursor-pointer"
                 >
                   <Briefcase className="w-3.5 h-3.5 text-emerald-400" />
                   Hire for Remote Contract
-                </a>
+                </button>
 
-                <a
-                  href="mailto:umendrabhati2001@gmail.com?subject=Inquiry%3A%20Commercial%20Source%20Code%20License%20(%24149)&body=Hi%20Umendra%2C%0A%0AI%20would%20like%20to%20purchase%20the%20commercial%20source%20code%20license%20for%20the%20Salesforce%20Developer%20Lab%20(%24149).%0A%0APlease%20provide%20payment%20and%20repository%20access%20details.%0A%0ABest%20regards"
-                  className="py-2 px-3 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold flex items-center justify-center gap-1 hover:bg-cyan-500/30 transition-colors"
+                <button
+                  onClick={() => {
+                    playClickSound();
+                    setContactModalMode("buyCode");
+                    setContactModalOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="py-2 px-3 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold flex items-center justify-center gap-1 hover:bg-cyan-500/30 transition-colors cursor-pointer"
                 >
                   <Sparkles className="w-3.5 h-3.5 fill-current" />
                   Buy Code ($149)
-                </a>
+                </button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <ContactModal
+        isOpen={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+        mode={contactModalMode}
+      />
     </header>
   );
 };
