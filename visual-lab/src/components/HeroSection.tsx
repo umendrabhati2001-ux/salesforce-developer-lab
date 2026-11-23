@@ -10,7 +10,8 @@ import {
   Linkedin,
   ShieldCheck,
   Terminal,
-  Zap
+  Zap,
+  Download
 } from "lucide-react";
 import React, { useRef } from "react";
 import { DeveloperBadgeCard } from "./DeveloperBadgeCard";
@@ -221,6 +222,21 @@ export const HeroSection: React.FC = () => {
               >
                 <Linkedin className="w-4 h-4 text-[#0A66C2]" />
                 Umendra Bhati
+              </motion.a>
+
+              <motion.a
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                href="/salesforce-architecture-blueprint.pdf"
+                download="Salesforce-Architecture-Blueprint-Umendra-Bhati.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={playClickSound}
+                className="px-4 py-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-cyan-500/40 text-cyan-300 font-mono text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)] cursor-pointer"
+                title="Download 1-Page Technical Architecture Blueprint (PDF)"
+              >
+                <Download className="w-4 h-4 text-cyan-400" />
+                Blueprint (PDF)
               </motion.a>
             </div>
 

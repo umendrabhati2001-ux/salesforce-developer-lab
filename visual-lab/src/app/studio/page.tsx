@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { StudioWorkspace } from "@/components/StudioWorkspace";
 import { CommandPalette } from "@/components/CommandPalette";
-import { ArrowLeft, ExternalLink, Linkedin, ShieldCheck, Sparkles, Terminal, Award, Briefcase } from "lucide-react";
+import { ArrowLeft, ExternalLink, Linkedin, ShieldCheck, Sparkles, Terminal, Award, Briefcase, Download } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Live Apex & SOQL Studio | Umendra Bhati",
@@ -80,6 +80,19 @@ export default function StudioPage() {
 
         {/* Right Actions: Conversion CTAs & Developer Profile */}
         <div className="flex flex-wrap items-center gap-2.5">
+          <a
+            href="/salesforce-architecture-blueprint.pdf"
+            download="Salesforce-Architecture-Blueprint-Umendra-Bhati.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold transition-all flex items-center gap-1.5 shadow-[0_0_15px_rgba(0,240,255,0.2)] cursor-pointer active:scale-95"
+            title="Download 1-Page Technical Architecture Blueprint (PDF)"
+          >
+            <Download className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="hidden sm:inline">Blueprint (PDF)</span>
+            <span className="sm:hidden">PDF</span>
+          </a>
+
           <a
             href="mailto:umendrabhati2001@gmail.com?subject=Salesforce%20Contract%20Engagement%20-%20Umendra%20Bhati&body=Hi%20Umendra%2C%0A%0AWe%20reviewed%20your%20Salesforce%20Developer%20Lab%20and%20would%20like%20to%20discuss%20a%20remote%20contract%20%2F%20consulting%20engagement.%0A%0ABest%20regards"
             className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 text-xs font-mono font-bold transition-all flex items-center gap-1.5 shadow-[0_0_20px_rgba(16,185,129,0.35)] cursor-pointer active:scale-95"
