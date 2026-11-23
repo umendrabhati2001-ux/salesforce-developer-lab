@@ -10,14 +10,16 @@ import {
   Cpu,
   Calculator,
   Terminal,
-  Sparkles
+  Sparkles,
+  BellRing
 } from "lucide-react";
 import { VisualizersSection } from "@/components/VisualizersSection";
 import { StripeIntegrationPanel } from "@/components/StripeIntegrationPanel";
+import { SlackEscalationPanel } from "@/components/SlackEscalationPanel";
 import { EnterpriseCostCalculator } from "@/components/EnterpriseCostCalculator";
 import { playClickSound } from "@/lib/sound";
 
-export type StudioViewMode = "split" | "proj1" | "proj2" | "calculator";
+export type StudioViewMode = "split" | "proj1" | "proj2" | "proj3" | "calculator";
 
 export const StudioWorkspace: React.FC = () => {
   const [viewMode, setViewMode] = useState<StudioViewMode>("split");
@@ -90,6 +92,24 @@ export const StudioWorkspace: React.FC = () => {
           <button
             onClick={() => {
               playClickSound();
+              setViewMode("proj3");
+            }}
+            className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+              viewMode === "proj3"
+                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30 font-bold"
+                : "text-slate-400 hover:text-white hover:bg-white/[0.05]"
+            }`}
+          >
+            <BellRing className="w-3.5 h-3.5 text-purple-400" />
+            <span>Project 3: Slack Ops</span>
+            <span className="px-1.5 py-0.2 rounded bg-purple-500/30 text-purple-200 text-[9px] font-bold">
+              NEW
+            </span>
+          </button>
+
+          <button
+            onClick={() => {
+              playClickSound();
               setViewMode("calculator");
             }}
             className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -151,6 +171,18 @@ export const StudioWorkspace: React.FC = () => {
             </div>
           </div>
 
+          {/* Connected Enterprise Slack Escalation Panel */}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between px-2 text-xs font-mono text-slate-400">
+              <span className="flex items-center gap-2 text-purple-300 font-bold">
+                <span className="px-2 py-0.5 rounded bg-purple-500/20 border border-purple-500/30 text-[10px]">PANE 3</span>
+                Enterprise Incident Escalation &amp; Slack Webhook Engine
+              </span>
+              <span className="text-[11px] text-slate-500 hidden sm:inline">Database.AllowsCallouts • Asynchronous Queueable</span>
+            </div>
+            <SlackEscalationPanel />
+          </div>
+
           {/* Connected ROI Calculator */}
           <EnterpriseCostCalculator />
         </div>
@@ -165,6 +197,12 @@ export const StudioWorkspace: React.FC = () => {
       {viewMode === "proj2" && (
         <div className="flex flex-col gap-6">
           <StripeIntegrationPanel />
+        </div>
+      )}
+
+      {viewMode === "proj3" && (
+        <div className="flex flex-col gap-6">
+          <SlackEscalationPanel />
         </div>
       )}
 

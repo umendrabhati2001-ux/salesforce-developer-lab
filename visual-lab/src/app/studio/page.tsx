@@ -122,6 +122,39 @@ export default function StudioPage() {
         </div>
       </header>
 
+      {/* High-Impact Global Contract Availability Banner */}
+      <div className="bg-gradient-to-r from-emerald-950/70 via-slate-900 to-cyan-950/70 border-b border-emerald-500/20 px-4 py-2.5">
+        <div className="max-w-[1550px] mx-auto flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+          <div className="flex items-center gap-2.5 text-slate-200">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            <span className="font-bold text-emerald-400">Available Immediately for Remote Contract (15–30 hrs/wk)</span>
+            <span className="text-slate-500 hidden sm:inline">•</span>
+            <span className="text-slate-300 hidden sm:inline">Rate: <strong className="text-white">$35 – $60/hr</strong></span>
+            <span className="text-slate-500 hidden md:inline">•</span>
+            <span className="text-cyan-300 hidden md:inline">Timezone Overlap: UK (GMT) &amp; US (EST)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <a
+              href="mailto:umendrabhati2001@gmail.com?subject=Contract%20Engagement%20Inquiry%20-%20Salesforce%20DX&body=Hi%20Umendra%2C%0A%0AWe%20reviewed%20your%20Salesforce%20runtime%20studio%20and%20architecture.%20We%20would%20like%20to%20discuss%20a%20remote%20contract%20engagement.%0A%0AWeekly%20Hours%3A%2015-30%20hrs%0ATarget%20Start%3A%20Immediate%0A%0ABest%20regards%2C"
+              className="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold transition-all flex items-center gap-1 active:scale-95 shadow-sm"
+            >
+              <span>Email Umendra</span>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/umendra-bhati-5243aa36a/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2.5 py-1 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/40 text-[11px] font-bold transition-all flex items-center gap-1 active:scale-95 shadow-sm"
+            >
+              <span>LinkedIn Message ↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* Main Studio Workspace with Side-by-Side Dual Pane */}
       <StudioWorkspace />
 
