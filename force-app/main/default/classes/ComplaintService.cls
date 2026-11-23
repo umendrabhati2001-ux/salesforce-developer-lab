@@ -78,4 +78,18 @@ public with sharing class ComplaintService {
       LIMIT 100
     ];
   }
+
+  /**
+   * @description Enqueues asynchronous Stripe refund callout for approved Billing Dispute Cases.
+   *              Prevents System.CalloutException: You have uncommitted work pending.
+   * @param caseIds Set of Case IDs approved for refund compensation
+   * @param disputeReason Explanation for the refund
+   * @return Id of the enqueued AsyncApexJob
+   */
+  public static Id processDisputeRefundAsync(Set<Id> caseIds, String disputeReason) {
+    if (caseIds == null || caseIds.isEmpty()) {
+      return null;
+    }
+    return System.enqueueJob(new CaseRefundQueueable(new List<Id>(caseIds), disputeReason));
+  }
 }

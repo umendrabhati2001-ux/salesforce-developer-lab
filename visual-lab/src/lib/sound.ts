@@ -139,6 +139,7 @@ export const sound = new SoundEngine();
 
 export const playClickSound = () => sound.playClick();
 export const playChimeSound = () => sound.playSuccess();
+export const playSuccessSound = () => sound.playSuccess();
 export const playWarningSound = () => sound.playAlarm();
 export const playAlarmSound = () => sound.playAlarm();
 

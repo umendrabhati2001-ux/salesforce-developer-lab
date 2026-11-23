@@ -99,6 +99,8 @@ export const Navbar: React.FC = () => {
               <a
                 key={link.href}
                 href={link.href}
+                target={link.href === "/studio" ? "_blank" : undefined}
+                rel={link.href === "/studio" ? "noopener noreferrer" : undefined}
                 onMouseEnter={() => setHoveredIdx(idx)}
                 onClick={playClickSound}
                 className="relative px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 z-10 select-none"
@@ -197,6 +199,8 @@ export const Navbar: React.FC = () => {
                   <a
                     key={link.href}
                     href={link.href}
+                    target={link.href === "/studio" ? "_blank" : undefined}
+                    rel={link.href === "/studio" ? "noopener noreferrer" : undefined}
                     onClick={() => {
                       playClickSound();
                       setMobileMenuOpen(false);
@@ -222,6 +226,8 @@ export const Navbar: React.FC = () => {
               <div className="flex items-center gap-2">
                 <a
                   href="/studio"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => {
                     playClickSound();
                     setMobileMenuOpen(false);

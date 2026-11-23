@@ -128,7 +128,7 @@ export const CommandPalette: React.FC = () => {
       badgeColor: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
       action: () => {
         setIsOpen(false);
-        window.location.href = "/studio";
+        window.open("/studio", "_blank", "noopener,noreferrer");
       },
     },
     {

@@ -555,6 +555,8 @@ export const VisualizersSection: React.FC<VisualizersSectionProps> = ({
               {!standalone && (
                 <a
                   href="/studio"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => sound.playClick()}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-xs font-mono text-cyan-300 transition-all cursor-pointer hover:shadow-[0_0_15px_rgba(0,240,255,0.25)]"
                 >

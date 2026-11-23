@@ -3,14 +3,14 @@
 import { playClickSound } from "@/lib/sound";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
-    ArrowRight,
-    CheckCircle2,
-    Cpu,
-    GitBranch,
-    Linkedin,
-    ShieldCheck,
-    Terminal,
-    Zap
+  ArrowRight,
+  CheckCircle2,
+  Cpu,
+  GitBranch,
+  Linkedin,
+  ShieldCheck,
+  Terminal,
+  Zap
 } from "lucide-react";
 import React, { useRef } from "react";
 import { DeveloperBadgeCard } from "./DeveloperBadgeCard";
@@ -174,6 +174,32 @@ export const HeroSection: React.FC = () => {
 
             {/* High-Tech Action Buttons */}
             <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 pt-2">
+              <motion.a
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                href="/studio"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={playClickSound}
+                className="px-5 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold text-xs sm:text-sm shadow-[0_0_20px_rgba(16,185,129,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Zap className="w-4 h-4 fill-current" />
+                Live Studio IDE ↗
+              </motion.a>
+
+              <motion.a
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                href="/studio"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={playClickSound}
+                className="px-5 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold text-xs sm:text-sm shadow-[0_0_20px_rgba(16,185,129,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Zap className="w-4 h-4 fill-current" />
+                Live Studio IDE ↗
+              </motion.a>
+
               <motion.a
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

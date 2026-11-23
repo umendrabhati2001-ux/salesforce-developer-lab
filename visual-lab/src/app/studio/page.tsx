@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { VisualizersSection } from "@/components/VisualizersSection";
-import { EnterpriseCostCalculator } from "@/components/EnterpriseCostCalculator";
+import { StudioWorkspace } from "@/components/StudioWorkspace";
 import { CommandPalette } from "@/components/CommandPalette";
 import { ArrowLeft, ExternalLink, Linkedin, ShieldCheck, Sparkles, Terminal, Award, Briefcase } from "lucide-react";
 
@@ -110,11 +109,8 @@ export default function StudioPage() {
         </div>
       </header>
 
-      {/* Main Studio Workspace */}
-      <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <VisualizersSection initialTab="soql" standalone={true} />
-        <EnterpriseCostCalculator />
-      </div>
+      {/* Main Studio Workspace with Side-by-Side Dual Pane */}
+      <StudioWorkspace />
 
       {/* Studio Footer */}
       <footer className="border-t border-white/[0.08] bg-[#02050E] py-4 px-4 text-center text-xs font-mono text-slate-500 flex flex-wrap items-center justify-between gap-2 max-w-7xl mx-auto w-full">
