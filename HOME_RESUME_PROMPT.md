@@ -36,7 +36,7 @@
 
 ---
 
-## 🚀 International Cold Outreach Dispatched (Total 19 Delivered)
+## 🚀 International Cold Outreach Dispatched (Total 24 Delivered)
 
 ### 🇬🇧 UK & 🇮🇪 Ireland Boutique Salesforce Consultancies (Delivered):
 1. **Nebula Consulting (London, UK)**: `info@nebulaconsulting.co.uk` ✅ Delivered
@@ -58,10 +58,15 @@
 15. **Sercante (Atlanta, GA - Summit Boutique Partner)**: `marketing@sercante.com` ✅ Delivered
 16. **Seas The Cloud (Florida, USA - Architect-led Boutique)**: `hello@seasthecloud.us` ✅ Delivered
 17. **Accelerize 360 (Dallas, TX - Consulting Partner)**: `hello@accelerize360.com` ✅ Delivered
+18. **Plative (Broadway, New York City - Summit Partner)**: `hello@plative.com` ✅ Delivered (with Blueprint PDF)
+19. **Coastal Cloud (Palm Coast, FL - Premier Summit Partner)**: `hello@coastal.us` ✅ Delivered (with Blueprint PDF)
+20. **Eigen X (Philadelphia & NYC - Summit Partner)**: `info@eigenx.com` ✅ Delivered (with Blueprint PDF)
+21. **Ascendix Technologies (Dallas, TX - AppExchange Boutique)**: `info@ascendix.com` ✅ Delivered (with Blueprint PDF)
+22. **LevelShift / DemandBlue (Irvine & US East - On-Demand Sprints)**: `info@levelshift.com` ✅ Delivered (with Blueprint PDF)
 
 ### 🇨🇦 Canada & 🇦🇺 Australia Boutique Salesforce Consultancies (Delivered):
-18. **CloudKettle (Canada - Specialized Practice)**: `hello@cloudkettle.com` ✅ Delivered
-19. **Carnac Group (Sydney & Melbourne, Australia)**: `info@carnacgroup.com` ✅ Delivered
+23. **CloudKettle (Canada - Specialized Practice)**: `hello@cloudkettle.com` ✅ Delivered
+24. **Carnac Group (Sydney & Melbourne, Australia)**: `info@carnacgroup.com` ✅ Delivered
 
 ---
 
