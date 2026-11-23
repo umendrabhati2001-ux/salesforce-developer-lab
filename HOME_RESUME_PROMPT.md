@@ -36,9 +36,9 @@
 
 ---
 
-## 🚀 International Cold Outreach Dispatched (Total 14 Delivered)
+## 🚀 International Cold Outreach Dispatched (Total 19 Delivered)
 
-### 🇬🇧 UK Boutique Salesforce Consultancies (Delivered):
+### 🇬🇧 UK & 🇮🇪 Ireland Boutique Salesforce Consultancies (Delivered):
 1. **Nebula Consulting (London, UK)**: `info@nebulaconsulting.co.uk` ✅ Delivered
 2. **Coacto (UK)**: `hello@coacto.co.uk` ✅ Delivered
 3. **CloudAnalysts (London, UK)**: `enquiries@cloudanalysts.com` ✅ Delivered
@@ -49,12 +49,19 @@
 8. **Cloud Orca (London, UK)**: `info@cloudorca.com` ✅ Delivered
 9. **Comnexa (UK - Boutique Practice)**: `hello@comnexa.co.uk` ✅ Delivered
 10. **Stimulus Consulting (UK - Engineering Partner)**: `info@stimulusconsulting.co.uk` ✅ Delivered
+11. **Bluewave Technology Group (London & Dublin - Summit Partner)**: `info@bluewavecx.com` ✅ Delivered
+12. **Aspire CRM (UK & Dublin, Ireland)**: `enquiries@aspirecrm.co.uk` ✅ Delivered
+13. **Inardua (UK - Transformation Partner)**: `team@inardua.co.uk` ✅ Delivered
 
-### 🇺🇸 USA Boutique Salesforce Consultancies (Delivered at 6:00 PM IST / Morning US):
-11. **mindZvue (USA - Salesforce Consulting Partner)**: `contact@mindZvue.com` ✅ Delivered
-12. **Sercante (Atlanta, GA - Summit Boutique Partner)**: `marketing@sercante.com` ✅ Delivered
-13. **Seas The Cloud (Florida, USA - Architect-led Boutique)**: `hello@seasthecloud.us` ✅ Delivered
-14. **Accelerize 360 (Dallas, TX - Consulting Partner)**: `contact@accelerize360.com` ✅ Delivered
+### 🇺🇸 USA Boutique Salesforce Consultancies (Delivered):
+14. **mindZvue (USA - Salesforce Consulting Partner)**: `contact@mindZvue.com` ✅ Delivered
+15. **Sercante (Atlanta, GA - Summit Boutique Partner)**: `marketing@sercante.com` ✅ Delivered
+16. **Seas The Cloud (Florida, USA - Architect-led Boutique)**: `hello@seasthecloud.us` ✅ Delivered
+17. **Accelerize 360 (Dallas, TX - Consulting Partner)**: `hello@accelerize360.com` ✅ Delivered
+
+### 🇨🇦 Canada & 🇦🇺 Australia Boutique Salesforce Consultancies (Delivered):
+18. **CloudKettle (Canada - Specialized Practice)**: `hello@cloudkettle.com` ✅ Delivered
+19. **Carnac Group (Sydney & Melbourne, Australia)**: `info@carnacgroup.com` ✅ Delivered
 
 ---
 
