@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { VisualizersSection } from "@/components/VisualizersSection";
+import { EnterpriseCostCalculator } from "@/components/EnterpriseCostCalculator";
 import { CommandPalette } from "@/components/CommandPalette";
 import { ArrowLeft, ExternalLink, Linkedin, ShieldCheck, Sparkles, Terminal, Award, Briefcase } from "lucide-react";
 
@@ -112,6 +113,7 @@ export default function StudioPage() {
       {/* Main Studio Workspace */}
       <div className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <VisualizersSection initialTab="soql" standalone={true} />
+        <EnterpriseCostCalculator />
       </div>
 
       {/* Studio Footer */}
