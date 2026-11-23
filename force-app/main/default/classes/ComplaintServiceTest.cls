@@ -204,4 +204,34 @@ private class ComplaintServiceTest {
       );
     }
   }
+
+  @isTest
+  static void testProcessCaseRefundFromLwc_Success() {
+    Account acc = [SELECT Id FROM Account LIMIT 1];
+    Case c = new Case(
+      AccountId = acc.Id,
+      Subject = 'Dispute on Charge #5521',
+      Status = 'New',
+      Description = 'Customer requested refund'
+    );
+    insert c;
+
+    Test.startTest();
+    String jobId = ComplaintService.processCaseRefundFromLwc(c.Id, 'Customer goodwill settlement');
+    Id asyncJobId = ComplaintService.processDisputeRefundAsync(new Set<Id>{ c.Id }, 'Batch settlement');
+    Test.stopTest();
+
+    Assert.isNotNull(jobId, 'Job ID should be returned from LWC refund method');
+    Assert.isNotNull(asyncJobId, 'Async job ID should be returned from Set method');
+  }
+
+  @isTest
+  static void testProcessCaseRefundFromLwc_NullCheck() {
+    try {
+      ComplaintService.processCaseRefundFromLwc(null, 'Reason');
+      Assert.fail('Should throw AuraHandledException on null caseId');
+    } catch (Exception ex) {
+      Assert.isTrue(ex instanceof AuraHandledException, 'Expected AuraHandledException');
+    }
+  }
 }

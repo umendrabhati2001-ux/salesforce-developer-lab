@@ -1,0 +1,84 @@
+<template>
+    <lightning-quick-action-panel header="Stripe Dispute Settlement &amp; Instant Refund">
+        <!-- Spinner on Async Execution -->
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Processing Stripe Refund Callout" size="medium"></lightning-spinner>
+        </template>
+
+        <!-- Main Modal Content -->
+        <div class="slds-p-around_medium">
+            <!-- Header Status Badge -->
+            <div class="slds-m-bottom_medium slds-box slds-box_x-small custom-alert-box">
+                <div class="slds-media slds-media_center">
+                    <div class="slds-media__figure">
+                        <lightning-icon icon-name="custom:custom41" size="small" alternative-text="Stripe Payment"></lightning-icon>
+                    </div>
+                    <div class="slds-media__body">
+                        <p class="slds-text-heading_small slds-text-color_inverse">
+                            Connected Stripe REST Engine
+                        </p>
+                        <p class="slds-text-body_small slds-text-color_weak">
+                            Queueable Async Callout &bull; 0 SOQL in Loops &bull; Automatic Case Closure
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case Record Overview -->
+            <div class="slds-form slds-form_stacked">
+                <lightning-input 
+                    label="Target Case ID" 
+                    value={recordId} 
+                    disabled 
+                    class="slds-m-bottom_small">
+                </lightning-input>
+
+                <lightning-input 
+                    type="number" 
+                    formatter="currency" 
+                    step="0.01" 
+                    label="Refund Amount (USD)" 
+                    value={refundAmount} 
+                    onchange={handleAmountChange} 
+                    required 
+                    class="slds-m-bottom_small">
+                </lightning-input>
+
+                <lightning-combobox
+                    label="Dispute Reason"
+                    value={disputeReason}
+                    placeholder="Select settlement reason..."
+                    options={reasonOptions}
+                    onchange={handleReasonChange}
+                    required
+                    class="slds-m-bottom_small">
+                </lightning-combobox>
+
+                <lightning-textarea
+                    label="Executive Audit Notes"
+                    value={auditNotes}
+                    onchange={handleNotesChange}
+                    placeholder="Optional compliance remarks for audit trail..."
+                    class="slds-m-bottom_small">
+                </lightning-textarea>
+            </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div slot="footer">
+            <lightning-button 
+                variant="neutral" 
+                label="Cancel" 
+                onclick={handleCancel} 
+                class="slds-m-right_small">
+            </lightning-button>
+            <lightning-button 
+                variant="brand" 
+                label="Execute Stripe Refund ($150.00)" 
+                icon-name="utility:money" 
+                onclick={handleExecuteRefund} 
+                disabled={isLoading}>
+            </lightning-button>
+        </div>
+    </lightning-quick-action-panel>
+</template>

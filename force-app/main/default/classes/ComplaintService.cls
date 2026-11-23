@@ -80,6 +80,21 @@ public with sharing class ComplaintService {
   }
 
   /**
+   * @description AuraEnabled endpoint for LWC stripeRefundModal to dispatch async Stripe refund.
+   * @param caseId Salesforce Record Id of the Case
+   * @param disputeReason Explanation for the refund
+   * @return Id of the enqueued AsyncApexJob
+   */
+  @AuraEnabled
+  public static String processCaseRefundFromLwc(Id caseId, String disputeReason) {
+    if (caseId == null) {
+      throw new AuraHandledException('Case ID is required to process refund.');
+    }
+    Id jobId = System.enqueueJob(new CaseRefundQueueable(new List<Id>{ caseId }, disputeReason));
+    return String.valueOf(jobId);
+  }
+
+  /**
    * @description Enqueues asynchronous Stripe refund callout for approved Billing Dispute Cases.
    *              Prevents System.CalloutException: You have uncommitted work pending.
    * @param caseIds Set of Case IDs approved for refund compensation
