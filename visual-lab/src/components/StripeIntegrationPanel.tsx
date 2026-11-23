@@ -181,7 +181,7 @@ export const StripeIntegrationPanel: React.FC<{ compact?: boolean }> = ({ compac
                 : "text-slate-400 hover:text-white"
             }`}
           >
-            Live Simulator
+            Runtime Console
           </button>
           <button
             onClick={() => {
