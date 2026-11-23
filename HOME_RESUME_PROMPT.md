@@ -61,7 +61,7 @@
 18. **Plative (Broadway, New York City - Summit Partner)**: `hello@plative.com` ✅ Delivered (with Blueprint PDF)
 19. **Coastal Cloud (Palm Coast, FL - Premier Summit Partner)**: `hello@coastal.us` ✅ Delivered (with Blueprint PDF)
 20. **Eigen X (Philadelphia & NYC - Summit Partner)**: `info@eigenx.com` ✅ Delivered (with Blueprint PDF)
-21. **Ascendix Technologies (Dallas, TX - AppExchange Boutique)**: `info@ascendix.com` ✅ Delivered (with Blueprint PDF)
+21. **CloudMasonry (Chicago & US National - Premier Partner)**: `info@cloudmasonry.com` ✅ Delivered (with Blueprint PDF)
 22. **LevelShift / DemandBlue (Irvine & US East - On-Demand Sprints)**: `info@levelshift.com` ✅ Delivered (with Blueprint PDF)
 
 ### 🇨🇦 Canada & 🇦🇺 Australia Boutique Salesforce Consultancies (Delivered):
